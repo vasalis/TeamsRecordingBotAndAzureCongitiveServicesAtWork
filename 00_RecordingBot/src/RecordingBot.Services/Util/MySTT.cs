@@ -84,7 +84,6 @@ namespace RecordingBot.Services.Util
 
                 _eventPublisher.Publish("MySTT Setup", $"Got region: {lCognitiveRegion}, key starting from: {lCognitiveKey??lCognitiveKey.Substring(0, lCognitiveKey.Length /2)}");
 
-                // this.mTransSpeechConfig = SpeechTranslationConfig.FromSubscription("5e2cf81a6c9344d5a8f06e9ca37f9a18", "westeurope");
                 this.mTransSpeechConfig = SpeechTranslationConfig.FromSubscription(lCognitiveKey, lCognitiveRegion);
                 var fromLanguage = "en-US";
                 var toLanguages = new List<string> { "el-GR" };
