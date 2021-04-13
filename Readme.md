@@ -1,8 +1,13 @@
+# [Work in progress] This is a git repo that tries to put together a Teams Recording Bot, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
+1. Captures the audio from a Team's call (by adding the "Recording bot" as a user)
+2. Transcribes the audio to the default language (english, but you can change that via code ;) ) 
+3. Translates the transcription to one or more languages (again you can change these)
+4. Shows the results on a Teams Tab App (React / TypeScript)
 # Steps to get things running
 1. [First start by registering a bot](https://github.com/microsoftgraph/microsoft-graph-comms-samples/blob/master/Samples/V1.0Samples/AksSamples/teams-recording-bot/docs/setup/bot.md)
-   1. From this you will need BOT_ID, BOT_SECRET and BOT_NAME. The first two will need to be kept as [repo secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
-   2. Create a Secret on your repo holding the value of BOT_ID
-   3. Create a Secret on your repo holding the value of BOT_SECRET
+   1. From this you will need BOT_ID, BOT_SECRET and BOT_NAME. The first two will need to be kept as GitHub [repo secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
+   2. Create a Secret on your repo named BOT_ID holding the value of BOT_ID
+   3. Create a Secret on your repo named BOT_SECRET holding the value of BOT_SECRET
 2. Change the values of 03_IaC\00_AzureCLI\MyDeploymentValues.txt with your desired values
    1. botSubDomain is the subdomain that your bot will "listen" to, for example myrecbot.mydomain.myextention
    2. botName is the value from step 1 BOT_NAME, use the same
@@ -36,13 +41,6 @@
     }
     ```
    3. For more details on this see [here](https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/LocalMediaSamples/AudioVideoPlaybackBot#test)
-# Work in Progress
-## This is a git repo that tries to put together a Teams Recording Bot, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
-1. Captures the audio from a Team's call (by adding the "Recording bot" as a user)
-2. Transcribes the audio to the default language (english, but you can change that via code ;) ) 
-3. Translates the transcription to one or more languages (again you can change these)
-4. Shows the results on a Teams Tab App (React / TypeScript)
-
 # Fork
 The Recording bot is a fork of this public repo: https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/AksSamples/teams-recording-bot
 which follows the MIT license. This part is located [here](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/00_RecordingBot)
