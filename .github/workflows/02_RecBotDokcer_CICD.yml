@@ -22,13 +22,13 @@ jobs:
       - name: Docker Build
         working-directory: 00_RecordingBot
         run: |
-          docker build --build-arg CallSignalingPort=<CALL_SIGNALING_PORT> --build-arg CallSignalingPort2=<CALL_SIGNALING_PORT+1> --build-arg InstanceInternalPort=<INSTANT_INTERNAL_PORT> -f ./build/Dockerfile . -t ${{env.acrName}}/teams-recording-bot:${{env.imgVersion}}
+          docker build --build-arg CallSignalingPort=<CALL_SIGNALING_PORT> --build-arg CallSignalingPort2=<CALL_SIGNALING_PORT+1> --build-arg InstanceInternalPort=<INSTANT_INTERNAL_PORT> -f ./build/Dockerfile . -t ${{env.acrName}}.azurecr.io/teams-recording-bot:${{env.imgVersion}}
       - name: ACR authentication        
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ env.acrName }}
+          login-server: ${{ env.acrName }}.azurecr.io
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}    
       - name: Docker Build & Push to ACR        
         run: |
-          docker push ${{env.acrName}}/teams-recording-bot:${{env.imgVersion}}
+          docker push ${{env.acrName}}.azurecr.io/teams-recording-bot:${{env.imgVersion}}
