@@ -5,9 +5,9 @@
 4. Shows the results on a Teams Tab App (React / TypeScript)
 # Steps to get things running
 1. [First start by registering a bot](https://github.com/microsoftgraph/microsoft-graph-comms-samples/blob/master/Samples/V1.0Samples/AksSamples/teams-recording-bot/docs/setup/bot.md)
-   1. From this you will need BOT_ID, BOT_SECRET and BOT_NAME. The first two will need to be kept as [repo secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
-   2. Create a Secret on your repo holding the value of BOT_ID
-   3. Create a Secret on your repo holding the value of BOT_SECRET
+   1. From this you will need BOT_ID, BOT_SECRET and BOT_NAME. The first two will need to be kept as GitHub [repo secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
+   2. Create a Secret on your repo named BOT_ID holding the value of BOT_ID
+   3. Create a Secret on your repo named BOT_SECRET holding the value of BOT_SECRET
 2. Change the values of 03_IaC\00_AzureCLI\MyDeploymentValues.txt with your desired values
    1. botSubDomain is the subdomain that your bot will "listen" to, for example myrecbot.mydomain.myextention
    2. botName is the value from step 1 BOT_NAME, use the same
