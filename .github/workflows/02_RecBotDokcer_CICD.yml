@@ -1,0 +1,34 @@
+name: CI_CD_RecordingBot
+on:  
+  push:
+    branches: [ master ]
+    paths:
+      - '00_RecordingBot/**'
+      - '.github/workflows/02_RecBotDokcer_CICD.yml'   
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_docker_image:
+    runs-on: windows-latest
+    env:      
+      imgVersion: 1.0.0
+    steps:      
+      - uses: actions/checkout@v2
+      - name: 'Load env variable from file using pwsh'
+        shell: pwsh
+        run: 03_IaC/00_AzureCLI/10_LoadEnvVariables.ps1
+      - name: Docker Build
+        working-directory: 00_RecordingBot
+        run: |
+          docker build --build-arg CallSignalingPort=<CALL_SIGNALING_PORT> --build-arg CallSignalingPort2=<CALL_SIGNALING_PORT+1> --build-arg InstanceInternalPort=<INSTANT_INTERNAL_PORT> -f ./build/Dockerfile . -t ${{env.acrName}}/teams-recording-bot:${{env.imgVersion}}
+      - name: ACR authentication        
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.acrName }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}    
+      - name: Docker Build & Push to ACR        
+        run: |
+          docker push ${{env.acrName}}/teams-recording-bot:${{env.imgVersion}}

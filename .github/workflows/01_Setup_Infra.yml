@@ -1,0 +1,25 @@
+name: Setup_infra
+
+on:  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+jobs:
+  Create_PaaS_Infra:
+    runs-on: ubuntu-latest
+    env:
+      BOT_ID: ${{secrets.BOT_ID}}
+      BOT_SECRET: ${{secrets.BOT_SECRET}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'Load env variable from file using pwsh'
+      shell: pwsh
+      run: 03_IaC/00_AzureCLI/10_LoadEnvVariables.ps1
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true    
+    - name: 'Run Setup AKS powershell'
+      shell: pwsh
+      run: 03_IaC/00_AzureCLI/01_AKS_iac.ps1
