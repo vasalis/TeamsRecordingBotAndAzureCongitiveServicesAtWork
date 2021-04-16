@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsComBackEnd", "TeamsComBackEnd\TeamsComBackEnd.csproj", "{8089E496-69AB-46D2-801A-0E25ACDF10FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamsComModels", "TeamsComModels\TeamsComModels.csproj", "{14E4B6F8-2709-43EA-924E-B83AF3E32FD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8089E496-69AB-46D2-801A-0E25ACDF10FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8089E496-69AB-46D2-801A-0E25ACDF10FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8089E496-69AB-46D2-801A-0E25ACDF10FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8089E496-69AB-46D2-801A-0E25ACDF10FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14E4B6F8-2709-43EA-924E-B83AF3E32FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E4B6F8-2709-43EA-924E-B83AF3E32FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E4B6F8-2709-43EA-924E-B83AF3E32FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E4B6F8-2709-43EA-924E-B83AF3E32FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FAEC3E1-E5B2-44E7-B497-81BA028BD211}
+	EndGlobalSection
+EndGlobal
