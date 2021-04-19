@@ -1,7 +1,7 @@
 name: 10_CI_CD_RecordingBot
 on:  
   push:
-    branches: [ master ]
+    branches: [ master, fb-** ]
     paths:
       - '00_RecordingBot/src/**'      
 

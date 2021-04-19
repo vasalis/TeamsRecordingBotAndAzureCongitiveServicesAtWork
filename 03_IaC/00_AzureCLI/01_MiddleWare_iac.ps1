@@ -6,6 +6,9 @@ $resourceGroupName = $projectPrefix +"_rg"
 Write-Output "(Got from ENV): RG: $resourceGroupName location: $azureLocation"
 Write-Output "Environment Azure CL: $(az --version)"
 
+# Front End Storage Account
+$staticSiteStorage = $projectPrefix +"staticsite"
+
 # Cognitive Services Related Variables
 $textAnalyticsName = $projectPrefix +"TextAnalytics"
 $speechToTextName = $projectPrefix +"SpeechToText"
@@ -24,6 +27,11 @@ $cosmosDbPartitionKey = '/callid'
 # Create the resource group
 Write-Output "About to create resource group: $resourceGroupName" 
 az group create -l $azureLocation -n $resourceGroupName
+
+# Create the Storage Account for the FrontEnd
+az storage account create --name $staticSiteStorage --resource-group $resourceGroupName --location $azureLocation --sku Standard_LRS
+# Enable Static Site
+az storage blob service-properties update --account-name $staticSiteStorage --static-website --404-document error.html --index-document index.html
 
 # Create the Text Analytics and Translation Cognitive Service
 Write-Output "About to create Text Analytics and Translation Cognitive Services: $textAnalyticsName, $speechToTextName"

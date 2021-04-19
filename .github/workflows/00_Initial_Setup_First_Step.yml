@@ -2,7 +2,7 @@ name: 00_Initial_Setup_First_Step
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, fb-** ]
     paths:                
       - '03_IaC/00_AzureCLI/MyDeploymentValues.txt'  
 

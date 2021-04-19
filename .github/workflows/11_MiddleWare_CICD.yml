@@ -2,7 +2,7 @@ name: 11_MiddleWare_CICD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, fb-** ]
     paths:
       - '01_MiddleWare/**'
   workflow_run:

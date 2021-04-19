@@ -191,12 +191,15 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
             });
         }
     }
+    
 
     // Util Functions -> move to another place
-    // TODO: Replace with the End point of the back end
+    // TODO: Replace with the End point of the back end, now set from env 
     private async ExecuteApiCall(aCallId: string) {
-        try {
-            return fetch('https://teamscombackend20200903053702.azurewebsites.net/api/GetTranscriptions', {
+        try {            
+            var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+            console.log('Got endpoint: ' + lEndPoint);
+            return fetch(lEndPoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
