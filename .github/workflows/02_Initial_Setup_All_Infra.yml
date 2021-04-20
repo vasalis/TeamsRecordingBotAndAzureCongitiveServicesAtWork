@@ -15,8 +15,8 @@ jobs:
     env:
       BOT_ID: ${{secrets.BOT_ID}}
       BOT_SECRET: ${{secrets.BOT_SECRET}}
-      SP_ID: ${{secrets.SP_ID}}
-      SP_SECRET: ${{secrets.SP_SECRET}}
+      SP_ID: ${{fromJson(secrets.AZURE_CREDENTIALS).clientId}}
+      SP_SECRET: ${{fromJson(secrets.AZURE_CREDENTIALS).clientSecret}}
     steps:
     - uses: actions/checkout@v2
     - name: 'Load env variables from file using pwsh'
