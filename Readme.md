@@ -1,8 +1,9 @@
-# [Work in progress] This is a git repo that tries to put together a Teams Recording Bot, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
+# [Work in progress] Git repo that puts together a Teams (recording) Bot with real-time audio access, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
 1. Captures the audio from a Team's call (by adding the "Recording bot" as a user)
 2. Transcribes the audio to the default language (english, but you can change that via code ;) ) 
 3. Translates the transcription to one or more languages (again you can change these)
 4. Shows the results on a Teams Tab App (React / TypeScript)
+6. The bot does not actually record the call, but the code for that is just commented out from the original forked project (see below).
 
 # Steps to get things running
 1. [First start by registering a bot](https://github.com/microsoftgraph/microsoft-graph-comms-samples/blob/master/Samples/V1.0Samples/AksSamples/teams-recording-bot/docs/setup/bot.md)
