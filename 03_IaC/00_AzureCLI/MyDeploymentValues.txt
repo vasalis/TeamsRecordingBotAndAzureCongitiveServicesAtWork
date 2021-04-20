@@ -1,5 +1,5 @@
-botSubDomain=<bot's sub domain, for example: vbot.mydomain.eu>
-botName=<the name of your bot, for example: myTeamsRecBot>
-projectPrefix=<a prefix to me used for naming, for example: vbot. This will create a resource group vbot_rg>
-azureLocation=<Azure region to deploy things, for example: northeurope>
-acrName=<your Azure Container name (to be created), for example: vbotacr. Make sure this is unique>
+botSubDomain=rbot.vsalis.eu
+botName=myTeamsRecBot
+projectPrefix=rbot
+azureLocation=northeurope
+acrName=rbotacr
