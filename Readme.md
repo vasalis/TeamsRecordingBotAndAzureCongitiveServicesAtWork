@@ -1,19 +1,35 @@
-# [Work in progress] Git repo that puts together a Teams (recording) Bot with real-time audio access, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
+#  Git repo that puts together a Teams (recording) Bot with real-time audio access, Azure Cognitive Services and a Teams Tab app to demonstrate end to end functionality that:
 1. Captures the audio from a Team's call (by adding the "Recording bot" as a user)
 2. Transcribes the audio to the default language (english, but you can change that via code ;) ) 
 3. Translates the transcription to one or more languages (again you can change these)
 4. Shows the results on a Teams Tab App (React / TypeScript)
 6. The bot does not actually record the call, but the code for that is just commented out from the original forked project (see below).
 
+## Prerequisites
+1. An Azure subcription
+2. A Teams Tenant with Admin rights
+3. A custom domain, where you can create an A Record
+
+## TL;DR
+1. The scope of this repo is by using GitHub Actions to automate the entire process of running the sample. 
+2. In theory, by:
+   1. Registering a calling bot (Step 1) and creating an Azure Service principal (Step 2)
+   2. Forking the repo 
+   3. Creating a file named `03_IaC\00_AzureCLI\MyDeploymentValues.txt` with your config values
+   4. and following auto-created issues on your repo.
+3. you should be set. 
+4. Estimated time to complete ~1.5-2hours (mostly due to building the Bot's docker image and spawning the hosting infrastructure)
+
 # Steps to get things running
-1. [First start by registering a bot](https://github.com/microsoftgraph/microsoft-graph-comms-samples/blob/master/Samples/V1.0Samples/AksSamples/teams-recording-bot/docs/setup/bot.md)
+1. First start by: [registering a calling bot](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/00_RecordingBot/docs/setup/bot.md)
    1. From this you will need BOT_ID, BOT_SECRET and BOT_NAME. The first two will need to be kept as [repo secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
-   2. Create a Secret on your GitHub repo holding the value of BOT_ID
-   3. Create a Secret on your GitHub repo holding the value of BOT_SECRET
+   2. Create a Secret on your GitHub repo named BOT_ID holding the value of BOT_ID
+   3. Create a Secret on your GitHub repo named BOT_SECRET holding the value of BOT_SECRET
 2. Create an Azure Service Principal
-   1. Run this: `az ad sp create-for-rbac -n "RecBotGitHubActions" --sdk-auth` (use any name you like instead of RecBotGitHubActions)
+   1. Run this: `az ad sp create-for-rbac -n "RecBotGitHubActions" --role Owner --sdk-auth` (you can use any name you like instead of RecBotGitHubActions)
    2. Get the result and create a GitHub repo Secret named AZURE_CREDENTIALS. For more details see [here](https://github.com/marketplace/actions/azure-login)
-3. Change the values of `03_IaC\00_AzureCLI\MyDeploymentValues.txt` with your desired values
+   3. Your GitHub repo secrets should look like this: ![git secrets](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/00_RecordingBot/docs/images/secrets.jpg)
+3. Rename (or create a new) the file `03_IaC\00_AzureCLI\MyDeploymentValues_template.txt` to `03_IaC\00_AzureCLI\MyDeploymentValues.txt` and set your desired values
    1. `botSubDomain` is the subdomain that your bot will "listen" to, for example myrecbot.mydomain.myextention
    2. `botName` is the value from step 1 BOT_NAME, use the same
    3. `projectPrefix` is a prefix, for naming conventions. This will create an Azure resource group named: <projectPrefix>_rg. Use something yours...
@@ -44,6 +60,7 @@
     }
     ```
    3. For more details on this see [here](https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/LocalMediaSamples/AudioVideoPlaybackBot#test)
+8. Teams Tab App
 # Fork
 The Recording bot is a fork of this public repo: https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/AksSamples/teams-recording-bot
 which follows the MIT license. This part is located [here](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/00_RecordingBot)
