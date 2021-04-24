@@ -14,7 +14,7 @@ import {
     IOverflowSetItemProps,
     StackItem,
     Label,
-    IStackItemStyles
+    IStackItemStyles, Dropdown, IDropdownOption, SelectableOptionMenuItemType
 } from "@fluentui/react";
 
 // Tokens definition
@@ -26,6 +26,8 @@ const wrapStackTokens: IStackTokens = { childrenGap: 5 };
  */
 export interface ITeamsTpTabState extends ITeamsBaseComponentState {
     currentStatus: string;    
+    activeCallItems: CallEntity[];
+    activeCallDDItems: IDropdownOption[];
     transcriptionItems: TranscriptionEntity[];
     isCallIdSet: boolean;
     fetchState: string;
@@ -47,7 +49,32 @@ class TranscriptionEntity {
     public when: string;
 }
 
+class CallEntity implements IDropdownOption {
+    isSelected?: boolean | undefined;
+    key: string | number;
+    id?: string | undefined;
+    text: string;
+    title?: string | undefined;
+    itemType?: SelectableOptionMenuItemType | undefined;
+    index?: number | undefined;
+    ariaLabel?: string | undefined;
+    selected?: boolean | undefined;
+    disabled?: boolean | undefined;
+    hidden?: boolean | undefined;
+    data?: any;
+        
+    //public callid: string;    
+    //public text: string;    
+    public when: string;    
 
+    public set callid(value) {
+        this.key = value;
+    }
+
+    public get callid() {
+        return this.key;
+    }    
+}
 
 /**
  * Implementation of the Teams_TP Tab content page
@@ -55,6 +82,7 @@ class TranscriptionEntity {
 export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTabState> {
     
     private _selection: Selection;
+    private intervalForActiveCalls;
     private interval;
 
     public componentWillMount() {
@@ -77,28 +105,17 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         {
             clearInterval(this.interval);
         }        
-      }
-
-    private async LoginIfNeededAndThenGetTeams() {
-
-        // TODO: replace with your own Client Id for Single Sign on.
-        const lTeamsConfig = {
-            clientId: "d8fdae16-a59f-4d1f-93ba-5e63b77f0235",
-            authPopupUrl: window.location.origin + "/auth/",
-            scopes: ["User.Read.All", "Group.Read.All"]
-        };
-
-        // TeamsProvider.microsoftTeamsLib = microsoftTeams;
-        // const lTe = new TeamsProvider(lTeamsConfig);
-        // Providers.globalProvider = lTe;
-
-        // lTe.login().then(() => this.GetTeamsAndPopulateDropDown());        
-    }         
+      }          
 
     private RenderAddCallId() {
         const addIcon: IIconProps = { iconName: 'Add' };
         return (
             <Stack horizontal horizontalAlign="end">
+                <Dropdown
+                    placeholder="Select an active call"
+                    label="My active calls"
+                    options={this.state.activeCallItems}                    
+                />
                 <TextField onChange={this._onChangeText} />
                 <Link onClick={() => this.GetTranscriptionsForUI()}>
                     <Persona imageInitials="+"
@@ -122,13 +139,18 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         });   
     }
 
+    private async GetActiveCallsForUI() {       
+
+        this.intervalForActiveCalls = setInterval(() => this.GetActiveCallsFromApi(), 2000);
+    }
+
     private async GetTranscriptionsForUI() {
         this.setState({
             isCallIdSet: true
         });
 
 
-        this.interval = setInterval(() => this.GetDataPeriodically(), 2000);
+        this.interval = setInterval(() => this.GetDataPeriodically(), 1000);
     }
     
     private async GetDataPeriodically() {
@@ -138,7 +160,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 fetchState: "Fetching data"
             });
 
-            await this.ExecuteApiCall(this.state.callIdToFetch);
+            await this.GetTranscriptionsFromApi(this.state.callIdToFetch);
         }
         else
         {
@@ -154,7 +176,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         this.setState({
             callIdToFetch: text
         });        
-    };
+    };    
 
     private RenderCallTranscription() {
         if (this.state.transcriptionItems) {
@@ -195,10 +217,11 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
 
     // Util Functions -> move to another place
     // TODO: Replace with the End point of the back end, now set from env 
-    private async ExecuteApiCall(aCallId: string) {
+    private async GetTranscriptionsFromApi(aCallId: string) {
         try {            
             var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-            console.log('Got endpoint: ' + lEndPoint);
+            lEndPoint = lEndPoint + "api/GetTranscriptions";
+            console.log('Got transcriptions endpoint: ' + lEndPoint);
             return fetch(lEndPoint, {
                 method: 'POST',
                 headers: {
@@ -213,13 +236,39 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                     this.setState({
                         fetchState: ""
                     });
-                }).catch(function(error) {
-                    alert("Fetch failed: " + error);
+                }).catch(function(error) {                    
                     console.log(error);
                 });
             
         } catch (error) {
-            this.Log("ExecuteApiCall error: " + JSON.stringify(error));
+            this.Log("GetTranscriptions error: " + JSON.stringify(error));
+        }
+    }
+
+    // Util Functions -> move to another place
+    // TODO: Replace with the End point of the back end, now set from env 
+    private async GetActiveCallsFromApi() {
+        try {            
+            var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+            lEndPoint = lEndPoint + "api/GetActiveCalls";
+
+            console.log('Got calls endpoint: ' + lEndPoint);
+            return fetch(lEndPoint, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }                
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({ activeCallItems: data });                   
+                }).catch(function(error) {                    
+                    console.log(error);
+                });
+            
+        } catch (error) {
+            this.Log("GetActiveCalls error: " + JSON.stringify(error));
         }
     }
 
@@ -249,6 +298,8 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 overflow: "visible"
             },
         };
+
+        this.GetActiveCallsForUI();
 
         return (
             <TeamsThemeContext.Provider value={context}>

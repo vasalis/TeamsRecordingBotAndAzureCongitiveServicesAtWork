@@ -82,4 +82,3 @@ az functionapp config appsettings set --name $functionsName --resource-group $re
 # Write env Variables for other steps to use
 Write-Output "azureCognitiveKey=$speechToTextKey" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 Write-Output "persistenceEndPoint=$persistanceEndPoint" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-Write-Output "textAnalyticsEndPoint=$textAnalyticsEndPoint" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append

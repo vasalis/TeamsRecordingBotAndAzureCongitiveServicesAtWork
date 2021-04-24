@@ -115,6 +115,47 @@ namespace TeamsComBackEnd
             }
 
             return returnValue;
-        }        
+        }
+
+        [FunctionName("GetActiveCalls")]
+        public async Task<IActionResult> GetActiveCalls(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("GetActiveCalls trigger function processed a request.");
+
+            IActionResult returnValue = null;
+
+            try
+            {
+                List<CallEntity> lResults = new List<CallEntity>();                
+
+                QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 5 t.callid FROM teamscalls t order by t._ts desc");
+
+                using (FeedIterator<CallEntity> feedIterator = this.mContainer.GetItemQueryIterator<CallEntity>(queryDefinition))
+                {
+                    while (feedIterator.HasMoreResults)
+                    {
+                        foreach (var item in await feedIterator.ReadNextAsync())
+                        {
+                            lResults.Add(item);
+                        }
+                    }
+
+                    mLogger.LogInformation($"Got {lResults.Count} top 5 calls");
+
+                    returnValue = new OkObjectResult(lResults);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                mLogger.LogError($"Could not GetActiveCalls. Exception thrown: {ex.Message}");
+                returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            return returnValue;
+        }
     }
 }
