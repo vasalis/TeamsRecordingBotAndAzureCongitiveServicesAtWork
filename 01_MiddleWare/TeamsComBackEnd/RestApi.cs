@@ -134,10 +134,12 @@ namespace TeamsComBackEnd
 
                 using (FeedIterator<CallEntity> feedIterator = this.mContainer.GetItemQueryIterator<CallEntity>(queryDefinition))
                 {
+                    int lCounter = 1;
                     while (feedIterator.HasMoreResults)
                     {
                         foreach (var item in await feedIterator.ReadNextAsync())
                         {
+                            item.Text = $"Call {lCounter++}";
                             lResults.Add(item);
                         }
                     }

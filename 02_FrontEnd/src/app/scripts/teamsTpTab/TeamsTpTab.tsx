@@ -141,7 +141,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
 
     private async GetActiveCallsForUI() {       
 
-        this.intervalForActiveCalls = setInterval(() => this.GetActiveCallsFromApi(), 2000);
+        this.intervalForActiveCalls = setInterval(() => this.GetActiveCallsFromApi(), 10000);
     }
 
     private async GetTranscriptionsForUI() {
