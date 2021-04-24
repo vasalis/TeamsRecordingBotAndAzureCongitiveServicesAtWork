@@ -166,7 +166,7 @@ namespace TeamsComBackEnd
             {
                 String lDate = string.Empty;
                 String lParticipants = string.Empty;
-                QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 3 t.who, t[\"when\"] FROM teamscalls t order by t._ts desc");
+                QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 10 t.who, t[\"when\"] FROM teamscalls t order by t._ts desc");
 
                 using (FeedIterator<TranscriptionEntity> feedIterator = this.mContainer.GetItemQueryIterator<TranscriptionEntity>(queryDefinition,
                     null,
