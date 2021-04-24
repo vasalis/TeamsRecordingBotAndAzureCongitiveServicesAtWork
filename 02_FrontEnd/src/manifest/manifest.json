@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "packageName": "teamstp",
   "developer": {
-    "name": "ocp",
+    "name": "vasalis",
     "websiteUrl": "https://{{HOSTNAME}}",
     "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
     "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"

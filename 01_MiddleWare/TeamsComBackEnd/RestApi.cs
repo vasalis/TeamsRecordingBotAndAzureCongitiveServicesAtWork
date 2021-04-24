@@ -138,7 +138,7 @@ namespace TeamsComBackEnd
                     {
                         foreach (var item in await feedIterator.ReadNextAsync())
                         {
-                            item.Text = item.CallId;
+                            item.Text = await GetCallDetails(item.CallId);
                             lResults.Add(item);
                         }
                     }
@@ -157,6 +157,52 @@ namespace TeamsComBackEnd
             }
 
             return returnValue;
+        }
+
+        private async Task<string> GetCallDetails(string aCallId)
+        {
+            string lExit = "";
+            try
+            {
+                String lDate = string.Empty;
+                String lParticipants = string.Empty;
+                QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 3 t.who, t[\"when\"] FROM teamscalls t order by t._ts desc");
+
+                using (FeedIterator<TranscriptionEntity> feedIterator = this.mContainer.GetItemQueryIterator<TranscriptionEntity>(queryDefinition,
+                    null,
+                    new QueryRequestOptions() { PartitionKey = new PartitionKey(aCallId) }))
+                {
+                    while (feedIterator.HasMoreResults)
+                    {
+                        foreach (var item in await feedIterator.ReadNextAsync())
+                        {
+                            if (string.IsNullOrEmpty(lDate))
+                            {
+                                lDate = $"{item.When.ToUniversalTime()}";
+                            }
+
+                            if (string.IsNullOrEmpty(lParticipants))
+                            {
+                                lParticipants = $"{item.Who}";
+                            }
+                            else
+                            {
+                                lParticipants = $", {item.Who}";
+                            }
+                        }
+                    }
+
+                    lExit = $"[{lDate} UTC] [With: {lParticipants}...]";
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                mLogger.LogError($"GetCallDetails failed. Exception thrown: {ex.Message}");                
+            }
+
+            return lExit;
         }
     }
 }
