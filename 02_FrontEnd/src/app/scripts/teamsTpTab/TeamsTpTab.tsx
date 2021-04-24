@@ -92,8 +92,8 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         
         return (
             <Dropdown
-                    placeholder="Select an active call"
-                    label="My active calls"
+                    placeholder="Select a call"
+                    label="My calls"
                     options={this.state.activeCallItems}        
                     onChange={this._onChangeDropDown}                    
                 /> 
