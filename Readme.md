@@ -64,7 +64,7 @@
    3. For more details on this see [here](https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/LocalMediaSamples/AudioVideoPlaybackBot#test)
 9. Teams Tab App
    1. Front End CI CD GitHub Action will deploy a Teams Tab App to an Azure Storage Static site on your newly created resource group
-   2. Also, it create the Team's app package that you can deploy on Teams. The app package will be hosted on https://<Project Prefix>staticsite.z16.web.core.windows.net/teams-tp.zip
+   2. Also, it create the Team's app package that you can deploy on Teams. The app package will be hosted on https://<Project Prefix>staticsite.z16.web.core.windows.net/teams-cognitive-bot.zip
    3. You can download the app package and install it on your Teams client using [Team's App Studio](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/app-studio-overview)
    4. For this to work, and start showing the transcriptions and translations, you would need the Call Id that is stored on Cosmos db.
 10. Putting it all together
