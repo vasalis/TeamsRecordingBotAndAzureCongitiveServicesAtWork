@@ -110,25 +110,14 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
       }          
 
     private RenderAddCallId() {
-        const addIcon: IIconProps = { iconName: 'Add' };
+        
         return (
-            <Stack horizontal horizontalAlign="end">
-                <Dropdown
+            <Dropdown
                     placeholder="Select an active call"
                     label="My active calls"
                     options={this.state.activeCallItems}        
                     onChange={this._onChangeDropDown}       
-                />                
-                {/* <TextField onChange={this._onChangeText} />
-                <Link onClick={() => this.GetTranscriptionsForUI()}>
-                    <Persona imageInitials="+"
-                        initialsColor="green" text="Start" secondaryText={this.state.fetchState} size={PersonaSize.size40} />                    
-                </Link>
-                <Link onClick={() => this.StopTranscriptionsForUI()}>                    
-                    <Persona imageInitials="X"
-                    initialsColor="green" text="Stop" secondaryText={this.state.fetchState} size={PersonaSize.size40} />
-                </Link> */}
-            </Stack>
+                /> 
         );
     }
 
@@ -180,10 +169,12 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         
         this.StopTranscriptionsForUI();
 
+        console.log("Selection is: " + option);
+
         if(option && option.text)
         {
             this.setState({
-                callIdToFetch: option.text as string
+                callIdToFetch: option.key as string
             });
             
             this.GetTranscriptionsForUI();

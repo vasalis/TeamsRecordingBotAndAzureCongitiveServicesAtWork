@@ -183,11 +183,11 @@ namespace TeamsComBackEnd
 
                             if (string.IsNullOrEmpty(lParticipants))
                             {
-                                lParticipants = $"{item.Who}";
+                                lParticipants = $"{item.Who.Substring(0, item.Who.IndexOf('['))}";
                             }
                             else
                             {
-                                lParticipants = $", {item.Who}";
+                                lParticipants += $", {item.Who.Substring(0, item.Who.IndexOf('['))}";
                             }
                         }
                     }
