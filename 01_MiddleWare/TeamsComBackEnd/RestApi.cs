@@ -166,7 +166,7 @@ namespace TeamsComBackEnd
             {
                 String lDate = string.Empty;
                 String lParticipants = string.Empty;
-                QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 10 t.who, t[\"when\"] FROM teamscalls t order by t._ts desc");
+                QueryDefinition queryDefinition = new QueryDefinition("SELECT top 1 t[\"when\"] FROM teamscalls t order by t._ts desc");
 
                 using (FeedIterator<TranscriptionEntity> feedIterator = this.mContainer.GetItemQueryIterator<TranscriptionEntity>(queryDefinition,
                     null,
@@ -176,11 +176,21 @@ namespace TeamsComBackEnd
                     {
                         foreach (var item in await feedIterator.ReadNextAsync())
                         {
-                            if (string.IsNullOrEmpty(lDate))
-                            {
-                                lDate = $"{item.When.ToUniversalTime()}";
-                            }
+                            lDate = $"{item.When.ToUniversalTime()}";                            
+                        }
+                    }                    
+                }
 
+                queryDefinition = new QueryDefinition("SELECT distinct top 10 t.who FROM teamscalls t");
+
+                using (FeedIterator<TranscriptionEntity> feedIterator = this.mContainer.GetItemQueryIterator<TranscriptionEntity>(queryDefinition,
+                    null,
+                    new QueryRequestOptions() { PartitionKey = new PartitionKey(aCallId) }))
+                {
+                    while (feedIterator.HasMoreResults)
+                    {
+                        foreach (var item in await feedIterator.ReadNextAsync())
+                        {
                             if (string.IsNullOrEmpty(lParticipants))
                             {
                                 lParticipants = $"{item.Who.Substring(0, item.Who.IndexOf('['))}";
@@ -191,15 +201,14 @@ namespace TeamsComBackEnd
                                 if (!lParticipants.Contains(lParticipant))
                                 {
                                     lParticipants += $", {lParticipant}";
-                                }                                
+                                }
                             }
                         }
-                    }
-
-                    lExit = $"[{lDate} UTC, with: {lParticipants}]";
+                    }                    
                 }
 
-                
+                lExit = $"[{lDate} UTC, with: {lParticipants}]";
+
             }
             catch (Exception ex)
             {
