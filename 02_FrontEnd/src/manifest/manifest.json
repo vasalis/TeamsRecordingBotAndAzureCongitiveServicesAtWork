@@ -42,6 +42,7 @@
     "messageTeamMembers"
   ],
   "validDomains": [
-    "{{HOSTNAME}},{{REACT_APP_BACKEND_DOMAIN}}"
+    "{{HOSTNAME}}",
+    "{{REACT_APP_BACKEND_DOMAIN}}"
   ]
 }
