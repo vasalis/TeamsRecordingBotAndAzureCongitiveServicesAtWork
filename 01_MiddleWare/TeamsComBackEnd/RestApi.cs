@@ -181,7 +181,7 @@ namespace TeamsComBackEnd
                     }                    
                 }
 
-                queryDefinition = new QueryDefinition("SELECT distinct top 10 t.who FROM teamscalls t");
+                queryDefinition = new QueryDefinition("SELECT distinct top 5 t.who FROM teamscalls t");
 
                 using (FeedIterator<TranscriptionEntity> feedIterator = this.mContainer.GetItemQueryIterator<TranscriptionEntity>(queryDefinition,
                     null,
