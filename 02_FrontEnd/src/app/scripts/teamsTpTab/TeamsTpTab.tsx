@@ -118,8 +118,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                     label="My active calls"
                     options={this.state.activeCallItems}        
                     onChange={this._onChangeDropDown}       
-                />
-                <Label>{this.state.fetchState}</Label>                
+                />                
                 {/* <TextField onChange={this._onChangeText} />
                 <Link onClick={() => this.GetTranscriptionsForUI()}>
                     <Persona imageInitials="+"

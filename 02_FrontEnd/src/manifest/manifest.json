@@ -5,18 +5,18 @@
   "version": "0.0.1",
   "packageName": "teamstp",
   "developer": {
-    "name": "ms",
+    "name": "ocp",
     "websiteUrl": "https://{{HOSTNAME}}",
     "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
     "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"
   },
   "name": {
-    "short": "Teams_TP",
-    "full": "Teams_TP"
+    "short": "Cognitive Bot",
+    "full": "Cognitive Bot"
   },
   "description": {
-    "short": "TODO: add short description here",
-    "full": "TODO: add full description here"
+    "short": "Cognitive Bot",
+    "full": "Cognitive Bot"
   },
   "icons": {
     "outline": "icon-outline.png",
@@ -27,7 +27,7 @@
   "staticTabs": [
     {
       "entityId": "default-data",
-      "name": "Teams_TP Tab",
+      "name": "Cognitive Bot",
       "contentUrl": "https://{{HOSTNAME}}/teamsTpTab/",
       "scopes": [
         "personal"

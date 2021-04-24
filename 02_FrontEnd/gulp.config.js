@@ -47,7 +47,7 @@ const config = {
         }    
     ],
     // This is the name of the packaged manifest file
-    manifestFileName: "teams-tp.zip"
+    manifestFileName: "teams-cognitive-bot.zip"
 };
 
 module.exports = config;
