@@ -133,13 +133,12 @@ namespace TeamsComBackEnd
                 QueryDefinition queryDefinition = new QueryDefinition("SELECT distinct top 5 t.callid FROM teamscalls t order by t._ts desc");
 
                 using (FeedIterator<CallEntity> feedIterator = this.mContainer.GetItemQueryIterator<CallEntity>(queryDefinition))
-                {
-                    int lCounter = 1;
+                {                    
                     while (feedIterator.HasMoreResults)
                     {
                         foreach (var item in await feedIterator.ReadNextAsync())
                         {
-                            item.Text = $"Call {lCounter++}";
+                            item.Text = item.CallId;
                             lResults.Add(item);
                         }
                     }

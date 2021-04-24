@@ -95,9 +95,11 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
             microsoftTeams.initialize();
             microsoftTeams.registerOnThemeChangeHandler(this.updateTheme);
 
-            initializeIcons();      
-            
+            initializeIcons();           
         }
+
+        // Get Active Calls
+        this.GetActiveCallsFromApi();
     }
 
     public componentWillUnmount() {
@@ -114,9 +116,11 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 <Dropdown
                     placeholder="Select an active call"
                     label="My active calls"
-                    options={this.state.activeCallItems}                    
+                    options={this.state.activeCallItems}        
+                    onChange={this._onChangeDropDown}       
                 />
-                <TextField onChange={this._onChangeText} />
+                <Label>{this.state.fetchState}</Label>                
+                {/* <TextField onChange={this._onChangeText} />
                 <Link onClick={() => this.GetTranscriptionsForUI()}>
                     <Persona imageInitials="+"
                         initialsColor="green" text="Start" secondaryText={this.state.fetchState} size={PersonaSize.size40} />                    
@@ -124,7 +128,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 <Link onClick={() => this.StopTranscriptionsForUI()}>                    
                     <Persona imageInitials="X"
                     initialsColor="green" text="Stop" secondaryText={this.state.fetchState} size={PersonaSize.size40} />
-                </Link>
+                </Link> */}
             </Stack>
         );
     }
@@ -137,11 +141,6 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         this.setState({
             fetchState: "Stopping..."
         });   
-    }
-
-    private async GetActiveCallsForUI() {       
-
-        this.intervalForActiveCalls = setInterval(() => this.GetActiveCallsFromApi(), 10000);
     }
 
     private async GetTranscriptionsForUI() {
@@ -176,7 +175,21 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         this.setState({
             callIdToFetch: text
         });        
-    };    
+    };  
+    
+    private _onChangeDropDown = (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption, index?: number) => {
+        
+        this.StopTranscriptionsForUI();
+
+        if(option && option.text)
+        {
+            this.setState({
+                callIdToFetch: option.text as string
+            });
+            
+            this.GetTranscriptionsForUI();
+        }        
+    };  
 
     private RenderCallTranscription() {
         if (this.state.transcriptionItems) {
@@ -218,28 +231,32 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
     // Util Functions -> move to another place
     // TODO: Replace with the End point of the back end, now set from env 
     private async GetTranscriptionsFromApi(aCallId: string) {
-        try {            
-            var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-            lEndPoint = lEndPoint + "api/GetTranscriptions";
-            console.log('Got transcriptions endpoint: ' + lEndPoint);
-            return fetch(lEndPoint, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: aCallId
-                })
-                .then(response => response.json())
-                .then(data => {
-                    this.setState({ transcriptionItems: data });
-                    this.setState({
-                        fetchState: ""
-                    });
-                }).catch(function(error) {                    
-                    console.log(error);
-                });
+        try {         
             
+            if(aCallId)
+            {
+                var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+                lEndPoint = lEndPoint + "api/GetTranscriptions";
+                console.log('Got transcriptions endpoint: ' + lEndPoint);
+                return fetch(lEndPoint, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: aCallId
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.setState({ transcriptionItems: data });
+                        this.setState({
+                            fetchState: ""
+                        });
+                    }).catch(function(error) {                    
+                        console.log(error);
+                    });
+            }
+
         } catch (error) {
             this.Log("GetTranscriptions error: " + JSON.stringify(error));
         }
@@ -298,8 +315,6 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 overflow: "visible"
             },
         };
-
-        this.GetActiveCallsForUI();
 
         return (
             <TeamsThemeContext.Provider value={context}>
