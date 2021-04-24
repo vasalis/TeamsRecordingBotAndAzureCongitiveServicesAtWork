@@ -196,7 +196,7 @@ namespace TeamsComBackEnd
                         }
                     }
 
-                    lExit = $"[{lDate} UTC] [With: {lParticipants}...]";
+                    lExit = $"[{lDate} UTC, with: {lParticipants}]";
                 }
 
                 
