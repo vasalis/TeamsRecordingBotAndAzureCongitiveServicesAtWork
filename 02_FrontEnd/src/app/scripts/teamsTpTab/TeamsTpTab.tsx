@@ -95,7 +95,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                     placeholder="Select an active call"
                     label="My active calls"
                     options={this.state.activeCallItems}        
-                    onChange={this._onChangeDropDown}       
+                    onChange={this._onChangeDropDown}                    
                 /> 
         );
     }
@@ -180,7 +180,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
                 root: {
                   background: DefaultPalette.white,                  
                   padding: 5,
-                  width: '90%'
+                  width: '100%'
                 },
               };
 
