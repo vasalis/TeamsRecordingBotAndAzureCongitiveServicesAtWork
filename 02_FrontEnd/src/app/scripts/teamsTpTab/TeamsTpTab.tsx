@@ -49,31 +49,10 @@ class TranscriptionEntity {
     public when: string;
 }
 
-class CallEntity implements IDropdownOption {
-    isSelected?: boolean | undefined;
-    key: string | number;
-    id?: string | undefined;
-    text: string;
-    title?: string | undefined;
-    itemType?: SelectableOptionMenuItemType | undefined;
-    index?: number | undefined;
-    ariaLabel?: string | undefined;
-    selected?: boolean | undefined;
-    disabled?: boolean | undefined;
-    hidden?: boolean | undefined;
-    data?: any;
-        
-    //public callid: string;    
-    //public text: string;    
-    public when: string;    
-
-    public set callid(value) {
-        this.key = value;
-    }
-
-    public get callid() {
-        return this.key;
-    }    
+interface CallEntity extends IDropdownOption {        
+    callid: string;    
+    text: string;    
+    when: string;    
 }
 
 /**
@@ -169,12 +148,13 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         
         this.StopTranscriptionsForUI();
 
-        console.log("Selection is: " + option);
+        console.log("Selection is: " + JSON.stringify(option));
 
-        if(option && option.text)
+        if(option)
         {
+            var lCall = option as CallEntity;
             this.setState({
-                callIdToFetch: option.key as string
+                callIdToFetch: lCall.callid
             });
             
             this.GetTranscriptionsForUI();
