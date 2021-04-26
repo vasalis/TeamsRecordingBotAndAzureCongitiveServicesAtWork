@@ -40,7 +40,10 @@ az cognitiveservices account create --name $speechToTextName --resource-group $r
 
 # Get keys and urls as variables
 $textAnalyticsKey = az cognitiveservices account keys list --name $textAnalyticsName --resource-group $resourceGroupName --query "key1"
-$textAnalyticsEndPoint = az cognitiveservices account show --name $textAnalyticsName --resource-group $resourceGroupName --query "endpoint"
+$textAnalyticsEndPoint = az cognitiveservices account show --name $textAnalyticsName --resource-group $resourceGroupName --query "endpoint" --output tsv
+if( !$textAnalyticsEndPoint ) {
+    $textAnalyticsEndPoint = (az cognitiveservices account show -n $textAnalyticsName -g $resourceGroupName --query "properties.endpoint" --output tsv)
+}
 $speechToTextKey = az cognitiveservices account keys list --name $speechToTextName --resource-group $resourceGroupName --query "key1"
 
 Write-Output "Textnalytics key is: $textAnalyticsKey, endpoint: $textAnalyticsEndPoint"
