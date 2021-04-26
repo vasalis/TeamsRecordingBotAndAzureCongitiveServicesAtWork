@@ -39,9 +39,9 @@ az cognitiveservices account create --name $textAnalyticsName --resource-group $
 az cognitiveservices account create --name $speechToTextName --resource-group $resourceGroupName --kind SpeechServices --sku S0 --location $azureLocation --yes
 
 # Get keys and urls as variables
-$textAnalyticsKey = az cognitiveservices account keys list --name $textAnalyticsName --resource-group $resourceGroupName --query 'key1'
-$textAnalyticsEndPoint = az cognitiveservices account show -n $textAnalyticsName -g $resourceGroupName --query 'endpoint'
-$speechToTextKey = az cognitiveservices account keys list --name $speechToTextName --resource-group $resourceGroupName --query 'key1'
+$textAnalyticsKey = az cognitiveservices account keys list --name $textAnalyticsName --resource-group $resourceGroupName --query "key1"
+$textAnalyticsEndPoint = az cognitiveservices account show -n $textAnalyticsName -g $resourceGroupName --query "endpoint"
+$speechToTextKey = az cognitiveservices account keys list --name $speechToTextName --resource-group $resourceGroupName --query "key1"
 
 Write-Output "Textnalytics key is: $textAnalyticsKey, endpoint: $textAnalyticsEndPoint"
 
