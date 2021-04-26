@@ -37,6 +37,10 @@ az storage blob service-properties update --account-name $staticSiteStorage --st
 Write-Output "About to create Text Analytics and Translation Cognitive Services: $textAnalyticsName, $speechToTextName"
 az cognitiveservices account create --name $textAnalyticsName --resource-group $resourceGroupName --kind TextAnalytics --sku S --location $azureLocation --yes
 az cognitiveservices account create --name $speechToTextName --resource-group $resourceGroupName --kind SpeechServices --sku S0 --location $azureLocation --yes
+
+# Sleep for a minute.
+Start-Sleep -Seconds 60
+
 # Get keys and urls as variables
 $textAnalyticsKey = az cognitiveservices account keys list --name $textAnalyticsName --resource-group $resourceGroupName --query 'key1'
 $textAnalyticsEndPoint = az cognitiveservices account show -n $textAnalyticsName -g $resourceGroupName --query endpoint --output tsv
