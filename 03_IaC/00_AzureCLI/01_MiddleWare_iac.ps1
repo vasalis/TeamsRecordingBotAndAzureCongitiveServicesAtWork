@@ -42,6 +42,8 @@ $textAnalyticsKey = az cognitiveservices account keys list --name $textAnalytics
 $textAnalyticsEndPoint = az cognitiveservices account show -n $textAnalyticsName -g $resourceGroupName --query endpoint --output tsv
 $speechToTextKey = az cognitiveservices account keys list --name $speechToTextName --resource-group $resourceGroupName --query 'key1'
 
+Write-Output "Textnalytics key is: $textAnalyticsKey, endpoint: $textAnalyticsEndPoint"
+
 # Create the Cosmos Db
 Write-Output "About to create Cosmos Db account: $cosmosDbAccount"
 az cosmosdb create --name $cosmosDbAccount --resource-group $resourceGroupName
