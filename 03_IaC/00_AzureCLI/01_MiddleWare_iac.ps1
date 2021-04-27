@@ -88,6 +88,10 @@ az functionapp config appsettings set --name $functionsName --resource-group $re
 az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "TextAnalyticsKey=$textAnalyticsKey"
 az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "TextAnalyticsEndPoint=$textAnalyticsEndPoint"
 
+# Add CORS all origins - as caller is on static site and ulr is not valid
+az functionapp cors remove -g $resourceGroupName -n $functionsName --allowed-origins
+az functionapp cors add -g $resourceGroupName -n $functionsName --allowed-origins *
+
 # Write env Variables for other steps to use
 Write-Output "azureCognitiveKey=$speechToTextKey" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 Write-Output "persistenceEndPoint=$persistanceEndPoint" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
