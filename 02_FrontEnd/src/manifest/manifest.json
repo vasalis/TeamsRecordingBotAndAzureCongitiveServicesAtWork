@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.5",
+  "id": "1a56f760-6126-11ea-8b10-67d6b6b6d778",
+  "version": "0.0.1",
+  "packageName": "teamstp",
+  "developer": {
+    "name": "vasalis",
+    "websiteUrl": "https://{{HOSTNAME}}",
+    "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
+    "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"
+  },
+  "name": {
+    "short": "Cognitive Bot",
+    "full": "Cognitive Bot"
+  },
+  "description": {
+    "short": "Cognitive Bot",
+    "full": "Cognitive Bot"
+  },
+  "icons": {
+    "outline": "icon-outline.png",
+    "color": "icon-color.png"
+  },
+  "accentColor": "#D85028",
+  "configurableTabs": [],
+  "staticTabs": [
+    {
+      "entityId": "default-data",
+      "name": "Cognitive Bot",
+      "contentUrl": "https://{{HOSTNAME}}/teamsTpTab/",
+      "scopes": [
+        "personal"
+      ]
+    }
+  ],
+  "bots": [],
+  "connectors": [],
+  "composeExtensions": [],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "{{HOSTNAME}}",
+    "{{REACT_APP_BACKEND_DOMAIN}}"
+  ]
+}

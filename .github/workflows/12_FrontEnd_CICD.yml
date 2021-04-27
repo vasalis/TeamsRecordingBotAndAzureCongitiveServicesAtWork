@@ -1,0 +1,58 @@
+name: 12_FrontEnd_CICD
+
+on:  
+  push:     
+    branches: [ master, fb-** ]
+    paths:
+      - '02_FrontEnd/**'
+      - '.github/workflows/**' 
+  
+  workflow_run:
+    workflows: ["02_Initial_Setup_All_Infra"]
+    branches: [master]
+    types: 
+      - completed
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest   
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@master   
+
+    - name: 'Load env variable from file using pwsh'
+      shell: pwsh
+      run: 03_IaC/00_AzureCLI/10_LoadEnvVariables.ps1    
+    
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+        
+    - name: 'Build Front End'
+      working-directory: 02_FrontEnd
+      run: |
+        Write-Output "HOSTNAME=${{env.projectPrefix}}staticsite.z16.web.core.windows.net" | Out-File -FilePath .env -Encoding utf8 -Append
+        Write-Output "REACT_APP_BACKEND_DOMAIN=${{env.projectPrefix}}middleware.azurewebsites.net" | Out-File -FilePath .env -Encoding utf8 -Append
+        Write-Output "REACT_APP_BACKEND_API=https://${{env.projectPrefix}}middleware.azurewebsites.net/" | Out-File -FilePath .env -Encoding utf8 -Append        
+        npm install
+        gulp build
+        gulp manifest
+    
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+        
+    - name: 'Push to Azure Storage Static Site'
+      working-directory: 02_FrontEnd
+      shell: pwsh # $projectPrefix +"StaticSite"
+      run: |
+        pushd ./dist/web
+        az storage blob upload-batch --account-name ${{env.projectPrefix}}staticsite --source . --destination '$web'
+        pushd ../../package
+        az storage blob upload-batch --account-name ${{env.projectPrefix}}staticsite --source . --destination '$web'

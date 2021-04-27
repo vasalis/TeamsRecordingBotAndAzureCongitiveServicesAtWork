@@ -1,0 +1,49 @@
+name: 10_CI_CD_RecordingBot
+on:  
+  push:
+    branches: [ master, fb-** ]
+    paths:
+      - '00_RecordingBot/src/**'      
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_docker_image:
+    runs-on: windows-latest
+    env:      
+      imgVersion: ${{ github.run_number }}
+    steps:      
+      - uses: actions/checkout@v2
+      - name: 'Load env variable from file using pwsh'
+        shell: pwsh
+        run: 03_IaC/00_AzureCLI/10_LoadEnvVariables.ps1
+      - name: Docker Build
+        working-directory: 00_RecordingBot
+        run: |
+          docker build --build-arg CallSignalingPort=<CALL_SIGNALING_PORT> --build-arg CallSignalingPort2=<CALL_SIGNALING_PORT+1> --build-arg InstanceInternalPort=<INSTANT_INTERNAL_PORT> -f ./build/Dockerfile . -t ${{env.acrName}}.azurecr.io/teams-recording-bot:${{env.imgVersion}}
+      - name: ACR authentication        
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.acrName }}.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}    
+      - name: Docker Build & Push to ACR        
+        run: |
+          docker push ${{env.acrName}}.azurecr.io/teams-recording-bot:${{env.imgVersion}}
+  deploy_to_AKS_Cluster:
+    runs-on: ubuntu-latest
+    needs: [build_docker_image]
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'Load env variable from file using pwsh'
+      shell: pwsh
+      run: 03_IaC/00_AzureCLI/10_LoadEnvVariables.ps1
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true    
+    - name: 'Run Initial Setup powershell'
+      shell: pwsh
+      run: 03_IaC/00_AzureCLI/11_Update_Bot_To_AKS_iac.ps1  
