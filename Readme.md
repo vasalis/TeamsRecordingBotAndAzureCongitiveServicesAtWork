@@ -6,7 +6,7 @@
 6. The bot does not actually record the call, but the code for that is just commented out from the original forked project (see below).
 
 ## Prerequisites
-1. An Azure subcription
+1. An Azure subcription, where you can create (or have access) to a Service Principal with the Owner Role.
 2. A Teams Tenant with Admin rights
 3. A custom domain, where you can create an A Record
 
