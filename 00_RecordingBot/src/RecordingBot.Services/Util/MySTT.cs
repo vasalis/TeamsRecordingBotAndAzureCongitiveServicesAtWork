@@ -27,6 +27,7 @@ namespace RecordingBot.Services.Util
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.ApplicationInsights.DataContracts;
     using Microsoft.CognitiveServices.Speech;
     using Microsoft.CognitiveServices.Speech.Audio;
     using Microsoft.CognitiveServices.Speech.Translation;
@@ -240,8 +241,13 @@ namespace RecordingBot.Services.Util
         /// <returns>Task.</returns>
         private async Task PersistAsync(string aText, IReadOnlyDictionary<string, string> aTranslations)
         {
+            var lTimeStamp = DateTime.UtcNow;
+            string lResultCode = string.Empty;
+            bool lSuccess = false;
+            
             try
             {
+                
                 TranscriptionEntity lItem = this.GetCurrentTranscriptionEntity();
                 lItem.When = DateTime.UtcNow;
                 lItem.Text = aText;
@@ -256,11 +262,21 @@ namespace RecordingBot.Services.Util
 
                 var lPayload = new StringContent(JsonConvert.SerializeObject(lItem), Encoding.UTF8, "application/json");
 
-                await this.mHttpClient.PostAsync(this.mFunctionsEndPoint, lPayload).ConfigureAwait(false);
+                var lResult = await this.mHttpClient.PostAsync(this.mFunctionsEndPoint, lPayload).ConfigureAwait(false);
+
+                lResultCode = lResult.StatusCode.ToString();
+                lSuccess = true;
             }
             catch (Exception ex)
             {
                 mEventPublisher.Publish("PersistAsync", $"Error: {ex.Message}");
+                MyAppInsightsLogger.Logger.TrackException(new ExceptionTelemetry(ex));
+            }
+            finally
+            {
+                var lDurartion = DateTime.UtcNow.Subtract(lTimeStamp);
+                DependencyTelemetry lDep = new DependencyTelemetry("API Call", "MiddleWare", "MiddleWare", "", lTimeStamp, lDurartion, lResultCode, lSuccess);
+                MyAppInsightsLogger.Logger.TrackDependency(lDep);
             }
         }
         
