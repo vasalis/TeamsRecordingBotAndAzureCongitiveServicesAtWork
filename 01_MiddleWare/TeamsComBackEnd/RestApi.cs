@@ -64,7 +64,7 @@ namespace TeamsComBackEnd
             }
             catch (Exception ex)
             {
-                mLogger.LogError($"Could not insert item. Exception thrown: {ex.Message}");
+                mLogger.LogError(ex, $"Could not insert item. Exception thrown: {ex.Message}");
                 returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 

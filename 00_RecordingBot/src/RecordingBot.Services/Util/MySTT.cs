@@ -275,7 +275,7 @@ namespace RecordingBot.Services.Util
             finally
             {
                 var lDurartion = DateTime.UtcNow.Subtract(lTimeStamp);
-                DependencyTelemetry lDep = new DependencyTelemetry("API Call", "MiddleWare", "MiddleWare", "", lTimeStamp, lDurartion, lResultCode, lSuccess);
+                DependencyTelemetry lDep = new DependencyTelemetry("Persistance Layer", "MiddleWare", "MiddleWare", "", lTimeStamp, lDurartion, lResultCode, lSuccess);
                 MyAppInsightsLogger.Logger.TrackDependency(lDep);
             }
         }
