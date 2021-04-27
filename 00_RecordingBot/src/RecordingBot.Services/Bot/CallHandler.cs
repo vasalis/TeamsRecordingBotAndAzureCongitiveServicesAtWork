@@ -93,6 +93,8 @@ namespace RecordingBot.Services.Bot
   
             this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);
 
+            //this.GraphLogger.Subscribe()
+
             if (_settings.CaptureEvents)
             {
                 var path = Path.Combine(Path.GetTempPath(), BotConstants.DefaultOutputFolder, _settings.EventsFolder, statefulCall.GetLocalMediaSession().MediaSessionId.ToString(), "participants");

@@ -25,7 +25,7 @@ namespace TeamsComBackEnd
             }
             catch (Exception ex)
             {
-                log.LogError($"Failed GetSentiment. Details: {ex.Message}", ex);
+                log.LogError(ex, $"Failed GetSentiment. Details: {ex.Message}");
             }
 
             return null;

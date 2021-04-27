@@ -212,7 +212,7 @@ namespace TeamsComBackEnd
             }
             catch (Exception ex)
             {
-                mLogger.LogError($"GetCallDetails failed. Exception thrown: {ex.Message}");                
+                mLogger.LogError(ex, $"GetCallDetails failed. Exception thrown: {ex.Message}");                
             }
 
             return lExit;

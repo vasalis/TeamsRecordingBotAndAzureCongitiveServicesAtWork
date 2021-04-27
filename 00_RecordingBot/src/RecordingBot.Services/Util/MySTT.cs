@@ -1,4 +1,17 @@
-﻿using System;
+﻿//**********************************************************
+//
+//      Author:     Vassilis Salis
+//      Summary:    My Speech to Text implementation using Azure Congnitive Services.
+//                  If needed, this can be replaced by "other" speech to text Services
+//
+//      Started:    Winter 2021
+//      Last mod:   Spring 2021
+//
+//      License:    Beerware
+//**********************************************************
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +37,8 @@ namespace RecordingBot.Services.Util
     using RecordingBot.Services.ServiceSetup;
 
     /// <summary>
-    /// Hello.
+    /// Receives audio stream and using Azure Cognitive Services transcribes and translates audio. 
+    /// The transcribed and translated data as persisted by making a POST API call to an external service (MiddleWare).
     /// </summary>
     public class MySTT : IDisposable
     {
@@ -32,7 +46,7 @@ namespace RecordingBot.Services.Util
         private const int BITSPERSAMPLE = 16;
         private const int NUMBEROFCHANNELS = 1;
 
-        private readonly IEventPublisher _eventPublisher;
+        private readonly IEventPublisher mEventPublisher;
 
         private AudioConfig mAudioConfig;
         private TranslationRecognizer mTranslationRecognizer;
@@ -47,7 +61,7 @@ namespace RecordingBot.Services.Util
         private HttpClient mHttpClient = new HttpClient();
         private TranscriptionEntity mCurrentTranscriptionObject;
 
-        private readonly AzureSettings _settings;
+        private readonly AzureSettings mSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MySTT"/> class.
@@ -55,12 +69,12 @@ namespace RecordingBot.Services.Util
         /// <param name="aCallId">Name.</param>
         /// <param name="aWho">Name..</param>
         /// <param name="aWhoId">Name...</param>
-        public MySTT(string aCallId, string aWho, string aWhoId, IGraphLogger logger, IEventPublisher eventPublisher, IAzureSettings settings)
+        public MySTT(string aCallId, string aWho, string aWhoId, IGraphLogger aLogger, IEventPublisher aEventPublisher, IAzureSettings aSettings)
         {
             try
             {
-                _eventPublisher = eventPublisher;
-                _settings = (AzureSettings)settings;
+                mEventPublisher = aEventPublisher;
+                mSettings = (AzureSettings)aSettings;
 
                 this.mCallId = aCallId;
                 this.mWho = aWho;
@@ -71,23 +85,29 @@ namespace RecordingBot.Services.Util
             }
             catch (Exception ex)
             {
-                _eventPublisher.Publish("MySTT Instantiation - Failed", $"{ex.Message}");
+                mEventPublisher.Publish("MySTT Instantiation - Failed", $"{ex.Message}");
             }            
         }
 
+        /// <summary>
+        /// TODO: Make from and to languages as settings arguments 
+        /// </summary>
         private void SetupTranscriptionAndTranslationService()
         {
             try
             {
-                var lCognitiveKey = _settings.AzureCognitiveKey;
-                var lCognitiveRegion = _settings.AzureCognitiveRegion;
+                var lCognitiveKey = mSettings.AzureCognitiveKey;
+                var lCognitiveRegion = mSettings.AzureCognitiveRegion;
 
-                _eventPublisher.Publish("MySTT Setup", $"Got region: {lCognitiveRegion}, key starting from: {lCognitiveKey??lCognitiveKey.Substring(0, lCognitiveKey.Length /2)}");
+                mEventPublisher.Publish("MySTT Setup", $"Got region: {lCognitiveRegion}, key starting from: {lCognitiveKey??lCognitiveKey.Substring(0, lCognitiveKey.Length /2)}");
 
                 this.mTransSpeechConfig = SpeechTranslationConfig.FromSubscription(lCognitiveKey, lCognitiveRegion);
+                
+                // Change these accordingly.
                 var fromLanguage = "en-US";
-                var toLanguages = new List<string> { "el-GR" };
-                //var toLanguages = new List<string> { "ru-RU" };
+                var toLanguages = new List<string> { "el-GR" };                
+                
+                
                 this.mTransSpeechConfig.SpeechRecognitionLanguage = fromLanguage;
                 toLanguages.ForEach(this.mTransSpeechConfig.AddTargetLanguage);
                 this.mInputStream = AudioInputStream.CreatePushStream(AudioStreamFormat.GetWaveFormatPCM(SAMPLESPERSECOND, BITSPERSAMPLE, NUMBEROFCHANNELS));
@@ -103,15 +123,15 @@ namespace RecordingBot.Services.Util
             }
             catch (Exception ex)
             {
-                _eventPublisher.Publish("MySTT Setup - Failed", $"Failed to initialize: {ex.Message}");                
+                mEventPublisher.Publish("MySTT Setup - Failed", $"Failed to initialize: {ex.Message}");                
             }            
         }
 
         private void SetupPersistanceEndPoint()
         {            
-            this.mFunctionsEndPoint = _settings.PersistenceEndPoint;
+            this.mFunctionsEndPoint = mSettings.PersistenceEndPoint;
 
-            _eventPublisher.Publish("SetupPersistanceEndPoint", $"Got end point: {this.mFunctionsEndPoint}");
+            mEventPublisher.Publish("SetupPersistanceEndPoint", $"Got end point: {this.mFunctionsEndPoint}");
         }
 
         /// <inheritdoc/>
@@ -127,7 +147,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Writes audio from unmixed buffer to mInput Stream.
         /// </summary>
         /// <param name="aBuffer">Buffer.</param>
         public void Transcribe(UnmixedAudioBuffer aBuffer)
@@ -159,7 +179,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Callback from Azure Congitive Services, on Speech end detected
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">e.</param>
@@ -169,7 +189,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Initializes continues Recognition on Azure Congitive Service (stt)
         /// </summary>
         private void StartRecognisionIfNeeded()
         {
@@ -181,7 +201,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Stops recognition
         /// </summary>
         private void StopRecognition()
         {
@@ -202,7 +222,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Callback from Azure Congitive Services, on Speech recognizing.
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
@@ -213,7 +233,7 @@ namespace RecordingBot.Services.Util
         }
 
         /// <summary>
-        /// Hello.
+        /// Passes TranscriptionEntity to MiddleWare
         /// </summary>
         /// <param name="aText">Text.</param>
         /// <param name="aTranslations">Translations.</param>
@@ -240,14 +260,10 @@ namespace RecordingBot.Services.Util
             }
             catch (Exception ex)
             {
-                _eventPublisher.Publish("PersistAsync", $"Erro: {ex.Message}");
+                mEventPublisher.Publish("PersistAsync", $"Error: {ex.Message}");
             }
         }
-
-        /// <summary>
-        /// Hello.
-        /// </summary>
-        /// <returns>hey.</returns>
+        
         private TranscriptionEntity GetCurrentTranscriptionEntity()
         {
             if (this.mCurrentTranscriptionObject == null)
@@ -261,10 +277,7 @@ namespace RecordingBot.Services.Util
 
             return this.mCurrentTranscriptionObject;
         }
-
-        /// <summary>
-        /// Hello.
-        /// </summary>
+        
         private void ResetCurrentTranscriptionEntity()
         {
             this.mCurrentTranscriptionObject = null;

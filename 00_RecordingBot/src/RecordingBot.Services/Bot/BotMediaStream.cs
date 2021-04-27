@@ -171,8 +171,6 @@ namespace RecordingBot.Services.Bot
                 {
                     for (int i = 0; i < e.Buffer.UnmixedAudioBuffers.Length; i++)
                     {
-                        // MyAudioRecorder.WriteUnmixedAudioBufferToDisk(e.Buffer.UnmixedAudioBuffers[i]);
-
                         // Transcribe
                         var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId);
                         if (lTrans != null)
