@@ -19,6 +19,7 @@ namespace TeamsComBackEnd
             });
 
             builder.Services.AddSingleton<Container>(GetContainer);
+            
         }
 
         private Container GetContainer(IServiceProvider options)

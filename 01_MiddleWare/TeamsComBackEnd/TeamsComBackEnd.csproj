@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <UserSecretsId>c4c41c30-c24d-4dd6-985e-9cf632418f2a</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/66b89049-c2e6-4d7f-b2cb-68363235fe63/resourceGroups/vipbot_rg/providers/microsoft.insights/components/vipbotmiddlewareAI</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.AI.TextAnalytics" Version="5.1.0-beta.3" />

@@ -25,6 +25,7 @@ namespace TeamsComBackEnd
             }
             catch (Exception ex)
             {
+                // This should be Track.exception on App Insights.
                 log.LogError(ex, $"Failed GetSentiment. Details: {ex.Message}");
             }
 
