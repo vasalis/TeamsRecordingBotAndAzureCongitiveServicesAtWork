@@ -17,12 +17,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace RecordingBot.Services.Util
 {
-    public class MyLogger : IObserver<LogEvent>
+    public class MyGraphLogger : IObserver<LogEvent>
     {
-        private readonly LogEventFormatter formatter = new LogEventFormatter();
+        private readonly LogEventFormatter formatter = new LogEventFormatter();       
 
         /// <summary>
         /// Provides the observer with new data.
@@ -36,7 +38,7 @@ namespace RecordingBot.Services.Util
             // Log trace: logEvent.EventType == LogEventType.Trace
             var logString = this.formatter.Format(logEvent);
 
-            //MyLogger.Log(logEvent.Level, logString)
+            MyAppInsightsLogger.Logger.TrackTrace(logString);            
         }
 
         /// <summary>
@@ -54,6 +56,28 @@ namespace RecordingBot.Services.Util
         public void OnCompleted()
         {
             // Graph Logger has completed logging (shutdown).
+        }
+    }
+
+    public static class MyAppInsightsLogger
+    {
+        private static TelemetryClient mLogger;
+
+        public static TelemetryClient Logger
+        {
+            get 
+            {
+                if (mLogger == null)
+                {
+                    var lConfig = new TelemetryConfiguration("e9b1d6b7-5237-4b20-b7c3-f9d87682557e");
+
+                    mLogger = new TelemetryClient(lConfig);
+                }
+
+                return mLogger;
+            }
+
+            private set { }
         }
     }
 }

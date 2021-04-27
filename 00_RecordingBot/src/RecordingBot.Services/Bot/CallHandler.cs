@@ -90,10 +90,14 @@ namespace RecordingBot.Services.Bot
             this.Call = statefulCall;
             this.Call.OnUpdated += this.CallOnUpdated;
             this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
-  
-            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);
 
-            //this.GraphLogger.Subscribe()
+            var mMyLogger = new MyGraphLogger();
+            var disposableSubsription = this.GraphLogger.Subscribe(mMyLogger);
+
+            this.GraphLogger.Log(System.Diagnostics.TraceLevel.Info, $"Starting call with id: {this.Call.Id}");
+
+
+            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);            
 
             if (_settings.CaptureEvents)
             {
