@@ -91,8 +91,8 @@ namespace RecordingBot.Services.Bot
             this.Call.OnUpdated += this.CallOnUpdated;
             this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
 
-            var mMyLogger = new MyGraphLogger();
-            var disposableSubsription = this.GraphLogger.Subscribe(mMyLogger);
+            //var mMyLogger = new MyGraphLogger();
+            //var disposableSubsription = this.GraphLogger.Subscribe(mMyLogger);
 
             this.GraphLogger.Log(System.Diagnostics.TraceLevel.Warning, $"Starting call with id: {this.Call.Id}");
 

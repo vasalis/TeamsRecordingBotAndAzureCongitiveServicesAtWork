@@ -1,0 +1,5 @@
+botSubDomain=vipbot.vsalis.eu
+botName=myTeamsRecBot
+projectPrefix=vipbot
+azureLocation=northeurope
+acrName=vipbotacr
