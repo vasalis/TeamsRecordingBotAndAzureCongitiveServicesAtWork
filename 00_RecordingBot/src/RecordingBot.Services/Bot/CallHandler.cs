@@ -89,10 +89,7 @@ namespace RecordingBot.Services.Bot
 
             this.Call = statefulCall;
             this.Call.OnUpdated += this.CallOnUpdated;
-            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
-
-            var mMyLogger = new MyGraphLogger();
-            var disposableSubsription = this.GraphLogger.Subscribe(mMyLogger);
+            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;            
 
             this.GraphLogger.Log(System.Diagnostics.TraceLevel.Info, $"Starting call with id: {this.Call.Id}");
 

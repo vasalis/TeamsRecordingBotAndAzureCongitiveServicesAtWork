@@ -18,6 +18,7 @@ using Microsoft.Graph.Communications.Common.Telemetry;
 using Microsoft.Owin.Hosting;
 using RecordingBot.Services.Contract;
 using RecordingBot.Services.Http;
+using RecordingBot.Services.Util;
 using System;
 
 namespace RecordingBot.Services.ServiceSetup
@@ -91,12 +92,16 @@ namespace RecordingBot.Services.ServiceSetup
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
 
-            _logger = Resolve<IGraphLogger>();
+            _logger = Resolve<IGraphLogger>();           
 
             try
             {
                 _settings = Resolve<IOptions<AzureSettings>>().Value;
                 _settings.Initialize();
+
+                var mMyLogger = new MyGraphLogger();
+                var disposableSubsription = this._logger.Subscribe(mMyLogger);
+
                 Resolve<IEventPublisher>();
                 _botService = Resolve<IBotService>();
             }
