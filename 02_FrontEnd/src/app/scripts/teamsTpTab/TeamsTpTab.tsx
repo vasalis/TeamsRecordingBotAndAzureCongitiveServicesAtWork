@@ -6,13 +6,12 @@ import {
 } from "msteams-ui-components-react";
 import TeamsBaseComponent, { ITeamsBaseComponentProps, ITeamsBaseComponentState } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
-import { Providers, TeamsProvider } from "@microsoft/mgt";
 import {
     Stack, IStackStyles, IStackTokens, Persona, PersonaSize,
     initializeIcons, IIconProps, IconButton, getTheme, mergeStyleSets, DefaultPalette, OverflowSet, IButtonStyles,
     FontWeights, Modal, DetailsList, DetailsListLayoutMode, IColumn, DefaultButton, SelectionMode, Link, TextField,
     IOverflowSetItemProps,
-    StackItem,
+    IDropdownStyles,
     Label,
     IStackItemStyles, Dropdown, IDropdownOption, SelectableOptionMenuItemType
 } from "@fluentui/react";
@@ -90,11 +89,17 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
 
     private RenderAddCallId() {
         
+        const dropdownStyles: Partial<IDropdownStyles> = {
+            dropdown: { width: 300 },
+          };
+          
+
         return (
             <Dropdown
                     placeholder="Select a call"
                     label="My calls"
-                    options={this.state.activeCallItems}        
+                    options={this.state.activeCallItems}   
+                    styles={dropdownStyles}     
                     onChange={this._onChangeDropDown}                    
                 /> 
         );
