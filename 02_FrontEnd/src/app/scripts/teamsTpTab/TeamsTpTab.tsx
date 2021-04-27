@@ -121,7 +121,7 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
         });
 
 
-        this.interval = setInterval(() => this.GetDataPeriodically(), 1000);
+        this.interval = setInterval(() => this.GetDataPeriodically(), 500);
     }
     
     private async GetDataPeriodically() {

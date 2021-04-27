@@ -15,6 +15,17 @@ namespace TeamsComModels
         public DateTime When { get; set; }        
 
         [JsonProperty(PropertyName = "text")]
-        public string Text { get; set; }        
+        public string Text { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title 
+        {
+            get
+            {
+                return this.Text;
+            }
+
+            private set { } 
+        }
     }
 }
