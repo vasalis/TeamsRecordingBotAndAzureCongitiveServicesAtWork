@@ -37,7 +37,8 @@ jobs:
       run: |
         Write-Output "HOSTNAME=${{env.projectPrefix}}staticsite.z16.web.core.windows.net" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "REACT_APP_BACKEND_DOMAIN=${{env.projectPrefix}}middleware.azurewebsites.net" | Out-File -FilePath .env -Encoding utf8 -Append
-        Write-Output "REACT_APP_BACKEND_API=https://${{env.projectPrefix}}middleware.azurewebsites.net/" | Out-File -FilePath .env -Encoding utf8 -Append        
+        Write-Output "REACT_APP_BACKEND_API=https://${{env.projectPrefix}}middleware.azurewebsites.net/" | Out-File -FilePath .env -Encoding utf8 -Append
+        Write-Output "APPINSIGHTS_INSTRUMENTATIONKEY=e2b2eeb6-a32c-40aa-8187-d9c58bc30178" | Out-File -FilePath .env -Encoding utf8 -Append
         npm install
         gulp build
         gulp manifest
