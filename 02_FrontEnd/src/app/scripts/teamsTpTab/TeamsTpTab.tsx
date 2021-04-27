@@ -88,18 +88,12 @@ export class TeamsTpTab extends TeamsBaseComponent<ITeamsTpTabProps, ITeamsTpTab
       }          
 
     private RenderAddCallId() {
-        
-        const dropdownStyles: Partial<IDropdownStyles> = {
-            dropdown: { width: 300 },
-          };
-          
-
+      
         return (
             <Dropdown
                     placeholder="Select a call"
                     label="My calls"
-                    options={this.state.activeCallItems}   
-                    styles={dropdownStyles}     
+                    options={this.state.activeCallItems}       
                     onChange={this._onChangeDropDown}                    
                 /> 
         );
