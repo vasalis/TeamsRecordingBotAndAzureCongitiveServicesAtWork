@@ -69,7 +69,7 @@ namespace RecordingBot.Services.Util
             {
                 if (mLogger == null)
                 {
-                    var lConfig = new TelemetryConfiguration("e9b1d6b7-5237-4b20-b7c3-f9d87682557e");
+                    var lConfig = new TelemetryConfiguration("e8e4be66-3875-4cc2-8fd1-3f392ba56455");
 
                     mLogger = new TelemetryClient(lConfig);
                 }
