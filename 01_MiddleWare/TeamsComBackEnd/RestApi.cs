@@ -191,13 +191,18 @@ namespace TeamsComBackEnd
                     {
                         foreach (var item in await feedIterator.ReadNextAsync())
                         {
+                            if (!string.IsNullOrEmpty(item.Who) && item.Who.Contains('['))
+                            {
+                                item.Who = item.Who.Substring(0, item.Who.IndexOf('['));
+                            }
+
                             if (string.IsNullOrEmpty(lParticipants))
                             {
-                                lParticipants = $"{item.Who.Substring(0, item.Who.IndexOf('['))}";
+                                lParticipants = item.Who;
                             }
                             else
                             {
-                                string lParticipant = item.Who.Substring(0, item.Who.IndexOf('['));
+                                string lParticipant = item.Who;
                                 if (!lParticipants.Contains(lParticipant))
                                 {
                                     lParticipants += $", {lParticipant}";
