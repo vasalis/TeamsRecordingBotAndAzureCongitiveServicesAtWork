@@ -95,6 +95,26 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Procdump\Eula.txt" />
+    <None Remove="Procdump\procdump.exe" />
+    <None Remove="Procdump\procdump64.exe" />
+    <None Remove="Procdump\procdump64a.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Procdump\Eula.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Procdump\procdump.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Procdump\procdump64.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Procdump\procdump64a.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RecordingBot.Model\RecordingBot.Model.csproj" />
   </ItemGroup>
 </Project>
