@@ -62,6 +62,8 @@ namespace RecordingBot.Services.ServiceSetup
         /// </summary>
         private IGraphLogger _logger;
 
+        private IDisposable mLogSub;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppHost" /> class.
 
@@ -99,8 +101,8 @@ namespace RecordingBot.Services.ServiceSetup
                 _settings = Resolve<IOptions<AzureSettings>>().Value;
                 _settings.Initialize();
 
-                //var mMyLogger = new MyGraphLogger();
-                //var disposableSubsription = this._logger.Subscribe(mMyLogger);
+                var mMyLogger = new MyGraphLogger();
+                mLogSub = this._logger.Subscribe(mMyLogger);
 
                 Resolve<IEventPublisher>();
                 _botService = Resolve<IBotService>();

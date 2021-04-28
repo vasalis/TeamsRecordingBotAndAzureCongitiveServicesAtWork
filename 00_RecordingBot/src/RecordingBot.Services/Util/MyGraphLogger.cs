@@ -38,7 +38,9 @@ namespace RecordingBot.Services.Util
             // Log trace: logEvent.EventType == LogEventType.Trace
             var logString = this.formatter.Format(logEvent);
 
-            MyAppInsightsLogger.Logger.TrackTrace(logString);            
+            MyAppInsightsLogger.Logger.TrackTrace(logString);  
+            
+
         }
 
         /// <summary>
@@ -61,20 +63,20 @@ namespace RecordingBot.Services.Util
 
     public static class MyAppInsightsLogger
     {
-        private static TelemetryClient mLogger;
+        private static Lazy<TelemetryClient> mLogger = new Lazy<TelemetryClient>(() => {
+            var lConfig = new TelemetryConfiguration("e8e4be66-3875-4cc2-8fd1-3f392ba56455");
+            lConfig.DisableTelemetry = false;
+            lConfig.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";
+
+            var mLogger = new TelemetryClient(lConfig);
+            return mLogger;
+        });
 
         public static TelemetryClient Logger
         {
             get 
             {
-                if (mLogger == null)
-                {
-                    var lConfig = new TelemetryConfiguration("e8e4be66-3875-4cc2-8fd1-3f392ba56455");
-
-                    mLogger = new TelemetryClient(lConfig);
-                }
-
-                return mLogger;
+                return mLogger.Value;
             }
 
             private set { }

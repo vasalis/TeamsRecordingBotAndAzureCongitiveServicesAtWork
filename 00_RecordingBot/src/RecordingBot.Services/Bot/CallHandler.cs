@@ -69,9 +69,7 @@ namespace RecordingBot.Services.Bot
         /// <summary>
         /// The is disposed
         /// </summary>
-        private bool _isDisposed = false;
-
-        private IDisposable mLogObserver;
+        private bool _isDisposed = false;       
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CallHandler" /> class.
@@ -91,11 +89,8 @@ namespace RecordingBot.Services.Bot
 
             this.Call = statefulCall;
             this.Call.OnUpdated += this.CallOnUpdated;
-            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
-
-            var mMyLogger = new MyGraphLogger();
-            mLogObserver = this.GraphLogger.Subscribe(mMyLogger);
-
+            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;           
+            
             this.GraphLogger.Log(System.Diagnostics.TraceLevel.Warning, $"Starting call with id: {this.Call.Id}");
 
 
