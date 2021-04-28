@@ -79,7 +79,8 @@ namespace RecordingBot.Services.ServiceSetup
                 init.Initialize();
             }
 
-            services.AddSingleton(config);
+            services.AddSingleton(config);            
+
             return config;
         }
 

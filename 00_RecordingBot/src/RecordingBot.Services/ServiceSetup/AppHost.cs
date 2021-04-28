@@ -11,6 +11,7 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -92,6 +93,10 @@ namespace RecordingBot.Services.ServiceSetup
             ServiceCollection = new ServiceCollection();
             ServiceCollection.AddCoreServices(configuration);
 
+            // Add Application Insights
+            // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
+            ServiceCollection.AddApplicationInsightsTelemetryWorkerService("e8e4be66-3875-4cc2-8fd1-3f392ba56455");
+
             ServiceProvider = ServiceCollection.BuildServiceProvider();
 
             _logger = Resolve<IGraphLogger>();           
@@ -101,11 +106,14 @@ namespace RecordingBot.Services.ServiceSetup
                 _settings = Resolve<IOptions<AzureSettings>>().Value;
                 _settings.Initialize();
 
+                // Add logging to Application Insights
                 var mMyLogger = new MyGraphLogger();
                 mLogSub = this._logger.Subscribe(mMyLogger);
 
                 Resolve<IEventPublisher>();
                 _botService = Resolve<IBotService>();
+
+                Resolve<TelemetryClient>();     
             }
             catch (Exception e)
             {

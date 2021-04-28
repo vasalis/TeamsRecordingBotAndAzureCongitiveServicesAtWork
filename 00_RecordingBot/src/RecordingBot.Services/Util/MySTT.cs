@@ -260,7 +260,7 @@ namespace RecordingBot.Services.Util
                     }
                 }
 
-                var lPayload = new StringContent(JsonConvert.SerializeObject(lItem), Encoding.UTF8, "application/json");
+                var lPayload = new StringContent(JsonConvert.SerializeObject(lItem), Encoding.UTF8, "application/json");                
 
                 var lResult = await this.mHttpClient.PostAsync(this.mFunctionsEndPoint, lPayload).ConfigureAwait(false);
 
