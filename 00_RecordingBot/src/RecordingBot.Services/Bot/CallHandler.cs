@@ -118,9 +118,7 @@ namespace RecordingBot.Services.Bot
             this.Call.OnUpdated -= this.CallOnUpdated;
             this.Call.Participants.OnUpdated -= this.ParticipantsOnUpdated;
 
-            this.BotMediaStream?.Dispose();
-
-            this.mLogObserver?.Dispose();
+            this.BotMediaStream?.Dispose();            
 
             // Event - Dispose of the call completed ok
             _eventPublisher.Publish("CallDisposedOK", $"Call.Id: {this.Call.Id}");
