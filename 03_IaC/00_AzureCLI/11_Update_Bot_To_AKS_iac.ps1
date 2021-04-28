@@ -33,4 +33,4 @@ Write-Output "Make sure there is an A record for this...mapping your bot subdoma
 # First uninstall
 helm uninstall teams-recording-bot --namespace teams-recording-bot
 # Install new version
-helm install teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespae --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion
+helm install teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespace --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion
