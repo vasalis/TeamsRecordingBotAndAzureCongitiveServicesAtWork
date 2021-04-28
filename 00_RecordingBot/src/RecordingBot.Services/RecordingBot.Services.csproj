@@ -95,6 +95,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Remove="ApplicationInsights.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationInsights.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RecordingBot.Model\RecordingBot.Model.csproj" />
   </ItemGroup>
 </Project>
