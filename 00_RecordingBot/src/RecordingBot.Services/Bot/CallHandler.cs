@@ -71,6 +71,8 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         private bool _isDisposed = false;
 
+        private IDisposable mLogObserver;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CallHandler" /> class.
         /// </summary>
@@ -91,15 +93,13 @@ namespace RecordingBot.Services.Bot
             this.Call.OnUpdated += this.CallOnUpdated;
             this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
 
-            //var mMyLogger = new MyGraphLogger();
-            //var disposableSubsription = this.GraphLogger.Subscribe(mMyLogger);
+            var mMyLogger = new MyGraphLogger();
+            mLogObserver = this.GraphLogger.Subscribe(mMyLogger);
 
             this.GraphLogger.Log(System.Diagnostics.TraceLevel.Warning, $"Starting call with id: {this.Call.Id}");
 
 
             this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);            
-
-            //this.GraphLogger.Subscribe()
 
             if (_settings.CaptureEvents)
             {
@@ -124,6 +124,8 @@ namespace RecordingBot.Services.Bot
             this.Call.Participants.OnUpdated -= this.ParticipantsOnUpdated;
 
             this.BotMediaStream?.Dispose();
+
+            this.mLogObserver?.Dispose();
 
             // Event - Dispose of the call completed ok
             _eventPublisher.Publish("CallDisposedOK", $"Call.Id: {this.Call.Id}");
