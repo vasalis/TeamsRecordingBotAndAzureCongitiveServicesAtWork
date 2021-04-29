@@ -11,6 +11,7 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using Microsoft.ApplicationInsights.WorkerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -57,7 +58,14 @@ namespace RecordingBot.Services.ServiceSetup
 
             // Add Application Insights
             // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
-            services.AddApplicationInsightsTelemetryWorkerService();
+            ApplicationInsightsServiceOptions lOptions = new ApplicationInsightsServiceOptions
+            {
+                EnableDependencyTrackingTelemetryModule = true,
+                EnableQuickPulseMetricStream = true,
+                EnableHeartbeat = true
+            };
+
+            services.AddApplicationInsightsTelemetryWorkerService(lOptions);
             
             return this;
         }

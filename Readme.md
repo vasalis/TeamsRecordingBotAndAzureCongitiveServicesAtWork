@@ -14,7 +14,7 @@
 1. The scope of this repo is by using GitHub Actions to automate the entire process of running the sample. 
 2. In theory, by:
    1. Registering a calling bot (Step 1) and creating an Azure Service principal (Step 2)
-   2. Forking the repo 
+   2. Forking/cloning the repo 
    3. Creating a file named `03_IaC\00_AzureCLI\MyDeploymentValues.txt` with your config values
    4. and following auto-created issues on your repo.
 3. you should be set. 
@@ -65,25 +65,28 @@
 9. Teams Tab App
    1. Front End CI CD GitHub Action will deploy a Teams Tab App to an Azure Storage Static site on your newly created resource group
    2. Also, it create the Team's app package that you can deploy on Teams. The app package will be hosted on https://<Project Prefix>staticsite.z16.web.core.windows.net/teams-cognitive-bot.zip
-   3. You can download the app package and install it on your Teams client using [Team's App Studio](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/app-studio-overview)
-   4. For this to work, and start showing the transcriptions and translations, you would need the Call Id that is stored on Cosmos db.
+   3. You can download the app package and install it on your Teams client using [Team's App Studio](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/app-studio-overview) 
 10. Putting it all together
    1. Once you have your bot added as a user to your Teams call
    2. Your Teams tab app installed
-   3. Go to your Cosmos db created, open data explorer and find your call id
-   4. Paste that on your teams tab...this should start showing the transcripions and translations...
+   3. You should see the last 5 calls (active or finished), select the first that is hopefully your last active call.
 # Fork
 The Recording bot is a fork of this public repo: https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/AksSamples/teams-recording-bot
 which follows the MIT license. This part is located [here](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/00_RecordingBot)
 
 # Original Work
 MiddleWare and Front end are original work in the context of a prove of concept.
+Extra effort has been put in order to enable Application Insights to all of the componets and achieve end-to-end tracing.
 # Environment
 1. AKS cluster (with windows pool) to run the recording bot
 2. Azure Functions (C#) as middleware between the bot and the front end (Teams Tab app)
 3. Cosmos db as persistance layer
 
 # Current state
+1. Adding Application Insights to all componets (Bot, Azure Functions, UI / Teams Tab)
+2. First version of Infrastructure as code is there. There are a few things to improve:
+   1. Updating properly with a new version of the bot. Currently it uninstalls the bot and then installs again.
+   2. Docker build takes a long time. Probably by using the Azure Container Instance for building the image will save some time, as the windows file layers can be persisted there - where this is not possible on the hosted GitHub agent.
 Working on Infrastructure as code, in order to deploy everything automatically [see here](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/03_IaC/00_AzureCLI)
 
 # Disclaimer
