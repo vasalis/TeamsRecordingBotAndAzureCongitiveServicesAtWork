@@ -104,6 +104,7 @@ namespace RecordingBot.Services.ServiceSetup
 
                 // Add logging to Application Insights
                 var lTelemetryClient = Resolve<TelemetryClient>();
+                lTelemetryClient.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";                
 
                 var mMyLogger = new MyGraphLogger(lTelemetryClient);
                 mLogSub = this._logger.Subscribe(mMyLogger);
