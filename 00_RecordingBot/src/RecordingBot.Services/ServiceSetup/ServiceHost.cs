@@ -62,7 +62,8 @@ namespace RecordingBot.Services.ServiceSetup
             {
                 EnableDependencyTrackingTelemetryModule = true,
                 EnableQuickPulseMetricStream = true,
-                EnableHeartbeat = true
+                EnableHeartbeat = true,
+                InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455"
             };
 
             services.AddApplicationInsightsTelemetryWorkerService(lOptions);
