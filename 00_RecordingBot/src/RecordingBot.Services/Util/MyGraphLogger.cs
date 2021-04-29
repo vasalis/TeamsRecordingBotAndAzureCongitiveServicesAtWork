@@ -24,7 +24,13 @@ namespace RecordingBot.Services.Util
 {
     public class MyGraphLogger : IObserver<LogEvent>
     {
-        private readonly LogEventFormatter formatter = new LogEventFormatter();       
+        private readonly LogEventFormatter formatter = new LogEventFormatter();
+        private TelemetryClient mTelemetryClient;
+
+        public MyGraphLogger(TelemetryClient aTelemetryClient)
+        {
+            mTelemetryClient = aTelemetryClient;
+        }
 
         /// <summary>
         /// Provides the observer with new data.
@@ -38,7 +44,7 @@ namespace RecordingBot.Services.Util
             // Log trace: logEvent.EventType == LogEventType.Trace
             var logString = this.formatter.Format(logEvent);
 
-            MyAppInsightsLogger.Logger.TrackTrace(logString);         
+            mTelemetryClient.TrackTrace(logString);         
 
         }
 
@@ -60,23 +66,23 @@ namespace RecordingBot.Services.Util
         }
     }
 
-    public static class MyAppInsightsLogger
-    {
-        private static Lazy<TelemetryClient> mLogger = new Lazy<TelemetryClient>(() => {
-            var lConfig = new TelemetryConfiguration("e8e4be66-3875-4cc2-8fd1-3f392ba56455");            
+    //public static class MyAppInsightsLogger
+    //{
+    //    private static Lazy<TelemetryClient> mLogger = new Lazy<TelemetryClient>(() => {
+    //        var lConfig = new TelemetryConfiguration("e8e4be66-3875-4cc2-8fd1-3f392ba56455");            
 
-            var mLogger = new TelemetryClient(lConfig);
-            return mLogger;
-        });
+    //        var mLogger = new TelemetryClient(lConfig);
+    //        return mLogger;
+    //    });
 
-        public static TelemetryClient Logger
-        {
-            get 
-            {
-                return mLogger.Value;
-            }
+    //    public static TelemetryClient Logger
+    //    {
+    //        get 
+    //        {
+    //            return mLogger.Value;
+    //        }
 
-            private set { }
-        }
-    }
+    //        private set { }
+    //    }
+    //}
 }

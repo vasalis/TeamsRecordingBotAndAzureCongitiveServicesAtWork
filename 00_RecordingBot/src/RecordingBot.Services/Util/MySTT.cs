@@ -270,14 +270,14 @@ namespace RecordingBot.Services.Util
             catch (Exception ex)
             {
                 mEventPublisher.Publish("PersistAsync", $"Error: {ex.Message}");
-                MyAppInsightsLogger.Logger.TrackException(new ExceptionTelemetry(ex));
+                // MyAppInsightsLogger.Logger.TrackException(new ExceptionTelemetry(ex));
             }
-            finally
-            {
-                var lDurartion = DateTime.UtcNow.Subtract(lTimeStamp);
-                DependencyTelemetry lDep = new DependencyTelemetry("Persistance Layer", "MiddleWare", "MiddleWare", "", lTimeStamp, lDurartion, lResultCode, lSuccess);
-                MyAppInsightsLogger.Logger.TrackDependency(lDep);
-            }
+            //finally
+            //{
+            //    var lDurartion = DateTime.UtcNow.Subtract(lTimeStamp);
+            //    DependencyTelemetry lDep = new DependencyTelemetry("Persistance Layer", "MiddleWare", "MiddleWare", "", lTimeStamp, lDurartion, lResultCode, lSuccess);
+            //    MyAppInsightsLogger.Logger.TrackDependency(lDep);
+            //}
         }
         
         private TranscriptionEntity GetCurrentTranscriptionEntity()
