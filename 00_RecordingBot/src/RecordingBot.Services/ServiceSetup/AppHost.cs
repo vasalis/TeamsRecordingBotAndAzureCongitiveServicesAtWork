@@ -100,12 +100,12 @@ namespace RecordingBot.Services.ServiceSetup
 
             try
             {
-                _settings = Resolve<IOptions<AzureSettings>>().Value;
-                _settings.Initialize();
+                //_settings = Resolve<IOptions<AzureSettings>>().Value;
+                //_settings.Initialize();
 
                 // Add logging to Application Insights
                 mAppInsights = Resolve<TelemetryClient>();
-                mAppInsights.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";                
+                mAppInsights.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";
 
                 var mMyLogger = new MyGraphLogger(mAppInsights);
                 mLogSub = this._logger.Subscribe(mMyLogger);

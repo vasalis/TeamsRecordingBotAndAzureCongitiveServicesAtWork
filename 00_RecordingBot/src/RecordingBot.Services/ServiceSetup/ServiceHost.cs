@@ -57,7 +57,7 @@ namespace RecordingBot.Services.ServiceSetup
 
             // Add Application Insights
             // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
-            services.AddApplicationInsightsTelemetryWorkerService("e8e4be66-3875-4cc2-8fd1-3f392ba56455");
+            services.AddApplicationInsightsTelemetryWorkerService();
             
             return this;
         }

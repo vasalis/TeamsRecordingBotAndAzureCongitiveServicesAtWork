@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace RecordingBot.Services.Util
 {
@@ -44,8 +45,15 @@ namespace RecordingBot.Services.Util
             // Log trace: logEvent.EventType == LogEventType.Trace
             var logString = this.formatter.Format(logEvent);
 
-            mTelemetryClient.TrackTrace(logString);         
-
+            if (logEvent.Level == System.Diagnostics.TraceLevel.Error)
+            {
+                ExceptionTelemetry lExTel = new ExceptionTelemetry(new Exception(logString));
+                mTelemetryClient.TrackException(lExTel);                
+            }
+            else
+            {
+                mTelemetryClient.TrackTrace(logString);
+            }
         }
 
         /// <summary>
