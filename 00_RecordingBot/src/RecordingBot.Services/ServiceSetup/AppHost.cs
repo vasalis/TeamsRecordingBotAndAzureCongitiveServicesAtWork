@@ -63,6 +63,7 @@ namespace RecordingBot.Services.ServiceSetup
         /// </summary>
         private IGraphLogger _logger;
 
+        private TelemetryClient mAppInsights;
         private IDisposable mLogSub;
 
         /// <summary>
@@ -103,10 +104,10 @@ namespace RecordingBot.Services.ServiceSetup
                 _settings.Initialize();
 
                 // Add logging to Application Insights
-                var lTelemetryClient = Resolve<TelemetryClient>();
-                lTelemetryClient.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";                
+                mAppInsights = Resolve<TelemetryClient>();
+                mAppInsights.InstrumentationKey = "e8e4be66-3875-4cc2-8fd1-3f392ba56455";                
 
-                var mMyLogger = new MyGraphLogger(lTelemetryClient);
+                var mMyLogger = new MyGraphLogger(mAppInsights);
                 mLogSub = this._logger.Subscribe(mMyLogger);
 
                 Resolve<IEventPublisher>();
