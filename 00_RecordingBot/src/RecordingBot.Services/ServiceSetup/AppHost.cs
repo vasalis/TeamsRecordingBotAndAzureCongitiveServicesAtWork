@@ -100,8 +100,8 @@ namespace RecordingBot.Services.ServiceSetup
 
             try
             {
-                //_settings = Resolve<IOptions<AzureSettings>>().Value;
-                //_settings.Initialize();
+                _settings = Resolve<IOptions<AzureSettings>>().Value;
+                _settings.Initialize();
 
                 // Add logging to Application Insights
                 mAppInsights = Resolve<TelemetryClient>();
