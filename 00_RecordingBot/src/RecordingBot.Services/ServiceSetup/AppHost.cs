@@ -104,7 +104,7 @@ namespace RecordingBot.Services.ServiceSetup
                 _settings.Initialize();
 
                 // Add logging to Application Insights
-                mAppInsights = Resolve<TelemetryClient>();                           
+                mAppInsights = ServiceProvider.GetRequiredService<TelemetryClient>();                                         
 
                 var mMyLogger = new MyGraphLogger(mAppInsights);
                 mLogSub = this._logger.Subscribe(mMyLogger);

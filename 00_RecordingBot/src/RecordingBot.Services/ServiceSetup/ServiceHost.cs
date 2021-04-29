@@ -67,7 +67,7 @@ namespace RecordingBot.Services.ServiceSetup
             };
 
             services.AddApplicationInsightsTelemetryWorkerService(lOptions);
-            
+
             return this;
         }
 
