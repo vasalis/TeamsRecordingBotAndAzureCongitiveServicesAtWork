@@ -28,9 +28,5 @@ Write-Output "Setting up helm for teams-recording-bot for bot domain: $botSubDom
 Write-Output "Image Version is: $imgVersion"
 Write-Output "Make sure there is an A record for this...mapping your bot subdomain with your Public IP"
 
-
 # Update Bot
-# First uninstall
-helm uninstall teams-recording-bot --namespace teams-recording-bot
-# Install new version
-helm install teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespace --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion
+helm upgrade teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespae --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion

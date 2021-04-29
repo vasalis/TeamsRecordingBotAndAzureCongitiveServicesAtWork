@@ -33,6 +33,8 @@ jobs:
           docker push ${{env.acrName}}.azurecr.io/teams-recording-bot:${{env.imgVersion}}
   deploy_to_AKS_Cluster:
     runs-on: ubuntu-latest
+    env:      
+      imgVersion: ${{ github.run_number }}
     needs: [build_docker_image]
     steps:
     - uses: actions/checkout@v2
