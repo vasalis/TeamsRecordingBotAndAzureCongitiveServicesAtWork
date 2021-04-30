@@ -121,7 +121,7 @@ spec:
             secretKeyRef:
               name: bot-application-secrets
               key: persistenceEndPoint
-        - name: AzureSettings__APPINSIGHTS_INSTRUMENTATIONKEY
+        - name: AzureSettings__AppInsightsKey
           valueFrom:
             secretKeyRef:
               name: bot-application-secrets

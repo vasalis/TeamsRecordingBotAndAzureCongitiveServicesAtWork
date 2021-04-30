@@ -54,19 +54,7 @@ namespace RecordingBot.Services.ServiceSetup
             services.Configure<AzureSettings>(configuration.GetSection(nameof(AzureSettings)));
             services.AddSingleton<IAzureSettings>(_ => _.GetRequiredService<IOptions<AzureSettings>>().Value);
 			services.AddSingleton<IEventPublisher, EventGridPublisher>(_ => new EventGridPublisher(_.GetRequiredService<IOptions<AzureSettings>>().Value));
-            services.AddSingleton<IBotService, BotService>();
-
-            // Add Application Insights
-            // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
-            ApplicationInsightsServiceOptions lOptions = new ApplicationInsightsServiceOptions()
-            {
-                EnableDependencyTrackingTelemetryModule = true,
-                EnableQuickPulseMetricStream = true,
-                EnableHeartbeat = true,
-                InstrumentationKey = Environment.GetEnvironmentVariable("AzureSettings:APPINSIGHTS_INSTRUMENTATIONKEY")
-            };
-
-            services.AddApplicationInsightsTelemetryWorkerService(lOptions);
+            services.AddSingleton<IBotService, BotService>();            
 
             return this;
         }
