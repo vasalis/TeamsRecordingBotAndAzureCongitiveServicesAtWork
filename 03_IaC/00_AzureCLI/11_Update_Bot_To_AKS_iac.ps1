@@ -29,4 +29,4 @@ Write-Output "Image Version is: $imgVersion"
 Write-Output "Make sure there is an A record for this...mapping your bot subdomain with your Public IP"
 
 # Update Bot
-helm upgrade teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespae --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion
+helm upgrade teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=$imgVersion
