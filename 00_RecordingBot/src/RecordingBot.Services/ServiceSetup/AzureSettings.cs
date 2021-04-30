@@ -174,10 +174,12 @@ namespace RecordingBot.Services.ServiceSetup
         public int WAVQuality { get; set; }
 
         public string AzureCognitiveKey { get; set; }
+
         public string AzureCognitiveRegion { get; set; }
 
         public string PersistenceEndPoint { get; set; }
 
+        public string AppInsightsKey { get; set; }
 
         /// <summary>
         /// Initializes this instance.
