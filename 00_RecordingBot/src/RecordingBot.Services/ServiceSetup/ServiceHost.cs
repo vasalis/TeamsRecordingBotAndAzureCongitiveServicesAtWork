@@ -63,7 +63,7 @@ namespace RecordingBot.Services.ServiceSetup
                 EnableDependencyTrackingTelemetryModule = true,
                 EnableQuickPulseMetricStream = true,
                 EnableHeartbeat = true,
-                InstrumentationKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY")
+                InstrumentationKey = Environment.GetEnvironmentVariable("AzureSettings:APPINSIGHTS_INSTRUMENTATIONKEY")
             };
 
             services.AddApplicationInsightsTelemetryWorkerService(lOptions);
