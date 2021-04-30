@@ -179,8 +179,6 @@ namespace RecordingBot.Services.ServiceSetup
 
         public string PersistenceEndPoint { get; set; }
 
-        public string AppInsightsKey { get; set; }
-
         /// <summary>
         /// Initializes this instance.
         /// </summary>
