@@ -59,6 +59,16 @@ namespace RecordingBot.Services.ServiceSetup
             // Add Application Insights
             // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
             string lAppInsightsKey = Environment.GetEnvironmentVariable("AzureSettings__AppInsightsKey");
+            if (string.IsNullOrEmpty(lAppInsightsKey))
+            {
+                lAppInsightsKey = Environment.GetEnvironmentVariable("AzureSettings:AppInsightsKey");
+            }
+
+            if (string.IsNullOrEmpty(lAppInsightsKey))
+            {
+                throw new Exception("App insights key is null");
+            }
+
             ApplicationInsightsServiceOptions lOptions = new ApplicationInsightsServiceOptions()
             {
                 EnableDependencyTrackingTelemetryModule = true,
