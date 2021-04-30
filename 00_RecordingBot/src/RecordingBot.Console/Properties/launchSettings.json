@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RecordingBot.Console": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "AzureSettings__AppInsightsKey": "keyhere"
+      }
+    }
+  }
+}

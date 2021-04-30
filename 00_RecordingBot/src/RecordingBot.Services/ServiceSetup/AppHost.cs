@@ -104,19 +104,6 @@ namespace RecordingBot.Services.ServiceSetup
                 _settings = Resolve<IOptions<AzureSettings>>().Value;
                 _settings.Initialize();
 
-                // Add Application Insights
-                // Make this here - so Azure Settings are initialized and there is an App Insights key available.
-                // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
-                ApplicationInsightsServiceOptions lOptions = new ApplicationInsightsServiceOptions()
-                {
-                    EnableDependencyTrackingTelemetryModule = true,
-                    EnableQuickPulseMetricStream = true,
-                    EnableHeartbeat = true,
-                    InstrumentationKey = ((AzureSettings)_settings).AppInsightsKey
-                };
-
-                ServiceCollection.AddApplicationInsightsTelemetryWorkerService(lOptions);
-
                 // Add logging to Application Insights
                 mAppInsights = ServiceProvider.GetRequiredService<TelemetryClient>();                                         
 
