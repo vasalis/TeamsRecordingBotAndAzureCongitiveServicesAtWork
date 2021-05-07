@@ -17,6 +17,7 @@ $speechToTextName = $projectPrefix +"SpeechToText"
 $functionsName = $projectPrefix + "middleware"
 $storageAccountName = $projectPrefix + 'funstorage'
 $functionsAppInsightsName = $functionsName + 'AI'
+$teamsTabAppInsightsName = $projectPrefix + 'teamsTabAI'
 
 # Cosmos Related variables
 $cosmosDbAccount = $projectPrefix + 'cosmosdb'
@@ -60,9 +61,10 @@ $cosmosPrimaryKey = az cosmosdb keys list --name $cosmosDbAccount --resource-gro
 $cosmosConString = "AccountEndpoint=https://"+$cosmosDbAccount+".documents.azure.com:443/;AccountKey="+$cosmosPrimaryKey
 
 # Create Application Insights for Functions
-Write-Output "About to create Application Insights: $functionsAppInsightsName"
+Write-Output "About to create Application Insights: $functionsAppInsightsName and $teamsTabAppInsightsName"
 az extension add --name application-insights
 az monitor app-insights component create -a $functionsAppInsightsName -l $azureLocation -g $resourceGroupName
+az monitor app-insights component create -a $teamsTabAppInsightsName -l $azureLocation -g $resourceGroupName
 $appInsightsKey = az monitor app-insights component show --app $functionsAppInsightsName -g $resourceGroupName --query 'instrumentationKey'
 Write-Output "Got app insights key: $appInsightsKey"
 
@@ -90,7 +92,7 @@ az functionapp config appsettings set --name $functionsName --resource-group $re
 
 # Add CORS all origins - as caller is on static site and ulr is not valid
 az functionapp cors remove -g $resourceGroupName -n $functionsName --allowed-origins
-az functionapp cors add -g $resourceGroupName -n $functionsName --allowed-origins *
+az functionapp cors add -g $resourceGroupName -n $functionsName --allowed-origins "*"
 
 # Write env Variables for other steps to use
 Write-Output "azureCognitiveKey=$speechToTextKey" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append

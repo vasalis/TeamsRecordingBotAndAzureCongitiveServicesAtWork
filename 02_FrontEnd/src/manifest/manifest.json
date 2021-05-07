@@ -1,9 +1,9 @@
 {
-  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.5",
-  "id": "1a56f760-6126-11ea-8b10-67d6b6b6d778",
-  "version": "0.0.1",
-  "packageName": "teamstp",
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.8",
+  "id": "{{APPLICATION_ID}}",
+  "version": "{{VERSION}}",
+  "packageName": "{{PACKAGE_NAME}}",
   "developer": {
     "name": "vasalis",
     "websiteUrl": "https://{{HOSTNAME}}",
@@ -23,12 +23,28 @@
     "color": "icon-color.png"
   },
   "accentColor": "#D85028",
-  "configurableTabs": [],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://{{HOSTNAME}}/cognitiveBotTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+      "canUpdateConfiguration": true,
+      "scopes": [
+        "team",
+        "groupchat"
+      ],
+      "context":[        
+        "channelTab",
+        "privateChatTab",
+        "meetingChatTab",
+        "meetingDetailsTab",
+        "meetingSidePanel"        
+     ]
+    }
+  ],
   "staticTabs": [
     {
       "entityId": "default-data",
       "name": "Cognitive Bot",
-      "contentUrl": "https://{{HOSTNAME}}/teamsTpTab/",
+      "contentUrl": "https://{{HOSTNAME}}/CognitiveBotTab/",
       "scopes": [
         "personal"
       ]
@@ -42,7 +58,8 @@
     "messageTeamMembers"
   ],
   "validDomains": [
-    "{{HOSTNAME}}",
-    "{{REACT_APP_BACKEND_DOMAIN}}"
-  ]
+    "{{HOSTNAME}}"
+  ],
+  "showLoadingIndicator": true,
+  "isFullScreen": true
 }
