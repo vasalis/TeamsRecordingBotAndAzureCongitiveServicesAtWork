@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Flex, Provider } from "@fluentui/react-northstar";
-import {    
+import {
     initializeIcons, IDropdownOption
 } from "@fluentui/react";
 import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
-import MyCalls from "../modules/MyCalls"
-import {TranscriptionEntity, CallEntity} from "../Models/ModelEntities"
+import MyCalls from "../modules/MyCalls";
+import { TranscriptionEntity, CallEntity } from "../Models/ModelEntities";
 import MyTranscriptions from "../modules/MyTranscriptions";
 
 /**
@@ -15,15 +15,14 @@ import MyTranscriptions from "../modules/MyTranscriptions";
  */
 export const CognitiveBotTab = () => {
 
-    const [{ inTeams, theme, context }] = useTeams();    
+    const [{ inTeams, theme, context }] = useTeams();
     const [myActiveCalls, setActiveCalls] = useState<CallEntity>();
     const [currentCallId, setcurrentCallId] = useState<string>();
     const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
-    
+
     const callIdChanged = (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<CallEntity>, index?: number) => {
-        if(option)
-        {
-            var lCall = option as unknown as CallEntity;
+        if (option) {
+            const lCall = option as unknown as CallEntity;
             setcurrentCallId(lCall.callid);
         }
     };
@@ -35,24 +34,24 @@ export const CognitiveBotTab = () => {
 
         initializeIcons();
 
-    }, [inTeams]);   
+    }, [inTeams]);
 
-    useEffect(() => {    
-        var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+    useEffect(() => {
+        let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
         lEndPoint = lEndPoint + "api/GetActiveCalls";
-        console.log('Got calls endpoint: ' + lEndPoint);
+        console.log("Got calls endpoint: " + lEndPoint);
 
         fetch(lEndPoint, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                }                
-            })
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            }
+        })
             .then(response => response.json())
-            .then(data => {                
-                setActiveCalls(data);                
-            }).catch(function(error) {                    
+            .then(data => {
+                setActiveCalls(data);
+            }).catch(function(error) {
                 console.log(error);
             });
     }, []);
@@ -60,38 +59,38 @@ export const CognitiveBotTab = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             if (currentCallId) {
-                var lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+                let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
                 lEndPoint = lEndPoint + "api/GetTranscriptions";
-                console.log('Got calls endpoint: ' + lEndPoint);
-    
+                console.log("Got calls endpoint: " + lEndPoint);
+
                 fetch(lEndPoint, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
                     },
                     body: currentCallId
-                    })
+                })
                     .then(response => response.json())
                     .then(data => {
                         setMyTranscriptions(data);
-                    }).catch(function(error) {                    
+                    }).catch(function(error) {
                         console.log(error);
                     });
             }
         }, 500);
         return () => clearInterval(interval);
-      }, [currentCallId]);
+    }, [currentCallId]);
 
     /**
      * The render() method to create the UI of the tab
      */
-    return (        
+    return (
         <Provider theme={theme}>
             <Flex column fill={true}>
-                <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>   
-                <MyTranscriptions transcriptions={myTranscriptions} />                    
-            </Flex>            
+                <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>
+                <MyTranscriptions transcriptions={myTranscriptions} />
+            </Flex>
         </Provider>
     );
 };

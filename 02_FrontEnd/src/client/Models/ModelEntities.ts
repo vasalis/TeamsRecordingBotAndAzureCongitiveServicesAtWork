@@ -6,8 +6,8 @@ export class TranscriptionEntity {
     public when: string;
 }
 
-export class CallEntity {        
-    callid: string;    
-    text: string;    
-    when: string;  
+export class CallEntity {
+    callid: string;
+    text: string;
+    when: string;
 }

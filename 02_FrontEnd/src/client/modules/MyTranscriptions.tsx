@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 import { Flex } from "@fluentui/react-northstar";
-import MyTranscription from './MyTranscription';
+import MyTranscription from "./MyTranscription";
 
 const MyTranscriptions = (props) => (
     <Flex column gap="gap.small" styles={{
