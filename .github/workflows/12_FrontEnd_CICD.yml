@@ -31,6 +31,12 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
         
     - name: 'Build Front End'
       working-directory: 02_FrontEnd
@@ -47,13 +53,8 @@ jobs:
         Get-Content .env
         npm install
         gulp build
-        gulp manifest
+        gulp manifest  
     
-    - name: Login via Az module
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        enable-AzPSSession: true
         
     - name: 'Push to Azure Storage Static Site'
       working-directory: 02_FrontEnd
