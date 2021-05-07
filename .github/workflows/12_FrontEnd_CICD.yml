@@ -36,7 +36,8 @@ jobs:
       working-directory: 02_FrontEnd
       run: |
         az extension add --name application-insights
-        $appInsightsKey = az monitor app-insights component show --app ${{env.projectPrefix}}teamsTabAI -g ${{env.projectPrefix}}_rg --query 'instrumentationKey'
+        $appInsightsKey = az monitor app-insights component show --app ${{env.projectPrefix}}teamsTabAI -g ${{env.projectPrefix}}_rg --query 'instrumentationKey'        
+        Write-Output "APPLICATION_ID=e6b3dba0-af0b-11eb-bed7-4980d524c0d2" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "HOSTNAME=${{env.projectPrefix}}staticsite.z16.web.core.windows.net" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "REACT_APP_BACKEND_DOMAIN=${{env.projectPrefix}}middleware.azurewebsites.net" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "REACT_APP_BACKEND_API=https://${{env.projectPrefix}}middleware.azurewebsites.net/" | Out-File -FilePath .env -Encoding utf8 -Append        
