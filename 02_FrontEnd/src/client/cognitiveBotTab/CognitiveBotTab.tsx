@@ -31,9 +31,6 @@ export const CognitiveBotTab = () => {
         if (inTeams === true) {
             microsoftTeams.appInitialization.notifySuccess();
         }
-
-        initializeIcons();
-
     }, [inTeams]);
 
     useEffect(() => {
