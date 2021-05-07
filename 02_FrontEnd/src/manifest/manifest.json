@@ -27,14 +27,10 @@
     {
       "configurationUrl": "https://{{HOSTNAME}}/cognitiveBotTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
       "canUpdateConfiguration": true,
-      "scopes": [
-        "team",
+      "scopes": [        
         "groupchat"
       ],
-      "context": [
-        "channelTab",
-        "privateChatTab",
-        "meetingChatTab",
+      "context": [       
         "meetingDetailsTab",
         "meetingSidePanel"
     ]
