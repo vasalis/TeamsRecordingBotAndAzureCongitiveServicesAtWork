@@ -1,4 +1,4 @@
-# CognitiveBot - Microsoft Teams App
+# cognitivebot - Microsoft Teams App
 
 Generate a Microsoft Teams application.
 

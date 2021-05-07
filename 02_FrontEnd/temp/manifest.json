@@ -1,14 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
   "manifestVersion": "1.8",
-  "id": "{{APPLICATION_ID}}",
-  "version": "{{VERSION}}",
-  "packageName": "{{PACKAGE_NAME}}",
+  "id": "e6b3dba0-af0b-11eb-bed7-4980d524c0d2",
+  "version": "0.0.1",
+  "packageName": "cognitivebot",
   "developer": {
     "name": "vasalis",
-    "websiteUrl": "https://{{HOSTNAME}}",
-    "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
-    "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"
+    "websiteUrl": "https://cognitivebot.azurewebsites.net",
+    "privacyUrl": "https://cognitivebot.azurewebsites.net/privacy.html",
+    "termsOfUseUrl": "https://cognitivebot.azurewebsites.net/tou.html"
   },
   "name": {
     "short": "cognitivebot",
@@ -25,7 +25,7 @@
   "accentColor": "#D85028",
   "configurableTabs": [
     {
-      "configurationUrl": "https://{{HOSTNAME}}/cognitivebotTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+      "configurationUrl": "https://cognitivebot.azurewebsites.net/cognitivebotTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
       "canUpdateConfiguration": true,
       "scopes": [
         "team",
@@ -44,7 +44,7 @@
     {
         "entityId": "default-data",
         "name": "Cognitive Bot",
-        "contentUrl": "https://{{HOSTNAME}}/CognitiveBotTab/",
+        "contentUrl": "https://cognitivebot.azurewebsites.net/CognitiveBotTab/",
         "scopes": [
             "personal"
         ]
@@ -58,7 +58,7 @@
     "messageTeamMembers"
   ],
   "validDomains": [
-    "{{HOSTNAME}}"
+    "cognitivebot.azurewebsites.net"
   ],
   "showLoadingIndicator": true,
   "isFullScreen": true
