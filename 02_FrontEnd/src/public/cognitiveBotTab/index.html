@@ -14,8 +14,7 @@
         instrumentationKey: "{{APPINSIGHTS_INSTRUMENTATIONKEY}}",
         disableFetchTracking: false,
         enableCorsCorrelation: true,
-        distributedTracingMode: 2,
-        enableDebug: true,
+        distributedTracingMode: 2,        
     });
   
     window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();    
