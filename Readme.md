@@ -2,7 +2,7 @@
 1. Captures the audio from a Team's call (by adding the "Recording bot" as a user)
 2. Transcribes the audio to the default language (english, but you can change that via code ;) ) 
 3. Translates the transcription to one or more languages (again you can change these)
-4. Shows the results on a Teams Tab App (React / TypeScript)
+4. Shows the results on a Teams Tab App (React / TypeScript), it can be added as a personal scope or to a meeting with Side Panel functionallity.
 6. The bot does not actually record the call, but the code for that is just commented out from the original forked project (see below).
 
 ## Prerequisites
@@ -64,7 +64,7 @@
    3. For more details on this see [here](https://github.com/microsoftgraph/microsoft-graph-comms-samples/tree/master/Samples/V1.0Samples/LocalMediaSamples/AudioVideoPlaybackBot#test)
 9. Teams Tab App
    1. Front End CI CD GitHub Action will deploy a Teams Tab App to an Azure Storage Static site on your newly created resource group
-   2. Also, it create the Team's app package that you can deploy on Teams. The app package will be hosted on https://<Project Prefix>staticsite.z16.web.core.windows.net/teams-cognitive-bot.zip
+   2. Also, it creates the Team's app package that you can deploy on Teams. The app package will be hosted on https://<Project Prefix>staticsite.z16.web.core.windows.net/cognitivebot.zip
    3. You can download the app package and install it on your Teams client using [Team's App Studio](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/app-studio-overview) 
 10. Putting it all together
    1. Once you have your bot added as a user to your Teams call
@@ -83,10 +83,9 @@ Extra effort has been put in order to enable Application Insights to all of the 
 3. Cosmos db as persistance layer
 
 # Current state
-1. Adding Application Insights to all componets (Bot, Azure Functions, UI / Teams Tab)
+1. Adding Teams **meeting** tab with side panel functionallity.
 2. First version of Infrastructure as code is there. There are a few things to improve:
-   1. Updating properly with a new version of the bot. Currently it uninstalls the bot and then installs again.
-   2. Docker build takes a long time. Probably by using the Azure Container Instance for building the image will save some time, as the windows file layers can be persisted there - where this is not possible on the hosted GitHub agent.
+   1. Docker build takes a long time. Probably by using the Azure Container Instance for building the image will save some time, as the windows file layers can be persisted there - where this is not possible on the hosted GitHub agent.
 Working on Infrastructure as code, in order to deploy everything automatically [see here](https://github.com/vasalis/TeamsRecordingBotAndAzureCongitiveServicesAtWork/tree/master/03_IaC/00_AzureCLI)
 
 # Disclaimer

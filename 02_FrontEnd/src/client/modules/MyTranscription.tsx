@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Flex, Label, Avatar, Card, CardHeader, CardBody, Text } from "@fluentui/react-northstar";
+import { Flex, Avatar, Card, CardHeader, CardBody, Text } from "@fluentui/react-northstar";
+import * as PropTypes from "prop-types";
+import { TranscriptionEntity } from "../Models/ModelEntities";
 
 const MyTranscription = (props) => (
     <Card fluid selected>
@@ -20,5 +22,9 @@ const MyTranscription = (props) => (
         </CardBody>
     </Card>
 );
+
+MyTranscription.propTypes = {
+    transcription: PropTypes.instanceOf(TranscriptionEntity)
+};
 
 export default MyTranscription;

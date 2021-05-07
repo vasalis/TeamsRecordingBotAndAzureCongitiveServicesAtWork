@@ -16,7 +16,7 @@ import MyTranscriptions from "../modules/MyTranscriptions";
 export const CognitiveBotTab = () => {
 
     const [{ inTeams, theme, context }] = useTeams();
-    const [myActiveCalls, setActiveCalls] = useState<CallEntity>();
+    const [myActiveCalls, setActiveCalls] = useState<CallEntity[]>();
     const [currentCallId, setcurrentCallId] = useState<string>();
     const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
 
