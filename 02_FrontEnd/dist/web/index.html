@@ -17,7 +17,7 @@
             instrumentationKey: "7b7af881-9816-4e62-85bb-17b6abc5ec3d"
         });
       
-        window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
+        window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView() && appInsights.trackDependency() && appInsights.trackException();        
       </script>
 </head>
 
