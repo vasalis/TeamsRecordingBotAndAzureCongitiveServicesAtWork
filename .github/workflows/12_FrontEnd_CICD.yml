@@ -59,6 +59,7 @@ jobs:
       working-directory: 02_FrontEnd
       shell: pwsh # $projectPrefix +"StaticSite"
       run: |
+        az storage blob delete-batch -s '$web' --account-name ${{env.projectPrefix}}staticsite
         pushd ./dist/web
         az storage blob upload-batch --account-name ${{env.projectPrefix}}staticsite --source . --destination '$web'
         pushd ../../package
