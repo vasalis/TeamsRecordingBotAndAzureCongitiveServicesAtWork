@@ -6,7 +6,7 @@ const browserHistory = createBrowserHistory({ basename: '' });
 const reactPlugin = new ReactPlugin();
 const appInsights = new ApplicationInsights({
     config: {
-        instrumentationKey: 'e3d81882-629d-46c4-b654-12f9f0cae67e',
+        instrumentationKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY as string,
         extensions: [reactPlugin],
         distributedTracingMode: DistributedTracingModes.W3C,
         disableFetchTracking: false,
