@@ -222,7 +222,7 @@ namespace RecordingBot.Services.Bot
 
                 // The context associated with the incoming call.
                 IncomingContext incomingContext =
-                    call.Resource.IncomingContext;
+                    call.Resource.IncomingContext;                
 
                 // The RP participant.
                 string observedParticipantId =

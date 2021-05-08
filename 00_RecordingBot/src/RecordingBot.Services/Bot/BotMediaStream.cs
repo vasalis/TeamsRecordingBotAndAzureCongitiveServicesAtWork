@@ -200,23 +200,27 @@ namespace RecordingBot.Services.Bot
             {
                 if (this.mSpeechToTextPool.ContainsKey(aUserId))
                 {
-                    return this.mSpeechToTextPool[aUserId];
+                    var lexit = this.mSpeechToTextPool[aUserId];
+
+                    if (!lexit.IsParticipantResolved)
+                    {
+                        // Try to resolved again
+                        var lParticipantInfo = this.TryToResolveParticipant(aUserId);
+
+                        //Update if resolved.
+                        if (lParticipantInfo.Item3)
+                        {
+                            lexit.UpdateParticipant(lParticipantInfo);
+                        }
+                    }
+
+                    return lexit;
                 }
                 else
                 {
-                    string lUserDisplayName = aUserId.ToString();
-                    string lUserId = aUserId.ToString();
+                    var lParticipantInfo = this.TryToResolveParticipant(aUserId);
 
-                    IParticipant participant = this.GetParticipantFromMSI(aUserId);
-                    var participantDetails = participant?.Resource?.Info?.Identity?.User;
-
-                    if (participantDetails != null)
-                    {
-                        lUserDisplayName = participantDetails.DisplayName;
-                        lUserId = participantDetails.Id;
-                    }
-
-                    var lNewSE = new MySTT(this._callId, lUserDisplayName, lUserId, this.GraphLogger, this._eventPublisher, this._settings);
+                    var lNewSE = new MySTT(this._callId, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
                     this.mSpeechToTextPool.Add(aUserId, lNewSE);
 
                     return lNewSE;
@@ -228,6 +232,25 @@ namespace RecordingBot.Services.Bot
             }
 
             return null;
+        }
+
+        private Tuple<String, String, Boolean> TryToResolveParticipant(uint aUserId)
+        {
+            bool lIsParticipantResolved = false;
+            string lUserDisplayName = aUserId.ToString();
+            string lUserId = aUserId.ToString();
+
+            IParticipant participant = this.GetParticipantFromMSI(aUserId);
+            var participantDetails = participant?.Resource?.Info?.Identity?.User;
+
+            if (participantDetails != null)
+            {
+                lUserDisplayName = participantDetails.DisplayName;
+                lUserId = participantDetails.Id;
+                lIsParticipantResolved = true;
+            }
+
+            return new Tuple<string, string, bool>(lUserDisplayName, lUserId, lIsParticipantResolved);
         }
 
         private IParticipant GetParticipantFromMSI(uint msi)

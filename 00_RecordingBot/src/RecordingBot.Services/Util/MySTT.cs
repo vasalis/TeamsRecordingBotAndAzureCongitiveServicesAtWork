@@ -64,13 +64,15 @@ namespace RecordingBot.Services.Util
 
         private readonly AzureSettings mSettings;
 
+        public bool IsParticipantResolved;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MySTT"/> class.
         /// </summary>
         /// <param name="aCallId">Name.</param>
         /// <param name="aWho">Name..</param>
         /// <param name="aWhoId">Name...</param>
-        public MySTT(string aCallId, string aWho, string aWhoId, IGraphLogger aLogger, IEventPublisher aEventPublisher, IAzureSettings aSettings)
+        public MySTT(string aCallId, string aWho, string aWhoId, bool aIsParticipantResolved, IGraphLogger aLogger, IEventPublisher aEventPublisher, IAzureSettings aSettings)
         {
             try
             {
@@ -80,6 +82,7 @@ namespace RecordingBot.Services.Util
                 this.mCallId = aCallId;
                 this.mWho = aWho;
                 this.mWhoId = aWhoId;
+                this.IsParticipantResolved = aIsParticipantResolved;
 
                 this.SetupTranscriptionAndTranslationService();
                 this.SetupPersistanceEndPoint();
@@ -88,6 +91,13 @@ namespace RecordingBot.Services.Util
             {
                 mEventPublisher.Publish("MySTT Instantiation - Failed", $"{ex.Message}");
             }            
+        }
+
+        public void UpdateParticipant(Tuple<string, string, bool> aParticipant)
+        {
+            this.mWho = aParticipant.Item1;
+            this.mWhoId = aParticipant.Item2;
+            this.IsParticipantResolved = aParticipant.Item3;
         }
 
         /// <summary>
