@@ -9,6 +9,8 @@ import * as microsoftTeams from "@microsoft/teams-js";
 import MyCalls from "../modules/MyCalls";
 import { TranscriptionEntity, CallEntity } from "../Models/ModelEntities";
 import MyTranscriptions from "../modules/MyTranscriptions";
+import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
+import { reactPlugin } from "../modules/AppInsights";
 
 /**
  * Implementation of the Cognitive Bot content page
@@ -83,11 +85,13 @@ export const CognitiveBotTab = () => {
      * The render() method to create the UI of the tab
      */
     return (
-        <Provider theme={theme}>
-            <Flex column fill={true}>
-                <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>
-                <MyTranscriptions transcriptions={myTranscriptions} />
-            </Flex>
-        </Provider>
+        <AppInsightsContext.Provider value={reactPlugin}>
+            <Provider theme={theme}>
+                <Flex column fill={true}>
+                    <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>
+                    <MyTranscriptions transcriptions={myTranscriptions} />
+                </Flex>
+            </Provider>
+        </AppInsightsContext.Provider>        
     );
 };
