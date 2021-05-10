@@ -11,6 +11,8 @@
   "dependencies": {
     "@fluentui/react": "^8.14.2",
     "@fluentui/react-northstar": "~0.52.0",
+    "@microsoft/applicationinsights-react-js": "^3.1.2",
+    "@microsoft/applicationinsights-web": "^2.6.2",
     "@microsoft/teams-js": "~1.9.0",
     "applicationinsights": "^1.8.10",
     "axios": "^0.21.1",
