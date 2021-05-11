@@ -44,6 +44,7 @@ jobs:
         az extension add --name application-insights
         $appInsightsKey = az monitor app-insights component show --app ${{env.projectPrefix}}teamsTabAI -g ${{env.projectPrefix}}_rg --query 'instrumentationKey'
         $staticSiteUrl = az storage account show -n ${{env.projectPrefix}}staticsite -g ${{env.projectPrefix}}_rg --query "primaryEndpoints.web" --output tsv
+        $staticSiteUrl = $staticSiteUrl.replace("http://","").replace("/","")
         Write-Output "PACKAGE_NAME=cognitivebot" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "APPLICATION_ID=e6b3dba0-af0b-11eb-bed7-4980d524c0d2" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "HOSTNAME=$staticSiteUrl" | Out-File -FilePath .env -Encoding utf8 -Append
