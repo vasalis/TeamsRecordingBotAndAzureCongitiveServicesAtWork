@@ -35,8 +35,6 @@ export const CognitiveBotTab = () => {
         if (inTeams === true) {
             microsoftTeams.appInitialization.notifySuccess();
 
-            console.log("my context: " + JSON.stringify(context));
-
             if(context && context.meetingId)
             {
                 console.log("In Teams Meeting, meeting id is: " + context.meetingId);
@@ -98,7 +96,7 @@ export const CognitiveBotTab = () => {
         <AppInsightsContext.Provider value={reactPlugin}>
             <Provider theme={theme}>
                 <Flex column fill={true}>
-                    {inMeeting ? (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
+                    {!inMeeting ? (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
                     (<InviteBot />) 
                     }                             
                     
