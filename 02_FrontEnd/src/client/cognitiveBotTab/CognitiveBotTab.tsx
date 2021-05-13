@@ -21,6 +21,7 @@ export const CognitiveBotTab = () => {
     const [myActiveCalls, setActiveCalls] = useState<CallEntity[]>();
     const [currentCallId, setcurrentCallId] = useState<string>();
     const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
+    const [inMeeting, setinMeeting] = useState<boolean>();
 
     const callIdChanged = (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<CallEntity>, index?: number) => {
         if (option) {
@@ -32,6 +33,12 @@ export const CognitiveBotTab = () => {
     useEffect(() => {
         if (inTeams === true) {
             microsoftTeams.appInitialization.notifySuccess();
+
+            if(context && context.meetingId)
+            {
+                console.log("In Teams Meeting, meeting id is: " + context.meetingId);
+                setinMeeting(true);
+            }
         }
     }, [inTeams]);
 
@@ -88,7 +95,10 @@ export const CognitiveBotTab = () => {
         <AppInsightsContext.Provider value={reactPlugin}>
             <Provider theme={theme}>
                 <Flex column fill={true}>
-                    <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>
+                    {inMeeting ? (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
+                    (<div>In Teams Meeting</div>) 
+                    }                             
+                    
                     <MyTranscriptions transcriptions={myTranscriptions} />
                 </Flex>
             </Provider>
