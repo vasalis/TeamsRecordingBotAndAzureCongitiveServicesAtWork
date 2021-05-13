@@ -11,6 +11,7 @@ import { TranscriptionEntity, CallEntity } from "../Models/ModelEntities";
 import MyTranscriptions from "../modules/MyTranscriptions";
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
 import { reactPlugin } from "../modules/AppInsights";
+import InviteBot from "../modules/InviteBot";
 
 /**
  * Implementation of the Cognitive Bot content page
@@ -33,6 +34,8 @@ export const CognitiveBotTab = () => {
     useEffect(() => {
         if (inTeams === true) {
             microsoftTeams.appInitialization.notifySuccess();
+
+            console.log("my context: " + JSON.stringify(context));
 
             if(context && context.meetingId)
             {
@@ -96,7 +99,7 @@ export const CognitiveBotTab = () => {
             <Provider theme={theme}>
                 <Flex column fill={true}>
                     {inMeeting ? (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
-                    (<div>In Teams Meeting</div>) 
+                    (<InviteBot />) 
                     }                             
                     
                     <MyTranscriptions transcriptions={myTranscriptions} />
