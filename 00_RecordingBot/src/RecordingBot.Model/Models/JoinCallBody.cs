@@ -25,6 +25,12 @@ namespace RecordingBot.Model.Models
         public string JoinURL { get; set; }
 
         /// <summary>
+        /// Gets or sets the Teams meeting id.
+        /// </summary>
+        /// <value>The join URL.</value>
+        public string MeetingId { get; set; }
+
+        /// <summary>
         /// Gets or sets the display name.
         /// Teams client does not allow changing of ones own display name.
         /// If display name is specified, we join as anonymous (guest) user

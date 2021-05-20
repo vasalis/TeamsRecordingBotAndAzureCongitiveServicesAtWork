@@ -49,6 +49,8 @@ namespace RecordingBot.Model.Constants
         /// </summary>
         public const string JoinCall = "joinCall";
 
+        public const string JoinCallWithMeetingId = "joinCallWithMeetingId";
+
         /// <summary>
         /// The route for getting the call.
         /// </summary>

@@ -107,6 +107,7 @@ export const CognitiveBotTab = () => {
         let provider = Providers.globalProvider;
         let graphClient = provider.graph.client;
         var lResult = graphClient.api("/me/onlineMeetings/MCMxOTptZWV0aW5nX1lUQXdORE00TW1VdE5qVmlPQzAwTnpReExXRmhZVGN0TWpKaE1qWXdabVl4WW1KbEB0aHJlYWQudjIjMA==").get();
+                                                          
 
         alert("Meeting info: " + JSON.stringify(lResult));
     }

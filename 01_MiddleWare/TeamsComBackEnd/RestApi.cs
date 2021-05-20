@@ -159,6 +159,35 @@ namespace TeamsComBackEnd
             return returnValue;
         }
 
+        [FunctionName("InviteBot")]
+        public async Task<IActionResult> InviteBot(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("InviteBot trigger function processed a request.");
+
+            IActionResult returnValue = null;
+
+            try
+            {
+                string lMeetingId = await new StreamReader(req.Body).ReadToEndAsync();
+
+                
+
+                    returnValue = new OkObjectResult("");
+                
+
+
+            }
+            catch (Exception ex)
+            {
+                mLogger.LogError($"Could not InviteBot. Exception thrown: {ex.Message}");
+                returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            return returnValue;
+        }
+
         private async Task<string> GetCallDetails(string aCallId)
         {
             string lExit = "";
