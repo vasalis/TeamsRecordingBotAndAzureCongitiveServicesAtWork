@@ -57,5 +57,9 @@
     "{{HOSTNAME}}"
   ],
   "showLoadingIndicator": true,
-  "isFullScreen": true
+  "isFullScreen": true,
+  "webApplicationInfo": {
+    "id": "{{SSO_APP_ID}}",
+    "resource": "api://{{HOSTNAME}}/{{SSO_APP_ID}}"
+  }
 }

@@ -10,3 +10,4 @@ export const render = (type: any, element: HTMLElement) => {
 export * from "./cognitiveBotTab/CognitiveBotTab";
 export * from "./cognitiveBotTab/CognitiveBotTabConfig";
 export * from "./cognitiveBotTab/CognitiveBotTabRemove";
+export * from "./authPopUp/authPopUp";

@@ -2,3 +2,4 @@
 export const nonce = {}; // Do not remove!
 // Automatically added for the cognitiveBotTab tab
 export * from "./cognitiveBotTab/CognitiveBotTab";
+export * from "./authPopUp/authPopUp";
