@@ -208,7 +208,7 @@ namespace RecordingBot.Services.Bot
                         var lParticipantInfo = this.TryToResolveParticipant(aUserId);
 
                         //Update if resolved.
-                        if (lParticipantInfo != null && lParticipantInfo.Item3)
+                        if (lParticipantInfo.Item3)
                         {
                             lexit.UpdateParticipant(lParticipantInfo);
                         }
@@ -220,22 +220,15 @@ namespace RecordingBot.Services.Bot
                 {
                     var lParticipantInfo = this.TryToResolveParticipant(aUserId);
 
-                    if (lParticipantInfo != null)
-                    {
-                        var lNewSE = new MySTT(this._callId, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
-                        this.mSpeechToTextPool.Add(aUserId, lNewSE);
+                    var lNewSE = new MySTT(this._callId, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
+                    this.mSpeechToTextPool.Add(aUserId, lNewSE);
 
-                        return lNewSE;
-                    }
-                    else
-                    {
-                        this.GraphLogger.Error($"Initilizing GetSTTEngine failed for userid: {aUserId} -> couldn't get participant info.");
-                    }
+                    return lNewSE;
                 }
             }
             catch (Exception ex)
             {
-                this.GraphLogger.Error(ex, $"GetSTTEngine failed for userid: {aUserId}. Details: {ex.Message}");                
+                this.GraphLogger.Error($"GetSTTEngine failed for userid: {aUserId}. Details: {ex.Message}");                
             }
 
             return null;
@@ -243,30 +236,21 @@ namespace RecordingBot.Services.Bot
 
         private Tuple<String, String, Boolean> TryToResolveParticipant(uint aUserId)
         {
-            try
+            bool lIsParticipantResolved = false;
+            string lUserDisplayName = aUserId.ToString();
+            string lUserId = aUserId.ToString();
+
+            IParticipant participant = this.GetParticipantFromMSI(aUserId);
+            var participantDetails = participant?.Resource?.Info?.Identity?.User;
+
+            if (participantDetails != null)
             {
-                bool lIsParticipantResolved = false;
-                string lUserDisplayName = aUserId.ToString();
-                string lUserId = aUserId.ToString();
-
-                IParticipant participant = this.GetParticipantFromMSI(aUserId);
-                var participantDetails = participant?.Resource?.Info?.Identity?.User;
-
-                if (participantDetails != null)
-                {
-                    lUserDisplayName = participantDetails.DisplayName;
-                    lUserId = participantDetails.Id;
-                    lIsParticipantResolved = true;
-                }
-
-                return new Tuple<string, string, bool>(lUserDisplayName, lUserId, lIsParticipantResolved);
-            }
-            catch (Exception ex)
-            {
-                this.GraphLogger.Error(ex, $"TryToResolveParticipant failed for userid: {aUserId}. Details: {ex.Message}");
+                lUserDisplayName = participantDetails.DisplayName;
+                lUserId = participantDetails.Id;
+                lIsParticipantResolved = true;
             }
 
-            return null;
+            return new Tuple<string, string, bool>(lUserDisplayName, lUserId, lIsParticipantResolved);
         }
 
         private IParticipant GetParticipantFromMSI(uint msi)

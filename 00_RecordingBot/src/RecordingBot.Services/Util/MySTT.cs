@@ -90,7 +90,6 @@ namespace RecordingBot.Services.Util
             catch (Exception ex)
             {
                 mEventPublisher.Publish("MySTT Instantiation - Failed", $"{ex.Message}");
-                aLogger.Error($"MySTT instantiation failed for userid: {aWhoId}. Details: {ex.Message}");
             }            
         }
 
