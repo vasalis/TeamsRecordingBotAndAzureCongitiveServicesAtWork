@@ -25,7 +25,7 @@ export const CognitiveBotTab = () => {
     const [currentCallId, setcurrentCallId] = useState<string>();
     const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
     const [inMeeting, setinMeeting] = useState<boolean>();
-    const [currentMeetingId, setcurrentMeetingId] = useState<string>();
+    const [currentJoinUrl, setcurrentJoinUrl] = useState<string>();
 
     const [name, setName] = useState<string>();
     const [error, setError] = useState<string>();
@@ -45,12 +45,21 @@ export const CognitiveBotTab = () => {
                     setName(decoded!.name);
                     microsoftTeams.appInitialization.notifySuccess();
 
-                    if(context && context.meetingId)
+                    if(context && context.meetingId && context.chatId && context.tid && context.userObjectId)
                     {
                         console.log("In Teams Meeting, meeting id is: " + context.meetingId);
                         console.log("Context is: " + JSON.stringify(context));
                         setinMeeting(true);
-                        setcurrentMeetingId(context.meetingId);
+
+                        // Try to create Join Url
+                        let lJoinUrl = "https://teams.microsoft.com/l/meetup-join/CHAT_ID/0?context={\"Tid\":T_ID,\"Oid\":O_ID}".
+                        replace("CHAT_ID", context.chatId).
+                        replace("T_ID", context.tid).
+                        replace("O_ID", context.userObjectId);
+
+                        console.log("Join web url is: " + lJoinUrl);
+
+                        setcurrentJoinUrl(lJoinUrl);
                     }
                 },
                 failureCallback: (message: string) => {
@@ -66,9 +75,11 @@ export const CognitiveBotTab = () => {
     }, [inTeams]);
 
     const inviteBot = () => {
-        let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-        lEndPoint = lEndPoint + "api/InviteBot";
-        console.log("Got invite bot endpoint: " + lEndPoint);
+        let lEndPoint = 'http://localhost:7071/'; //process.env.REACT_APP_BACKEND_API as string;
+        lEndPoint = lEndPoint + "api/InviteBot";        
+        let lBody = {JoinURL: currentJoinUrl};        
+
+        console.log("Got invite bot endpoint: " + lEndPoint + ". Body is: " + JSON.stringify(lBody));
 
         fetch(lEndPoint, {
             method: "POST",
@@ -76,7 +87,7 @@ export const CognitiveBotTab = () => {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            body: currentMeetingId
+            body: encodeURI(JSON.stringify(lBody))
         })
             .then(response => response.text())
             .then(data => {
@@ -175,7 +186,7 @@ export const CognitiveBotTab = () => {
                             {error && <div><Text content={`An SSO error occurred ${error}`} /></div>}
 
                             <div>
-                                <Button onClick={getAuthAndGetMeetingInfo}>A sample button</Button>
+                                <Button onClick={inviteBot}>Invite Bot</Button>
                             </div>
                         </div>
                     </Flex.Item>

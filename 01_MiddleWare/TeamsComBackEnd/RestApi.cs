@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.Cosmos;
 using System.Collections.Generic;
 using TeamsComModels;
+using System.Net.Http;
+using System.Text;
 
 namespace TeamsComBackEnd
 {
@@ -170,14 +172,14 @@ namespace TeamsComBackEnd
 
             try
             {
-                string lMeetingId = await new StreamReader(req.Body).ReadToEndAsync();
+                string lBody = await new StreamReader(req.Body).ReadToEndAsync();
 
+                HttpClient lhttp = new HttpClient();
+
+                var lExit = await lhttp.PostAsync("https://cogbot.vsalis.eu/joinCall", new StringContent(lBody, Encoding.UTF8, "application/json"));
                 
 
-                    returnValue = new OkObjectResult("");
-                
-
-
+               returnValue = new OkObjectResult(lExit);               
             }
             catch (Exception ex)
             {
