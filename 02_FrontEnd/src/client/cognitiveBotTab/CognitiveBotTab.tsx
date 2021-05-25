@@ -21,6 +21,8 @@ export const CognitiveBotTab = () => {
     const [myActiveCalls, setActiveCalls] = useState<CallEntity[]>();
     const [currentCallId, setcurrentCallId] = useState<string>();
     const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
+    const [inMeeting, setinMeeting] = useState<boolean>();
+    const [currentJoinUrl, setcurrentJoinUrl] = useState<string>();
 
     const callIdChanged = (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<CallEntity>, index?: number) => {
         if (option) {
@@ -32,8 +34,51 @@ export const CognitiveBotTab = () => {
     useEffect(() => {
         if (inTeams === true) {
             microsoftTeams.appInitialization.notifySuccess();
+
+            // Get Join Meeting Url
+            if(context && context.meetingId && context.chatId && context.tid && context.userObjectId)
+            {
+                console.log("In Teams Meeting, meeting id is: " + context.meetingId);
+                console.log("Context is: " + JSON.stringify(context));
+                setinMeeting(true);
+
+                // Try to create Join Url
+                let lJoinUrl = "https://teams.microsoft.com/l/meetup-join/CHAT_ID/0?context={\"Tid\":\"T_ID\",\"Oid\":\"O_ID\"}".
+                replace("CHAT_ID", context.chatId).
+                replace("T_ID", context.tid).
+                replace("O_ID", context.userObjectId);
+
+                console.log("Join web url is: " + lJoinUrl);
+
+                setcurrentJoinUrl(lJoinUrl);
+            }
+
         }
     }, [inTeams]);
+
+    const inviteBot = () => {
+        let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
+        lEndPoint = lEndPoint + "api/InviteBot";
+        
+        let lBody = {JoinURL: currentJoinUrl ? encodeURI(currentJoinUrl) : ""};        
+
+        console.log("Got invite bot endpoint: " + lEndPoint + ". Body is: " + JSON.stringify(lBody));
+
+        fetch(lEndPoint, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(lBody)
+        })
+            .then(response => response.text())
+            .then(data => {
+                setcurrentCallId(data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+    };
 
     useEffect(() => {
         let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
@@ -88,7 +133,12 @@ export const CognitiveBotTab = () => {
         <AppInsightsContext.Provider value={reactPlugin}>
             <Provider theme={theme}>
                 <Flex column fill={true}>
-                    <MyCalls calls={myActiveCalls} onChange={callIdChanged}/>
+
+                    {!inMeeting ? 
+                        (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
+                        (<InviteBot onClick={inviteBot} />) 
+                    }
+
                     <MyTranscriptions transcriptions={myTranscriptions} />
                 </Flex>
             </Provider>
