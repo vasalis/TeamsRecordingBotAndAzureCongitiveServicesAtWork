@@ -48,6 +48,7 @@ export const CognitiveBotTab = () => {
                     if(context && context.meetingId)
                     {
                         console.log("In Teams Meeting, meeting id is: " + context.meetingId);
+                        console.log("Context is: " + JSON.stringify(context));
                         setinMeeting(true);
                         setcurrentMeetingId(context.meetingId);
                     }
