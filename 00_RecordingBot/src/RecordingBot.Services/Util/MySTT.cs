@@ -72,7 +72,7 @@ namespace RecordingBot.Services.Util
         /// <param name="aCallId">Name.</param>
         /// <param name="aWho">Name..</param>
         /// <param name="aWhoId">Name...</param>
-        public MySTT(string aCallId, string aWho, string aWhoId, bool aIsParticipantResolved, IGraphLogger aLogger, IEventPublisher aEventPublisher, IAzureSettings aSettings)
+        public MySTT(string aCallId, string aTranscriptionLanguage, string[] aTranslationLanguages, string aWho, string aWhoId, bool aIsParticipantResolved, IGraphLogger aLogger, IEventPublisher aEventPublisher, IAzureSettings aSettings)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace RecordingBot.Services.Util
                 this.mWhoId = aWhoId;
                 this.IsParticipantResolved = aIsParticipantResolved;
 
-                this.SetupTranscriptionAndTranslationService();
+                this.SetupTranscriptionAndTranslationService(aTranscriptionLanguage, aTranslationLanguages);
                 this.SetupPersistanceEndPoint();
             }
             catch (Exception ex)
@@ -103,22 +103,23 @@ namespace RecordingBot.Services.Util
         /// <summary>
         /// TODO: Make from and to languages as settings arguments 
         /// </summary>
-        private void SetupTranscriptionAndTranslationService()
+        private void SetupTranscriptionAndTranslationService(string aTranscriptionLanguage, string[] aTranslationLanguages)
         {
             try
             {
                 var lCognitiveKey = mSettings.AzureCognitiveKey;
                 var lCognitiveRegion = mSettings.AzureCognitiveRegion;
 
-                mEventPublisher.Publish("MySTT Setup", $"Got region: {lCognitiveRegion}, key starting from: {lCognitiveKey??lCognitiveKey.Substring(0, lCognitiveKey.Length /2)}");
+                mEventPublisher.Publish("MySTT Setup", $"Got region: {lCognitiveRegion}, key starting from: {lCognitiveKey??lCognitiveKey.Substring(0, lCognitiveKey.Length /2)}, transcription lang is: {aTranscriptionLanguage}, translation langs are: {aTranslationLanguages}");
 
                 this.mTransSpeechConfig = SpeechTranslationConfig.FromSubscription(lCognitiveKey, lCognitiveRegion);
-                
+
                 // Change these accordingly.
-                var fromLanguage = "en-US";
-                var toLanguages = new List<string> { "el-GR" };                
-                
-                
+                var fromLanguage = aTranscriptionLanguage;
+                var toLanguages = aTranslationLanguages.ToList();
+
+
+
                 this.mTransSpeechConfig.SpeechRecognitionLanguage = fromLanguage;
                 toLanguages.ForEach(this.mTransSpeechConfig.AddTargetLanguage);
                 this.mInputStream = AudioInputStream.CreatePushStream(AudioStreamFormat.GetWaveFormatPCM(SAMPLESPERSECOND, BITSPERSAMPLE, NUMBEROFCHANNELS));

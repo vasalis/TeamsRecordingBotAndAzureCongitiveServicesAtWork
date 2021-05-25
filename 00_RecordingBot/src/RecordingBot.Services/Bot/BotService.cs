@@ -52,6 +52,9 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         private readonly AzureSettings _settings;
 
+        private readonly string mTranscriptionLanguage;
+        private readonly string[] mTranslationLanguages;
+
         /// <summary>
         /// Gets the collection of call handlers.
         /// </summary>
@@ -81,6 +84,8 @@ namespace RecordingBot.Services.Bot
         /// <param name="settings">The settings.</param>
         public BotService(
             IGraphLogger logger,
+            string aTranscriptionLanguage,
+            string[] aTranslationLanguages,
             IEventPublisher eventPublisher,
             IAzureSettings settings
 
@@ -89,6 +94,9 @@ namespace RecordingBot.Services.Bot
             _logger = logger;
             _eventPublisher = eventPublisher;
             _settings = (AzureSettings)settings;
+
+            mTranscriptionLanguage = aTranscriptionLanguage;
+            mTranslationLanguages = aTranslationLanguages;
 
         }
 
@@ -269,7 +277,7 @@ namespace RecordingBot.Services.Bot
         {
             foreach (var call in args.AddedResources)
             {
-                var callHandler = new CallHandler(call, _settings, _eventPublisher);
+                var callHandler = new CallHandler(call,mTranscriptionLanguage, mTranslationLanguages, _settings, _eventPublisher);
                 this.CallHandlers[call.Id] = callHandler;
             }
 

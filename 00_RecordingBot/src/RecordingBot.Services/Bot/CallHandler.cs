@@ -79,6 +79,8 @@ namespace RecordingBot.Services.Bot
         /// <param name="eventPublisher">The event publisher.</param>
         public CallHandler(
             ICall statefulCall,
+            string aTranscriptionLanguage,
+            string[] aTranslationLanguages,
             IAzureSettings settings,
             IEventPublisher eventPublisher
         )
@@ -94,7 +96,7 @@ namespace RecordingBot.Services.Bot
             this.GraphLogger.Log(System.Diagnostics.TraceLevel.Warning, $"Starting call with id: {this.Call.Id}");
 
 
-            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);            
+            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id,aTranscriptionLanguage, aTranslationLanguages, this.GraphLogger, eventPublisher,  _settings);            
 
             if (_settings.CaptureEvents)
             {

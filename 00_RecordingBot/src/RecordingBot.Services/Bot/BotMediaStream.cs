@@ -65,6 +65,9 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         private readonly string _callId;
 
+        private readonly string mTranscriptionLanguage;
+        private readonly string[] mTranslationLanguages;
+
         private Dictionary<uint, MySTT> mSpeechToTextPool = new Dictionary<uint, MySTT>();
 
         /// <summary>
@@ -85,6 +88,8 @@ namespace RecordingBot.Services.Bot
         public BotMediaStream(
             ILocalMediaSession mediaSession,
             string callId,
+            string aTranscriptionLanguage,
+            string[] aTranslationLanguages,
             IGraphLogger logger,
             IEventPublisher eventPublisher,
             IAzureSettings settings
@@ -96,6 +101,9 @@ namespace RecordingBot.Services.Bot
             ArgumentVerifier.ThrowOnNullArgument(settings, nameof(settings));
 
             this.participants = new List<IParticipant>();
+
+            this.mTranscriptionLanguage = aTranscriptionLanguage;
+            this.mTranslationLanguages = aTranslationLanguages;
 
             _eventPublisher = eventPublisher;
             _callId = callId;
@@ -172,7 +180,7 @@ namespace RecordingBot.Services.Bot
                     for (int i = 0; i < e.Buffer.UnmixedAudioBuffers.Length; i++)
                     {
                         // Transcribe
-                        var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId);
+                        var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId, this.mTranscriptionLanguage, this.mTranslationLanguages);
                         if (lTrans != null)
                         {
                             lTrans.Transcribe(e.Buffer.UnmixedAudioBuffers[i]);
@@ -194,7 +202,7 @@ namespace RecordingBot.Services.Bot
 
         }
 
-        private MySTT GetSTTEngine(uint aUserId)
+        private MySTT GetSTTEngine(uint aUserId, string aTranscriptionLanguage, string[] aTranslationLanguages)
         {
             try
             {
@@ -220,7 +228,7 @@ namespace RecordingBot.Services.Bot
                 {
                     var lParticipantInfo = this.TryToResolveParticipant(aUserId);
 
-                    var lNewSE = new MySTT(this._callId, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
+                    var lNewSE = new MySTT(this._callId, aTranscriptionLanguage, aTranslationLanguages, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
                     this.mSpeechToTextPool.Add(aUserId, lNewSE);
 
                     return lNewSE;
