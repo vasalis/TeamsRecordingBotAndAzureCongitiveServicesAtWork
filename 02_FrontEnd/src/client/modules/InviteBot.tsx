@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 
 const InviteBot = (props) => (
     <button
-        onClick={props.onClick}>Invite Cognitive Bot</button>
+        onClick={props.onClick}>Invite Cog Bot</button>
 );
 
 InviteBot.propTypes = {
