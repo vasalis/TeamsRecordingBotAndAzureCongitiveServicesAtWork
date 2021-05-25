@@ -82,9 +82,7 @@ namespace RecordingBot.Services.Bot
         /// <param name="eventPublisher">The event publisher.</param>
         /// <param name="settings">The settings.</param>
         public BotService(
-            IGraphLogger logger,
-            string aTranscriptionLanguage,
-            string[] aTranslationLanguages,
+            IGraphLogger logger,            
             IEventPublisher eventPublisher,
             IAzureSettings settings
 
