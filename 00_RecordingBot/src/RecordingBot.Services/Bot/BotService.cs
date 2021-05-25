@@ -26,6 +26,7 @@ using RecordingBot.Services.ServiceSetup;
 using RecordingBot.Services.Util;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecordingBot.Services.Bot
@@ -52,8 +53,6 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         private readonly AzureSettings _settings;
 
-        private readonly string mJoinParamKey = "joinparams_key";
-
         /// <summary>
         /// Gets the collection of call handlers.
         /// </summary>
@@ -65,6 +64,8 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         /// <value>The client.</value>
         public ICommunicationsClient Client { get; private set; }
+
+        private Dictionary<string, JoinCallBody> mCallLanguagesDict = new Dictionary<string, JoinCallBody>();
 
 
         /// <inheritdoc />
@@ -172,10 +173,12 @@ namespace RecordingBot.Services.Bot
                     DisplayName = joinCallBody.DisplayName,
                 };
             }
-            
-            joinParams.SetInAdditionalData(mJoinParamKey, joinCallBody);
+
+            mCallLanguagesDict.Add(scenarioId.ToString(), joinCallBody);
 
             var statefulCall = await this.Client.Calls().AddAsync(joinParams, scenarioId).ConfigureAwait(false);
+
+
             statefulCall.GraphLogger.Info($"Call creation complete: {statefulCall.Id}");
             return statefulCall;
         }
@@ -274,9 +277,10 @@ namespace RecordingBot.Services.Bot
             {
                 // Use this in order to get the default values for languages.
                 JoinCallBody lJoinBody = new JoinCallBody();
-                if (call.Resource != null && call.Resource.AdditionalData != null && call.Resource.AdditionalData.ContainsKey(mJoinParamKey))
+                
+                if (call.ScenarioId != null && mCallLanguagesDict.ContainsKey(call.ScenarioId.ToString()))
                 {
-                    lJoinBody = call.Resource.AdditionalData[mJoinParamKey] as JoinCallBody;
+                    lJoinBody = mCallLanguagesDict[call.ScenarioId.ToString()] as JoinCallBody;
 
                     _eventPublisher.Publish("CallsOnUpdated", $"JoinBody found -> Settings languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranscriptionLanguage}");
                 }
