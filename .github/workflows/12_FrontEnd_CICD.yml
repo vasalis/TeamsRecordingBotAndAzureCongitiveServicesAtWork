@@ -51,6 +51,7 @@ jobs:
         Write-Output "REACT_APP_BACKEND_DOMAIN=${{env.projectPrefix}}middleware.azurewebsites.net" | Out-File -FilePath .env -Encoding utf8 -Append
         Write-Output "REACT_APP_BACKEND_API=https://${{env.projectPrefix}}middleware.azurewebsites.net/" | Out-File -FilePath .env -Encoding utf8 -Append        
         Write-Output "APPINSIGHTS_INSTRUMENTATIONKEY=$appInsightsKey" | Out-File -FilePath .env -Encoding utf8 -Append
+        Write-Output "SSO_APP_ID=e94a13cc-a503-44b4-95f0-869b291f0e4f" | Out-File -FilePath .env -Encoding utf8 -Append
         Get-Content .env
         npm install
         gulp build
