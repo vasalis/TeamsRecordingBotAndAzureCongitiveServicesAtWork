@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.Cosmos;
 using System.Collections.Generic;
 using TeamsComModels;
+using System.Net.Http;
+using System.Text;
 
 namespace TeamsComBackEnd
 {
@@ -153,6 +155,35 @@ namespace TeamsComBackEnd
             catch (Exception ex)
             {
                 mLogger.LogError($"Could not GetActiveCalls. Exception thrown: {ex.Message}");
+                returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            return returnValue;
+        }
+
+        [FunctionName("InviteBot")]
+        public async Task<IActionResult> InviteBot(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("InviteBot trigger function processed a request.");
+
+            IActionResult returnValue = null;
+
+            try
+            {
+                string lBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+                HttpClient lhttp = new HttpClient();
+
+                var lExit = await lhttp.PostAsync("https://cogbot.vsalis.eu/joinCall", new StringContent(lBody, Encoding.UTF8, "application/json"));
+
+
+                returnValue = new OkObjectResult(lExit);
+            }
+            catch (Exception ex)
+            {
+                mLogger.LogError($"Could not InviteBot. Exception thrown: {ex.Message}");
                 returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
