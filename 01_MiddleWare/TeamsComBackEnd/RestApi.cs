@@ -178,8 +178,9 @@ namespace TeamsComBackEnd
 
                 var lExit = await lhttp.PostAsync("https://cogbot.vsalis.eu/joinCall", new StringContent(lBody, Encoding.UTF8, "application/json"));
 
+                string lresponseContent = await lExit.Content.ReadAsStringAsync();
 
-                returnValue = new OkObjectResult(lExit);
+                returnValue = new OkObjectResult(lresponseContent);
             }
             catch (Exception ex)
             {
