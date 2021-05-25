@@ -11,6 +11,7 @@ import { TranscriptionEntity, CallEntity } from "../Models/ModelEntities";
 import MyTranscriptions from "../modules/MyTranscriptions";
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
 import { reactPlugin } from "../modules/AppInsights";
+import InviteBot from "../modules/InviteBot";
 
 /**
  * Implementation of the Cognitive Bot content page
