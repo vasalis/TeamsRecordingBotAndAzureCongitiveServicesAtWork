@@ -52,8 +52,7 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         private readonly AzureSettings _settings;
 
-        private readonly string mTranscriptionLanguage;
-        private readonly string[] mTranslationLanguages;
+        private readonly string mJoinParamKey = "joinparams_key";
 
         /// <summary>
         /// Gets the collection of call handlers.
@@ -94,10 +93,6 @@ namespace RecordingBot.Services.Bot
             _logger = logger;
             _eventPublisher = eventPublisher;
             _settings = (AzureSettings)settings;
-
-            mTranscriptionLanguage = aTranscriptionLanguage;
-            mTranslationLanguages = aTranslationLanguages;
-
         }
 
         /// <summary>
@@ -179,6 +174,8 @@ namespace RecordingBot.Services.Bot
                     DisplayName = joinCallBody.DisplayName,
                 };
             }
+            
+            joinParams.SetInAdditionalData(mJoinParamKey, joinCallBody);
 
             var statefulCall = await this.Client.Calls().AddAsync(joinParams, scenarioId).ConfigureAwait(false);
             statefulCall.GraphLogger.Info($"Call creation complete: {statefulCall.Id}");
@@ -277,7 +274,20 @@ namespace RecordingBot.Services.Bot
         {
             foreach (var call in args.AddedResources)
             {
-                var callHandler = new CallHandler(call,mTranscriptionLanguage, mTranslationLanguages, _settings, _eventPublisher);
+                // Use this in order to get the default values for languages.
+                JoinCallBody lJoinBody = new JoinCallBody();
+                if (call.Resource != null && call.Resource.AdditionalData != null && call.Resource.AdditionalData.ContainsKey(mJoinParamKey))
+                {
+                    lJoinBody = call.Resource.AdditionalData[mJoinParamKey] as JoinCallBody;
+
+                    _eventPublisher.Publish("CallsOnUpdated", $"JoinBody found -> Settings languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranscriptionLanguage}");
+                }
+                else
+                {
+                    _eventPublisher.Publish("CallsOnUpdated", $"No JoinBody object found -> Settings default languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranscriptionLanguage}");
+                }
+
+                var callHandler = new CallHandler(call, lJoinBody.TranscriptionLanguage, lJoinBody.TranslationLanguages, _settings, _eventPublisher);
                 this.CallHandlers[call.Id] = callHandler;
             }
 
