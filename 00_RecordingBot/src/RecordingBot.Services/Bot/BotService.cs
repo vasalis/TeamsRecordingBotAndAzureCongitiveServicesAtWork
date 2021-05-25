@@ -282,11 +282,11 @@ namespace RecordingBot.Services.Bot
                 {
                     lJoinBody = mCallLanguagesDict[call.ScenarioId.ToString()] as JoinCallBody;
 
-                    _eventPublisher.Publish("CallsOnUpdated", $"JoinBody found -> Settings languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranscriptionLanguage}");
+                    _eventPublisher.Publish("CallsOnUpdated", $"JoinBody found -> Settings languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranslationLanguages}");
                 }
                 else
                 {
-                    _eventPublisher.Publish("CallsOnUpdated", $"No JoinBody object found -> Settings default languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranscriptionLanguage}");
+                    _eventPublisher.Publish("CallsOnUpdated", $"No JoinBody object found -> Settings default languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranslationLanguages}");
                 }
 
                 var callHandler = new CallHandler(call, lJoinBody.TranscriptionLanguage, lJoinBody.TranslationLanguages, _settings, _eventPublisher);
