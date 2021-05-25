@@ -73,9 +73,9 @@ export const CognitiveBotTab = () => {
             },
             body: JSON.stringify(lBody)
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                setcurrentCallId(data);
+                setcurrentCallId(data.callId);
             }).catch(function(error) {
                 console.log(error);
             });
@@ -135,9 +135,14 @@ export const CognitiveBotTab = () => {
             <Provider theme={theme}>
                 <Flex column fill={true}>
 
+                    {inMeeting && !currentCallId ?                        
+                        ( <InviteBot onClick={inviteBot} />) :
+                        (null)
+                    }
+
                     {!inMeeting ? 
                         (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
-                        (<InviteBot onClick={inviteBot} />) 
+                        (null)
                     }
 
                     <MyTranscriptions transcriptions={myTranscriptions} />
