@@ -75,6 +75,7 @@ export const CognitiveBotTab = () => {
         })
             .then(response => response.json())
             .then(data => {
+                console.log("Got response after adding bot: " + JSON.stringify(data));
                 setcurrentCallId(data.callId);
             }).catch(function(error) {
                 console.log(error);
