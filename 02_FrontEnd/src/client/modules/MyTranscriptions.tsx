@@ -37,7 +37,7 @@ const MyTranscriptions = (props) =>
 
     return (
         <Flex column gap="gap.small" styles={{
-            padding: ".8rem"
+            padding: ".4rem"
         }}>
             { myTranscriptions?.map((team, index) => (
                 <MyTranscription key={team.id} transcription={team} />

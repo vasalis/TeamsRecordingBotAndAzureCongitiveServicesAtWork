@@ -20,8 +20,8 @@ const InviteBot = (props) =>
             let lBody = {
                             JoinURL: props.currentJoinUrl ? encodeURI(props.currentJoinUrl) : "",
                             TranscriptionLanguage: currentTranscriptionLang,
-                            TranslationLanguages: currentTranslationLang
-                        };        
+                            TranslationLanguages: [currentTranslationLang]
+                        };
     
             console.log("Got invite bot endpoint: " + lEndPoint + ". Body is: " + JSON.stringify(lBody));
     
@@ -45,11 +45,14 @@ const InviteBot = (props) =>
 
     const myLanguages: LanguageEntity[] = [        
         { key: 'en-US', text: 'English' },
-        { key: 'el-GR', text: 'Greek' }        
+        { key: 'el-GR', text: 'Greek' },   
+        { key: 'pl-PL', text: 'Polish' },
+        { key: 'ru-RU', text: 'Russian' },
+        { key: 'sl-SI', text: 'Slovenian' }
       ];
 
     return (
-        <Flex column fill={true}>
+        <Flex column gap="gap.small" fill={true}>
             <LanguageSelection                
                 setLangSelection={setcurrentTranscriptionLang}
                 languages = {myLanguages}
