@@ -1,5 +1,5 @@
-botSubDomain=ceobot.vsalis.eu
+botSubDomain=cogbot.vsalis.eu
 botName=myTeamsRecBot
-projectPrefix=ceobot
+projectPrefix=cogbot
 azureLocation=northeurope
-acrName=ceobotacr
+acrName=cogbotacr
