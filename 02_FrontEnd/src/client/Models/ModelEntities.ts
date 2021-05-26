@@ -11,3 +11,8 @@ export class CallEntity {
     text: string;
     when: string;
 }
+
+export class LanguageEntity {
+    key: string;
+    text: string;    
+}

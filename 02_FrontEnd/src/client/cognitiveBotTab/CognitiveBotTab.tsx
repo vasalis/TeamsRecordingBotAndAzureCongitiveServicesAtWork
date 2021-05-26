@@ -1,13 +1,9 @@
 import * as React from "react";
 import { Flex, Provider } from "@fluentui/react-northstar";
-import {
-    initializeIcons, IDropdownOption
-} from "@fluentui/react";
 import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 import MyCalls from "../modules/MyCalls";
-import { TranscriptionEntity, CallEntity } from "../Models/ModelEntities";
 import MyTranscriptions from "../modules/MyTranscriptions";
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
 import { reactPlugin } from "../modules/AppInsights";
@@ -18,19 +14,10 @@ import InviteBot from "../modules/InviteBot";
  */
 export const CognitiveBotTab = () => {
 
-    const [{ inTeams, theme, context }] = useTeams();
-    const [myActiveCalls, setActiveCalls] = useState<CallEntity[]>();
-    const [currentCallId, setcurrentCallId] = useState<string>();
-    const [myTranscriptions, setMyTranscriptions] = useState<TranscriptionEntity[]>();
+    const [{ inTeams, theme, context }] = useTeams();    
+    const [currentCallId, setcurrentCallId] = useState<string>();    
     const [inMeeting, setinMeeting] = useState<boolean>();
-    const [currentJoinUrl, setcurrentJoinUrl] = useState<string>();
-
-    const callIdChanged = (event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<CallEntity>, index?: number) => {
-        if (option) {
-            const lCall = option as unknown as CallEntity;
-            setcurrentCallId(lCall.callid);
-        }
-    };
+    const [currentJoinUrl, setcurrentJoinUrl] = useState<string>();    
 
     useEffect(() => {
         if (inTeams === true) {
@@ -55,78 +42,7 @@ export const CognitiveBotTab = () => {
             }
 
         }
-    }, [inTeams]);
-
-    const inviteBot = () => {
-        let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-        lEndPoint = lEndPoint + "api/InviteBot";
-        
-        let lBody = {JoinURL: currentJoinUrl ? encodeURI(currentJoinUrl) : ""};        
-
-        console.log("Got invite bot endpoint: " + lEndPoint + ". Body is: " + JSON.stringify(lBody));
-
-        fetch(lEndPoint, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(lBody)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Got response after adding bot: " + JSON.stringify(data) + " -> Call id is: " + data.callId);
-                setcurrentCallId(data.callId);
-            }).catch(function(error) {
-                console.log(error);
-            });
-    };
-
-    useEffect(() => {
-        let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-        lEndPoint = lEndPoint + "api/GetActiveCalls";
-        console.log("Got calls endpoint: " + lEndPoint);
-
-        fetch(lEndPoint, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                setActiveCalls(data);
-            }).catch(function(error) {
-                console.log(error);
-            });
-    }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (currentCallId) {
-                let lEndPoint = process.env.REACT_APP_BACKEND_API as string;
-                lEndPoint = lEndPoint + "api/GetTranscriptions";
-                console.log("Got calls endpoint: " + lEndPoint);
-
-                fetch(lEndPoint, {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: currentCallId
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        setMyTranscriptions(data);
-                    }).catch(function(error) {
-                        console.log(error);
-                    });
-            }
-        }, 500);
-        return () => clearInterval(interval);
-    }, [currentCallId]);
+    }, [inTeams]);     
 
     /**
      * The render() method to create the UI of the tab
@@ -137,16 +53,16 @@ export const CognitiveBotTab = () => {
                 <Flex column fill={true}>
 
                     {inMeeting && !currentCallId ?                        
-                        ( <InviteBot onClick={inviteBot} />) :
+                        ( <InviteBot currentJoinUrl={currentJoinUrl} setcurrentCallId={setcurrentCallId}  />) :
                         (null)
                     }
 
                     {!inMeeting ? 
-                        (<MyCalls calls={myActiveCalls} onChange={callIdChanged}/>) :
+                        (<MyCalls setcurrentCallId={setcurrentCallId} />) :
                         (null)
                     }
 
-                    <MyTranscriptions transcriptions={myTranscriptions} />
+                    <MyTranscriptions currentCallId={currentCallId} />
                 </Flex>
             </Provider>
         </AppInsightsContext.Provider>        
