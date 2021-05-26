@@ -62,7 +62,7 @@ const InviteBot = (props) =>
             />
 
             <button
-                onClick={inviteBot}>Invite Cognitive Bot</button>
+                onClick={inviteBot}>Invite Bot</button>
         </Flex>
         
     );
