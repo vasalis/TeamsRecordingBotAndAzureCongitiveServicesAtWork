@@ -52,7 +52,7 @@ const InviteBot = (props) =>
       ];
 
     return (
-        <Flex column gap="gap.small" fill={true}>
+        <Flex column gap="gap.small">
             <LanguageSelection                
                 setLangSelection={setcurrentTranscriptionLang}
                 languages = {myLanguages}
