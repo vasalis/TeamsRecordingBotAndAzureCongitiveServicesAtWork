@@ -48,7 +48,8 @@ const InviteBot = (props) =>
         { key: 'el-GR', text: 'Greek' },   
         { key: 'pl-PL', text: 'Polish' },
         { key: 'ru-RU', text: 'Russian' },
-        { key: 'sl-SI', text: 'Slovenian' }
+        { key: 'sl-SI', text: 'Slovenian' },
+        { key: 'sk-SK', text: 'Slovak' }
       ];
 
     return (

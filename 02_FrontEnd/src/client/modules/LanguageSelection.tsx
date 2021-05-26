@@ -13,11 +13,10 @@ const LanguageSelection = (props) =>
 
     return (
         
-        <Dropdown
-            label="My label"
+        <Dropdown            
             onChange={langChanged}
             options={props.languages}
-            placeholder="Select a language"
+            placeholder={props.label}
         />
     );
 };
