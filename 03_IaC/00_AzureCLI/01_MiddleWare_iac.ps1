@@ -2,6 +2,7 @@
 $azureLocation = $env:azureLocation
 $projectPrefix = $env:projectPrefix
 $resourceGroupName = $projectPrefix +"_rg"
+$botSubDomain= $env:botSubDomain
 
 Write-Output "(Got from ENV): RG: $resourceGroupName location: $azureLocation"
 Write-Output "Environment Azure CL: $(az --version)"
