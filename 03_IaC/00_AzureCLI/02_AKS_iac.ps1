@@ -108,7 +108,7 @@ kubectl create secret generic bot-application-secrets --namespace teams-recordin
 Write-Output "Setting up helm for teams-recording-bot for bot domain: $botSubDomain and Public IP: $publicIpAddress"
 Write-Output "Make sure there is an A record for this...mapping your bot subdomain with your Public IP"
 
-helm install teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespace --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=58
+helm install teams-recording-bot 00_RecordingBot/deploy/teams-recording-bot --namespace teams-recording-bot --create-namespace --set host=$botSubDomain --set public.ip=$publicIpAddress --set image.domain="$acrName.azurecr.io" --set image.tag=1.0.0
 
 # Validate certificate, wait a minute or two
 # Write-Output "Sleeping for 5 mins before running validation."

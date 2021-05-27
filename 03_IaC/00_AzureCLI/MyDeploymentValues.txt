@@ -1,5 +1,5 @@
-botSubDomain=cogbot.vsalis.eu
+botSubDomain=cognitivebot.vsalis.eu
 botName=myTeamsRecBot
-projectPrefix=cogbot
+projectPrefix=cognitivebot
 azureLocation=northeurope
-acrName=cogbotacr
+acrName=cognitivebotacr
