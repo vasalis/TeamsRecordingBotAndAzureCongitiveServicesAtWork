@@ -89,6 +89,7 @@ az functionapp config appsettings set --name $functionsName --resource-group $re
 az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "CosmosDbPartitionKey=$cosmosDbPartitionKey"
 az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "TextAnalyticsKey=$textAnalyticsKey"
 az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "TextAnalyticsEndPoint=$textAnalyticsEndPoint"
+az functionapp config appsettings set --name $functionsName --resource-group $resourceGroupName --settings "botSubDomain=$botSubDomain"
 
 # Add CORS all origins - as caller is on static site and ulr is not valid
 az functionapp cors remove -g $resourceGroupName -n $functionsName --allowed-origins

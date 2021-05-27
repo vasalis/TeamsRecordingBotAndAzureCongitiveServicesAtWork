@@ -172,11 +172,14 @@ namespace TeamsComBackEnd
 
             try
             {
+                var lBotEndPoint = Environment.GetEnvironmentVariable("BotEndPoint");
+                mLogger.LogInformation($"InviteBot -> Log End point is : {lBotEndPoint}");
+
                 string lBody = await new StreamReader(req.Body).ReadToEndAsync();
 
                 HttpClient lhttp = new HttpClient();
 
-                var lExit = await lhttp.PostAsync("https://ceobot.vsalis.eu/joinCall", new StringContent(lBody, Encoding.UTF8, "application/json"));
+                var lExit = await lhttp.PostAsync($"https://{lBotEndPoint}/joinCall", new StringContent(lBody, Encoding.UTF8, "application/json"));
 
                 var lresponseContent = await lExit.Content.ReadAsAsync<object>();
 
