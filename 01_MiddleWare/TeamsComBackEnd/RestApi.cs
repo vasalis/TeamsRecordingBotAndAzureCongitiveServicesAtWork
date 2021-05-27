@@ -172,7 +172,7 @@ namespace TeamsComBackEnd
 
             try
             {
-                var lBotEndPoint = Environment.GetEnvironmentVariable("BotEndPoint");
+                var lBotEndPoint = Environment.GetEnvironmentVariable("botSubDomain");
                 mLogger.LogInformation($"InviteBot -> Log End point is : {lBotEndPoint}");
 
                 string lBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -187,7 +187,7 @@ namespace TeamsComBackEnd
             }
             catch (Exception ex)
             {
-                mLogger.LogError($"Could not InviteBot. Exception thrown: {ex.Message}");
+                mLogger.LogError(ex, $"Could not InviteBot. Exception thrown: {ex.Message}");
                 returnValue = new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
