@@ -173,7 +173,7 @@ namespace TeamsComBackEnd
             try
             {
                 var lBotEndPoint = Environment.GetEnvironmentVariable("botSubDomain");
-                mLogger.LogInformation($"InviteBot -> Log End point is : {lBotEndPoint}");
+                mLogger.LogInformation($"InviteBot -> Bot End point is : {lBotEndPoint}");
 
                 string lBody = await new StreamReader(req.Body).ReadToEndAsync();
 
