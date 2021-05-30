@@ -10,11 +10,14 @@ echo Setup: Starting VC_redist
 .\VC_redist.x64.exe /quiet /norestart
 
 echo Setup: Converting certificate
-set res = powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
-echo res
+
+powershell.exe 
+C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
+exit
+
 
 echo Setup: Installing certificate
-dir
+dir certificate*
 certutil -f -p "" -importpfx certificate.pfx
 powershell.exe "(Get-PfxCertificate -FilePath certificate.pfx).Thumbprint" > thumbprint
 set /p AzureSettings__CertificateThumbprint= < thumbprint
