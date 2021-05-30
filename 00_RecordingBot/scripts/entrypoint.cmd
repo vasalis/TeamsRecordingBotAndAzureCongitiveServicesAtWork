@@ -11,12 +11,12 @@ echo Setup: Starting VC_redist
 
 echo Setup: Converting certificate
 
-
-cd C:\Program` Files\OpenSSL\bin
+cd \
+cd "Program Files\OpenSSL\bin"
 openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
 
 cd \
-cd c:\bot
+cd bot
 
 echo Setup: Installing certificate
 dir certificate*
