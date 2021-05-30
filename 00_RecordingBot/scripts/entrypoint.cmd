@@ -11,10 +11,8 @@ echo Setup: Starting VC_redist
 
 echo Setup: Converting certificate
 
-powershell.exe 
-C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
-exit
-
+powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt > openssllog.txt
+more openssllog.txt
 
 echo Setup: Installing certificate
 dir certificate*
