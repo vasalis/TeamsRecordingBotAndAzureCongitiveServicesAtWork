@@ -115,6 +115,7 @@ namespace RecordingBot.Services.ServiceSetup
             }
             catch (Exception e)
             {
+                Console.WriteLine($"Unhandled exception in Boot: {e.Message}, {e.StackTrace}");
                 _logger.Error(e, "Unhandled exception in Boot()");
             }
 
