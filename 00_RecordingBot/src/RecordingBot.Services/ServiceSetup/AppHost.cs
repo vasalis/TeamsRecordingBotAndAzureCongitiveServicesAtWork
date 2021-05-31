@@ -11,6 +11,8 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.WorkerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,6 +20,7 @@ using Microsoft.Graph.Communications.Common.Telemetry;
 using Microsoft.Owin.Hosting;
 using RecordingBot.Services.Contract;
 using RecordingBot.Services.Http;
+using RecordingBot.Services.Util;
 using System;
 
 namespace RecordingBot.Services.ServiceSetup
@@ -61,6 +64,9 @@ namespace RecordingBot.Services.ServiceSetup
         /// </summary>
         private IGraphLogger _logger;
 
+        private TelemetryClient mAppInsights;
+        private IDisposable mLogSub;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppHost" /> class.
 
@@ -87,21 +93,29 @@ namespace RecordingBot.Services.ServiceSetup
             var configuration = builder.Build();
 
             ServiceCollection = new ServiceCollection();
-            ServiceCollection.AddCoreServices(configuration);
+            ServiceCollection.AddCoreServices(configuration);          
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
 
-            _logger = Resolve<IGraphLogger>();
+            _logger = Resolve<IGraphLogger>();           
 
             try
             {
                 _settings = Resolve<IOptions<AzureSettings>>().Value;
                 _settings.Initialize();
+
+                // Add logging to Application Insights
+                mAppInsights = ServiceProvider.GetRequiredService<TelemetryClient>();                                         
+
+                var mMyLogger = new MyGraphLogger(mAppInsights);
+                mLogSub = this._logger.Subscribe(mMyLogger);
+
                 Resolve<IEventPublisher>();
-                _botService = Resolve<IBotService>();
+                _botService = Resolve<IBotService>();    
             }
             catch (Exception e)
             {
+                Console.WriteLine($"Unhandled exception in Boot: {e.Message}, {e.StackTrace}");
                 _logger.Error(e, "Unhandled exception in Boot()");
             }
 

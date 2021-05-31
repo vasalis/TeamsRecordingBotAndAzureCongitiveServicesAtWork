@@ -11,6 +11,7 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using Microsoft.ApplicationInsights.WorkerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -54,6 +55,29 @@ namespace RecordingBot.Services.ServiceSetup
             services.AddSingleton<IAzureSettings>(_ => _.GetRequiredService<IOptions<AzureSettings>>().Value);
 			services.AddSingleton<IEventPublisher, EventGridPublisher>(_ => new EventGridPublisher(_.GetRequiredService<IOptions<AzureSettings>>().Value));
             services.AddSingleton<IBotService, BotService>();
+
+            // Add Application Insights
+            // https://docs.microsoft.com/en-us/azure/azure-monitor/app/worker-service
+            string lAppInsightsKey = Environment.GetEnvironmentVariable("AzureSettings__AppInsightsKey");
+            if (string.IsNullOrEmpty(lAppInsightsKey))
+            {
+                lAppInsightsKey = Environment.GetEnvironmentVariable("AzureSettings:AppInsightsKey");
+            }
+
+            if (string.IsNullOrEmpty(lAppInsightsKey))
+            {
+                throw new Exception("App insights key is null");
+            }
+
+            ApplicationInsightsServiceOptions lOptions = new ApplicationInsightsServiceOptions()
+            {
+                EnableDependencyTrackingTelemetryModule = true,
+                EnableQuickPulseMetricStream = true,
+                EnableHeartbeat = true,
+                InstrumentationKey = lAppInsightsKey
+            };
+
+            services.AddApplicationInsightsTelemetryWorkerService(lOptions);
 
             return this;
         }

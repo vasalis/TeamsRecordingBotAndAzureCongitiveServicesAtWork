@@ -26,6 +26,7 @@ using RecordingBot.Services.ServiceSetup;
 using RecordingBot.Services.Util;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecordingBot.Services.Bot
@@ -64,6 +65,8 @@ namespace RecordingBot.Services.Bot
         /// <value>The client.</value>
         public ICommunicationsClient Client { get; private set; }
 
+        private Dictionary<string, JoinCallBody> mCallLanguagesDict = new Dictionary<string, JoinCallBody>();
+
 
         /// <inheritdoc />
         public void Dispose()
@@ -80,7 +83,7 @@ namespace RecordingBot.Services.Bot
         /// <param name="eventPublisher">The event publisher.</param>
         /// <param name="settings">The settings.</param>
         public BotService(
-            IGraphLogger logger,
+            IGraphLogger logger,            
             IEventPublisher eventPublisher,
             IAzureSettings settings
 
@@ -89,7 +92,6 @@ namespace RecordingBot.Services.Bot
             _logger = logger;
             _eventPublisher = eventPublisher;
             _settings = (AzureSettings)settings;
-
         }
 
         /// <summary>
@@ -172,7 +174,11 @@ namespace RecordingBot.Services.Bot
                 };
             }
 
+            mCallLanguagesDict.Add(scenarioId.ToString(), joinCallBody);
+
             var statefulCall = await this.Client.Calls().AddAsync(joinParams, scenarioId).ConfigureAwait(false);
+
+
             statefulCall.GraphLogger.Info($"Call creation complete: {statefulCall.Id}");
             return statefulCall;
         }
@@ -222,7 +228,7 @@ namespace RecordingBot.Services.Bot
 
                 // The context associated with the incoming call.
                 IncomingContext incomingContext =
-                    call.Resource.IncomingContext;
+                    call.Resource.IncomingContext;                
 
                 // The RP participant.
                 string observedParticipantId =
@@ -269,7 +275,21 @@ namespace RecordingBot.Services.Bot
         {
             foreach (var call in args.AddedResources)
             {
-                var callHandler = new CallHandler(call, _settings, _eventPublisher);
+                // Use this in order to get the default values for languages.
+                JoinCallBody lJoinBody = new JoinCallBody();
+                
+                if (call.ScenarioId != null && mCallLanguagesDict.ContainsKey(call.ScenarioId.ToString()))
+                {
+                    lJoinBody = mCallLanguagesDict[call.ScenarioId.ToString()] as JoinCallBody;
+
+                    _eventPublisher.Publish("CallsOnUpdated", $"JoinBody found -> Settings languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranslationLanguages}");
+                }
+                else
+                {
+                    _eventPublisher.Publish("CallsOnUpdated", $"No JoinBody object found -> Settings default languages: {lJoinBody.TranscriptionLanguage}, {lJoinBody.TranslationLanguages}");
+                }
+
+                var callHandler = new CallHandler(call, lJoinBody.TranscriptionLanguage, lJoinBody.TranslationLanguages, _settings, _eventPublisher);
                 this.CallHandlers[call.Id] = callHandler;
             }
 

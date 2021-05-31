@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: YOUR_EMAIL
+    email: vasalis@microsoft.com
     privateKeySecretRef:
       name: letsencrypt
     solvers:
@@ -15,3 +15,4 @@ spec:
             spec:
               nodeSelector:
                 "beta.kubernetes.io/os": linux
+                

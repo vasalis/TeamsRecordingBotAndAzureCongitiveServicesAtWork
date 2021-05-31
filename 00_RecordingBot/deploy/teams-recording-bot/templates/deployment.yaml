@@ -106,6 +106,26 @@ spec:
           value: "{{ .Values.container.env.azureSetting.wavSampleRate }}"
         - name: AzureSettings__WAVQuality
           value: "{{ .Values.container.env.azureSetting.wavQuality }}"
+        - name: AzureSettings__AzureCognitiveKey
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: azureCognitiveKey
+        - name: AzureSettings__AzureCognitiveRegion
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: azureCognitiveRegion
+        - name: AzureSettings__PersistenceEndPoint
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: persistenceEndPoint
+        - name: AzureSettings__AppInsightsKey
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: appInsightsKey
         - name: AzureSettings__PodName
           valueFrom:
             fieldRef:

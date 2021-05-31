@@ -35,5 +35,9 @@ namespace RecordingBot.Model.Models
         /// </summary>
         /// <value>The display name.</value>
         public string DisplayName { get; set; }
+
+        public string TranscriptionLanguage { get; set; } = "en-US";
+
+        public string[] TranslationLanguages { get; set; } = { "el-GR" };
     }
 }

@@ -21,8 +21,11 @@ using Microsoft.Skype.Bots.Media;
 using Microsoft.Skype.Internal.Media.Services.Common;
 using RecordingBot.Services.Contract;
 using RecordingBot.Services.Media;
+using RecordingBot.Services.ServiceSetup;
+using RecordingBot.Services.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -53,9 +56,19 @@ namespace RecordingBot.Services.Bot
         private readonly IEventPublisher _eventPublisher;
 
         /// <summary>
+        /// The settings
+        /// </summary>
+        private readonly AzureSettings _settings;
+
+        /// <summary>
         /// The call identifier
         /// </summary>
         private readonly string _callId;
+
+        private readonly string mTranscriptionLanguage;
+        private readonly string[] mTranslationLanguages;
+
+        private Dictionary<uint, MySTT> mSpeechToTextPool = new Dictionary<uint, MySTT>();
 
         /// <summary>
         /// Return the last read 'audio quality of experience data' in a serializable structure
@@ -75,6 +88,8 @@ namespace RecordingBot.Services.Bot
         public BotMediaStream(
             ILocalMediaSession mediaSession,
             string callId,
+            string aTranscriptionLanguage,
+            string[] aTranslationLanguages,
             IGraphLogger logger,
             IEventPublisher eventPublisher,
             IAzureSettings settings
@@ -87,8 +102,12 @@ namespace RecordingBot.Services.Bot
 
             this.participants = new List<IParticipant>();
 
+            this.mTranscriptionLanguage = aTranscriptionLanguage;
+            this.mTranslationLanguages = aTranslationLanguages;
+
             _eventPublisher = eventPublisher;
             _callId = callId;
+            _settings = (AzureSettings)settings;
             _mediaStream = new MediaStream(
                 settings,
                 logger,
@@ -150,13 +169,26 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The audio media received arguments.</param>
-        private async void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
+        private void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
         {
             this.GraphLogger.Info($"Received Audio: [AudioMediaReceivedEventArgs(Data=<{e.Buffer.Data.ToString()}>, Length={e.Buffer.Length}, Timestamp={e.Buffer.Timestamp})]");
 
             try
             {
-                await _mediaStream.AppendAudioBuffer(e.Buffer, this.participants);
+                if (e.Buffer != null && e.Buffer.UnmixedAudioBuffers != null)
+                {
+                    for (int i = 0; i < e.Buffer.UnmixedAudioBuffers.Length; i++)
+                    {
+                        // Transcribe
+                        var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId, this.mTranscriptionLanguage, this.mTranslationLanguages);
+                        if (lTrans != null)
+                        {
+                            lTrans.Transcribe(e.Buffer.UnmixedAudioBuffers[i]);
+                        }
+                    }
+                }
+
+                // await _mediaStream.AppendAudioBuffer(e.Buffer, this.participants);
                 e.Buffer.Dispose();
             }
             catch (Exception ex)
@@ -168,6 +200,70 @@ namespace RecordingBot.Services.Bot
                 e.Buffer.Dispose();
             }
 
+        }
+
+        private MySTT GetSTTEngine(uint aUserId, string aTranscriptionLanguage, string[] aTranslationLanguages)
+        {
+            try
+            {
+                if (this.mSpeechToTextPool.ContainsKey(aUserId))
+                {
+                    var lexit = this.mSpeechToTextPool[aUserId];
+
+                    if (!lexit.IsParticipantResolved)
+                    {
+                        // Try to resolved again
+                        var lParticipantInfo = this.TryToResolveParticipant(aUserId);
+
+                        //Update if resolved.
+                        if (lParticipantInfo.Item3)
+                        {
+                            lexit.UpdateParticipant(lParticipantInfo);
+                        }
+                    }
+
+                    return lexit;
+                }
+                else
+                {
+                    var lParticipantInfo = this.TryToResolveParticipant(aUserId);
+
+                    var lNewSE = new MySTT(this._callId, aTranscriptionLanguage, aTranslationLanguages, lParticipantInfo.Item1, lParticipantInfo.Item2, lParticipantInfo.Item3, this.GraphLogger, this._eventPublisher, this._settings);
+                    this.mSpeechToTextPool.Add(aUserId, lNewSE);
+
+                    return lNewSE;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.GraphLogger.Error($"GetSTTEngine failed for userid: {aUserId}. Details: {ex.Message}");                
+            }
+
+            return null;
+        }
+
+        private Tuple<String, String, Boolean> TryToResolveParticipant(uint aUserId)
+        {
+            bool lIsParticipantResolved = false;
+            string lUserDisplayName = aUserId.ToString();
+            string lUserId = aUserId.ToString();
+
+            IParticipant participant = this.GetParticipantFromMSI(aUserId);
+            var participantDetails = participant?.Resource?.Info?.Identity?.User;
+
+            if (participantDetails != null)
+            {
+                lUserDisplayName = participantDetails.DisplayName;
+                lUserId = participantDetails.Id;
+                lIsParticipantResolved = true;
+            }
+
+            return new Tuple<string, string, bool>(lUserDisplayName, lUserId, lIsParticipantResolved);
+        }
+
+        private IParticipant GetParticipantFromMSI(uint msi)
+        {
+            return this.participants.SingleOrDefault(x => x.Resource.IsInLobby == false && x.Resource.MediaStreams.Any(y => y.SourceId == msi.ToString()));
         }
     }
 }

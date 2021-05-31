@@ -69,7 +69,7 @@ namespace RecordingBot.Services.Bot
         /// <summary>
         /// The is disposed
         /// </summary>
-        private bool _isDisposed = false;
+        private bool _isDisposed = false;       
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CallHandler" /> class.
@@ -79,6 +79,8 @@ namespace RecordingBot.Services.Bot
         /// <param name="eventPublisher">The event publisher.</param>
         public CallHandler(
             ICall statefulCall,
+            string aTranscriptionLanguage,
+            string[] aTranslationLanguages,
             IAzureSettings settings,
             IEventPublisher eventPublisher
         )
@@ -89,9 +91,12 @@ namespace RecordingBot.Services.Bot
 
             this.Call = statefulCall;
             this.Call.OnUpdated += this.CallOnUpdated;
-            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;
-  
-            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id, this.GraphLogger, eventPublisher,  _settings);
+            this.Call.Participants.OnUpdated += this.ParticipantsOnUpdated;     
+            
+            this.GraphLogger.Log(System.Diagnostics.TraceLevel.Warning, $"Starting call with id: {this.Call.Id}");
+
+
+            this.BotMediaStream = new BotMediaStream(this.Call.GetLocalMediaSession(), this.Call.Id,aTranscriptionLanguage, aTranslationLanguages, this.GraphLogger, eventPublisher,  _settings);            
 
             if (_settings.CaptureEvents)
             {
@@ -115,7 +120,7 @@ namespace RecordingBot.Services.Bot
             this.Call.OnUpdated -= this.CallOnUpdated;
             this.Call.Participants.OnUpdated -= this.ParticipantsOnUpdated;
 
-            this.BotMediaStream?.Dispose();
+            this.BotMediaStream?.Dispose();            
 
             // Event - Dispose of the call completed ok
             _eventPublisher.Publish("CallDisposedOK", $"Call.Id: {this.Call.Id}");

@@ -3,8 +3,8 @@ override:
   namespace: ""
 
 scale:
-  maxReplicaCount: 3
-  replicaCount: 3
+  maxReplicaCount: 1
+  replicaCount: 1
 
 host: null
 
@@ -39,12 +39,12 @@ container:
       captureEvents: false
       eventsFolder: events
       mediaFolder: archive
-      eventhubKey: ""
-      eventhubName: recordingbotevents
-      eventhubRegion: ""
+      eventhubKey: "JE7k7F10uY95faMM46MloaWoN5SxplNQBK44NEWbVdE="
+      eventhubName: "vsalisrecordingbot"
+      eventhubRegion: "northeurope"
       isStereo: false
       wavSampleRate: 0 # when it is 0, the default sample rate will be set per the stereo flag setting above
-      wavQuality: 100
+      wavQuality: 100      
   port: 9441
 
 resources: {}
