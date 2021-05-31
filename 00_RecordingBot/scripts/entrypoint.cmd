@@ -53,4 +53,5 @@ echo Setup: Done
 echo ---------------------
 
 :: --- Running bot ---
-.\RecordingBot.Console.exe
+:: .\RecordingBot.Console.exe
+powershell.exe
