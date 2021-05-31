@@ -13,6 +13,9 @@ echo Setup: Converting certificate
 
 cd \
 cd "Program Files\OpenSSL\bin"
+echo Setup: On OpenSSL folder
+dir
+echo Setup: Creating pfx certificate
 openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
 
 cd \
