@@ -114,9 +114,7 @@ namespace RecordingBot.Tests.BotTests
         public void TestOnParticipantUpdate()
         {
             var participantCount = 0;
-            //TODO: Fix this properly
-            JoinCallBody ljBody = new JoinCallBody();
-            var handler = new CallHandler(_call.Object, ljBody.TranscriptionLanguage, ljBody.TranslationLanguages, _settings, _eventPublisher);
+            var handler = new CallHandler(_call.Object, _settings, _eventPublisher);
 
             using (var fs = System.IO.File.OpenRead(Path.Combine("TestData", "participants.zip")))
             {

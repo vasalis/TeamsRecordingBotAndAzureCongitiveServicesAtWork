@@ -10,14 +10,7 @@ echo Setup: Starting VC_redist
 .\VC_redist.x64.exe /quiet /norestart
 
 echo Setup: Converting certificate
-cd "C:\Program Files\OpenSSL\bin"
-openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls1.key -in C:\certs\tls.crt
-
-cd c:\bot
-
-dir
-
-dir cert*
+powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
 
 echo Setup: Installing certificate
 certutil -f -p "" -importpfx certificate.pfx
@@ -53,5 +46,4 @@ echo Setup: Done
 echo ---------------------
 
 :: --- Running bot ---
-:: .\RecordingBot.Console.exe
-powershell.exe Start-Sleep -Seconds 6000
+.\RecordingBot.Console.exe

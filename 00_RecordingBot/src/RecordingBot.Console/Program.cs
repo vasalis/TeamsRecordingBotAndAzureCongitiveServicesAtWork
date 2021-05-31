@@ -46,11 +46,6 @@ namespace RecordingBot.Console
             {
                 System.Console.WriteLine("RecordingBot: booting");
 
-                if (bot == null)
-                {
-                    System.Console.WriteLine("RecordingBot: bot instance is null...about to fail...");
-                }
-
                 bot.Boot();
                 bot.StartServer();
 

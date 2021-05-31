@@ -121,13 +121,12 @@ namespace RecordingBot.Services.Http.Controllers
                     }
                 }
 
-                _logger.Error(e, $"JoinCallAsync failed. Received HTTP {this.Request.Method}, {this.Request.RequestUri}");
                 response.Content = new StringContent(e.ToString());
                 return response;
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"JoinCallAsync failed. HTTP {this.Request.Method}, {this.Request.RequestUri}");
+                _logger.Error(e, $"Received HTTP {this.Request.Method}, {this.Request.RequestUri}");
                 HttpResponseMessage response = this.Request.CreateResponse(HttpStatusCode.InternalServerError);
                 response.Content = new StringContent(e.Message);
                 return response;
