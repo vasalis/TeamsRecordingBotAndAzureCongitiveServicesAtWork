@@ -13,6 +13,12 @@ echo Setup: Converting certificate
 cd "C:\Program Files\OpenSSL\bin"
 openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
 
+cd c:\bot
+
+dir
+
+dir cert*
+
 echo Setup: Installing certificate
 certutil -f -p "" -importpfx certificate.pfx
 powershell.exe "(Get-PfxCertificate -FilePath certificate.pfx).Thumbprint" > thumbprint
