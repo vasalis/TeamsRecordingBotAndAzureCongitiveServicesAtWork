@@ -54,4 +54,4 @@ echo ---------------------
 
 :: --- Running bot ---
 :: .\RecordingBot.Console.exe
-powershell.exe
+powershell.exe Start-Sleep -Seconds 6000
