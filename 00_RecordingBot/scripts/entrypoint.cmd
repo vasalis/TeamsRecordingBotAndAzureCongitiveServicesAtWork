@@ -5,21 +5,18 @@ IF "%1"=="-v" (
     exit /b 0
 )
 
+:: echo Setup: Sleeping for 10 mins
+:: powershell.exe Start-Sleep -Seconds 600
+
+echo Setup: Converting certificate (changed order, doing this before starting VC_redist)
+powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
+
 :: --- Ensure the VC_redist is installed for the Microsoft.Skype.Bots.Media Library ---
-echo Setup: Starting VC_redist
-.\VC_redist.x64.exe /quiet /norestart
+:: echo Setup: Starting VC_redist (using powershell)
+:: powershell.exe .\VC_redist.x64.exe /quiet /norestart /log Install_vc_redist_2017_x64.log
 
-echo Setup: Converting certificate
-
-cd \
-cd "Program Files\OpenSSL\bin"
-echo Setup: On OpenSSL folder
-dir
-echo Setup: Creating pfx certificate
-openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
-
-cd \
-cd bot
+echo Setup: VC_redist log:
+more Install_vc_redist_2017_x64.log
 
 echo Setup: Installing certificate
 dir certificate*
