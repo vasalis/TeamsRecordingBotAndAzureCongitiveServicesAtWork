@@ -15,8 +15,8 @@ powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\
 :: echo Setup: Starting VC_redist (using powershell)
 :: powershell.exe .\VC_redist.x64.exe /quiet /norestart /log Install_vc_redist_2017_x64.log
 
-echo Setup: VC_redist log:
-more Install_vc_redist_2017_x64.log
+:: echo Setup: VC_redist log:
+:: more Install_vc_redist_2017_x64.log
 
 echo Setup: Installing certificate
 dir certificate*

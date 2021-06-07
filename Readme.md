@@ -10,8 +10,6 @@
 2. A Teams Tenant with Admin rights
 3. A custom domain, where you can create an A Record
 
-## !Currently broken functionallity
-Facing a bug that causes the recording bot POD to fail launching. Stay tuned for updates...
 ## TL;DR
 1. The scope of this repo is by using GitHub Actions to automate the entire process of running the sample. 
 2. In theory, by:
