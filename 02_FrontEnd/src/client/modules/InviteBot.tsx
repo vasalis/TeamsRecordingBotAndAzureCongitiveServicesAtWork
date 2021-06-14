@@ -40,7 +40,11 @@ const InviteBot = (props) =>
                 }).catch(function(error) {
                     console.log(error);
                 });
-        }        
+        }
+        else
+        {
+            console.log("At least one language is not set...");
+        }  
     };
 
     const myLanguages: LanguageEntity[] = [        
