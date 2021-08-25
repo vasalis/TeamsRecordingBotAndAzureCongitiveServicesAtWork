@@ -80,6 +80,7 @@ kubectl wait pod -n cert-manager --for condition=ready --timeout=60s --all
 
 Write-Output "Installing cluster issuer"
 kubectl apply -f 00_RecordingBot/deploy/cluster-issuer.yaml
+kubectl apply -f 00_RecordingBot/deploy/cluster-issuer.yaml
 
 # Setup Ingress
 Write-Output "Creating ingress-nginx namespace"
