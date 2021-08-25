@@ -1,4 +1,4 @@
-botSubDomain=ceobot.vsalis.eu
+botSubDomain=ceobot2.vsalis.eu
 botName=myTeamsRecBot
 projectPrefix=ceobot
 azureLocation=northeurope
