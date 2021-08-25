@@ -80,6 +80,8 @@ kubectl wait pod -n cert-manager --for condition=ready --timeout=60s --all
 
 Write-Output "Installing cluster issuer"
 kubectl apply -f 00_RecordingBot/deploy/cluster-issuer.yaml
+# Write-Output "Sleeping for 30 secs before retrying
+Start-Sleep -Seconds 30
 kubectl apply -f 00_RecordingBot/deploy/cluster-issuer.yaml
 
 # Setup Ingress
