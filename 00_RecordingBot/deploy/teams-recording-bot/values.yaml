@@ -39,7 +39,7 @@ container:
       captureEvents: false
       eventsFolder: events
       mediaFolder: archive
-      eventhubKey: "B3ADGEQIHuhVM0CwVPXwMHRPkCct3hUq8O/sk7iUSAs="
+      eventhubKey: "5ZzUe5sG+afqx5PWlT2ZQm3rtbz7tc0+8dsHeXjkeqw="
       eventhubName: "vsalisrecordingbot"
       eventhubRegion: "northeurope"
       isStereo: false
