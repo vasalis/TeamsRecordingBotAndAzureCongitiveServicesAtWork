@@ -6,12 +6,12 @@
     <ApplicationInsightsResourceId>/subscriptions/66b89049-c2e6-4d7f-b2cb-68363235fe63/resourceGroups/vipbot_rg/providers/microsoft.insights/components/vipbotmiddlewareAI</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.AI.TextAnalytics" Version="5.1.0-beta.3" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.17.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.17.0" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.17.1" />
+    <PackageReference Include="Azure.AI.TextAnalytics" Version="5.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.18.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.21.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamsComModels\TeamsComModels.csproj" />
