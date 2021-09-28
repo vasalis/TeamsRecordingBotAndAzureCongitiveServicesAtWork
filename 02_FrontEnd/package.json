@@ -15,7 +15,7 @@
     "@microsoft/applicationinsights-web": "^2.6.2",
     "@microsoft/teams-js": "~1.9.0",
     "applicationinsights": "^1.8.10",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "botbuilder": "4.11.1",
     "botbuilder-dialogs": "4.11.1",
     "compression": "1.7.4",
