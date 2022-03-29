@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "TeamsComBackEnd": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CosmosDbContainerName": "TeamsCalls",
+        "CosmosConnectionString": "AccountEndpoint=https://ybotcosmosdb.documents.azure.com:443/;AccountKey=5i9Z13RkchenFprecIi2N25vpotPni4wZJ7vOIFSCZgYqfg8NoGXLrcQNP3lEtlcUyCboSnHu1fGs2deiVUMFg==",
+        "TextAnalyticsKey": "aded5282e673421da4d71409ece10fff",
+        "CosmosDbPartitionKey": "/callid",
+        "TextAnalyticsEndPoint": "https://northeurope.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+        "APPINSIGHTS_INSTRUMENTATIONKEY": "06624dc2-14d7-4fe7-b27f-b505b4a8e141",
+        "CosmosDbName": "TeamsCallsDatabase"
+      }
+    }
+  }
+}
