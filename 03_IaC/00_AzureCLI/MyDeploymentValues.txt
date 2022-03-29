@@ -1,5 +1,5 @@
 botSubDomain=mbot.vsalis.eu
 botName=myTeamsRecBot
 projectPrefix=mbot
-azureLocation=northeurope
+azureLocation=francecentral
 acrName=mbotacr
