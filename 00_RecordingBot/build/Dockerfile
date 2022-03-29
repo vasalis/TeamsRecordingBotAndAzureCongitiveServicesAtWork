@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019 AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS build
 
 ARG CallSignalingPort=9441
 ARG CallSignalingPort2=9442
@@ -13,7 +13,7 @@ WORKDIR /src/RecordingBot.Console
 RUN msbuild /p:Configuration=Release /p:OutputPath=C:\app /p:Platform=x64
 
 
-FROM mcr.microsoft.com/windows:1909
+FROM mcr.microsoft.com/windows:1809
 SHELL ["powershell", "-Command"]
 
 ADD https://aka.ms/vs/16/release/vc_redist.x64.exe /bot/VC_redist.x64.exe
