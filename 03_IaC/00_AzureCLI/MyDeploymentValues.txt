@@ -1,5 +1,5 @@
-botSubDomain=mbot.vsalis.eu
+botSubDomain=ibot.vsalis.eu
 botName=myTeamsRecBot
-projectPrefix=mbot
+projectPrefix=ibot
 azureLocation=francecentral
-acrName=mbotacr
+acrName=ibotacr
