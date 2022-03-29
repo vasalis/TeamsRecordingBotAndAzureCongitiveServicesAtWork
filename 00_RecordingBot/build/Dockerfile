@@ -13,7 +13,7 @@ WORKDIR /src/RecordingBot.Console
 RUN msbuild /p:Configuration=Release /p:OutputPath=C:\app /p:Platform=x64
 
 
-FROM mcr.microsoft.com/windows:1809
+FROM mcr.microsoft.com/windows/server
 SHELL ["powershell", "-Command"]
 
 ADD https://aka.ms/vs/16/release/vc_redist.x64.exe /bot/VC_redist.x64.exe
