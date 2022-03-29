@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/framework/runtime AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS build
 
 ARG CallSignalingPort=9441
 ARG CallSignalingPort2=9442
