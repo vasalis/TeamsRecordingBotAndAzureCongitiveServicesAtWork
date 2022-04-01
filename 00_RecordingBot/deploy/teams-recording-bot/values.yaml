@@ -39,9 +39,9 @@ container:
       captureEvents: false
       eventsFolder: events
       mediaFolder: archive
-      eventhubKey: "5ZzUe5sG+afqx5PWlT2ZQm3rtbz7tc0+8dsHeXjkeqw="
-      eventhubName: "vsalisrecordingbot"
-      eventhubRegion: "northeurope"
+      eventhubKey: ""
+      eventhubName: ""
+      eventhubRegion: ""
       isStereo: false
       wavSampleRate: 0 # when it is 0, the default sample rate will be set per the stereo flag setting above
       wavQuality: 100      
