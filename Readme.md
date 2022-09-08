@@ -5,6 +5,11 @@
 4. Shows the results on a Teams Tab App (React / TypeScript), it can be added as a personal scope or to a meeting with Side Panel functionallity.
 6. The bot does not actually record the call, but the code for that is just commented out from the original forked project (see below).
 
+## Update - current status
+This is currently broken, as cert-manager --version v0.15.1 is not support for AKS version > 1.21.
+There is no time estimation when this will be addressed :( 
+In case anyone would like to assist, please create a pull request :)
+
 ## Prerequisites
 1. An Azure subcription, where you can create (or have access) to a Service Principal with the Owner Role.
 2. A Teams Tenant with Admin rights
