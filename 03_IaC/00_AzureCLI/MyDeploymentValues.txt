@@ -1,5 +1,5 @@
-botSubDomain=probot.vsalis.eu
+botSubDomain=sambot.vsalis.eu
 botName=myTeamsRecBot
-projectPrefix=porbot
+projectPrefix=sambot
 azureLocation=francecentral
-acrName=porbotacr
+acrName=sambotacr
