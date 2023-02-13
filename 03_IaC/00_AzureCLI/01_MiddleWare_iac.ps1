@@ -78,7 +78,7 @@ az storage account create -n $storageAccountName -g $resourceGroupName -l $azure
 # Hosted agents use Azure CLI 2.3.1
 # az functionapp create -c $azureLocation -n $functionsName --os-type Linux -g $resourceGroupName --runtime dotnet -s $storageAccountName --app-insights $appInsightsName --app-insights-key $appInsightsKey
 Write-Output "About to create Functions middleware: $functionsName"
-az functionapp create -c $azureLocation -n $functionsName --os-type Windows -g $resourceGroupName --runtime dotnet -s $storageAccountName --app-insights $functionsAppInsightsName --app-insights-key $appInsightsKey
+az functionapp create -c $azureLocation -n $functionsName --os-type Windows -g $resourceGroupName --runtime dotnet -s $storageAccountName --app-insights $functionsAppInsightsName --app-insights-key $appInsightsKey --functions-version 4
 $persistanceEndPoint = "https://" + $functionsName + ".azurewebsites.net/api/StoreTranscription"
 
 Write-Output "Functions end point is: $persistanceEndPoint"
