@@ -5,8 +5,9 @@ IF "%1"=="-v" (
     exit /b 0
 )
 
-:: echo Setup: Sleeping for 10 mins
-:: powershell.exe Start-Sleep -Seconds 600
+echo Setup: Debug Mode!!!
+echo Setup: Sleeping for 10 mins
+powershell.exe Start-Sleep -Seconds 600
 
 echo Setup: Converting certificate (changed order, doing this before starting VC_redist)
 powershell.exe C:\Program` Files\OpenSSL\bin\openssl.exe pkcs12 -export -out C:\bot\certificate.pfx -passout pass: -inkey C:\certs\tls.key -in C:\certs\tls.crt
