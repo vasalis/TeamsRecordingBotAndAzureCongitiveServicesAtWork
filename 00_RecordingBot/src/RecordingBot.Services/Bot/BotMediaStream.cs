@@ -169,10 +169,20 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The audio media received arguments.</param>
-        private void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
+        private async void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
         {
             this.GraphLogger.Info($"Received Audio: [AudioMediaReceivedEventArgs(Data=<{e.Buffer.Data.ToString()}>, Length={e.Buffer.Length}, Timestamp={e.Buffer.Timestamp})]");
 
+            try
+            {
+                // Save to files.
+                await _mediaStream.AppendAudioBuffer(e.Buffer, this.participants);                
+            }
+            catch (Exception ex)
+            {
+                this.GraphLogger.Error(ex);
+            }
+            
             try
             {
                 if (e.Buffer != null && e.Buffer.UnmixedAudioBuffers != null)
