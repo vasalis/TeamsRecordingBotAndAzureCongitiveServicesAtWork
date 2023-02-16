@@ -1,18 +1,16 @@
 import * as React from "react";
-import { Flex, Provider } from "@fluentui/react-northstar";
+import { Provider, Flex, Text, Button, Header } from "@fluentui/react-northstar";
 import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
-import * as microsoftTeams from "@microsoft/teams-js";
+import { app } from "@microsoft/teams-js";
 import MyCalls from "../modules/MyCalls";
 import MyTranscriptions from "../modules/MyTranscriptions";
-import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin } from "../modules/AppInsights";
 import InviteBot from "../modules/InviteBot";
 
 /**
- * Implementation of the Cognitive Bot content page
+ * Implementation of the recbot content page
  */
-export const CognitiveBotTab = () => {
+export const RecbotTab = () => {
 
     const [{ inTeams, theme, context }] = useTeams();    
     const [currentCallId, setcurrentCallId] = useState<string>();    
@@ -21,20 +19,20 @@ export const CognitiveBotTab = () => {
 
     useEffect(() => {
         if (inTeams === true) {
-            microsoftTeams.appInitialization.notifySuccess();
+            app.notifySuccess();
 
             // Get Join Meeting Url
-            if(context && context.meetingId && context.chatId && context.tid && context.userObjectId)
+            if(context && context.meeting?.id && context.chat?.id && context.team?.internalId && context.user?.id)
             {
-                console.log("In Teams Meeting, meeting id is: " + context.meetingId);
+                console.log("In Teams Meeting, meeting id is: " + context.meeting?.id);
                 console.log("Context is: " + JSON.stringify(context));
                 setinMeeting(true);
 
                 // Try to create Join Url
                 let lJoinUrl = "https://teams.microsoft.com/l/meetup-join/CHAT_ID/0?context={\"Tid\":\"T_ID\",\"Oid\":\"O_ID\"}".
-                replace("CHAT_ID", context.chatId).
-                replace("T_ID", context.tid).
-                replace("O_ID", context.userObjectId);
+                replace("CHAT_ID", context.chat?.id).
+                replace("T_ID", context.team?.internalId).
+                replace("O_ID", context.user?.id);
 
                 console.log("Join web url is: " + lJoinUrl);
 
@@ -48,8 +46,7 @@ export const CognitiveBotTab = () => {
      * The render() method to create the UI of the tab
      */
     return (
-        <AppInsightsContext.Provider value={reactPlugin}>
-            <Provider theme={theme}>
+        <Provider theme={theme}>
                 <Flex column fill={true}>
 
                     {inMeeting && !currentCallId ?                        
@@ -64,7 +61,6 @@ export const CognitiveBotTab = () => {
 
                     <MyTranscriptions currentCallId={currentCallId} />
                 </Flex>
-            </Provider>
-        </AppInsightsContext.Provider>        
+            </Provider>       
     );
 };

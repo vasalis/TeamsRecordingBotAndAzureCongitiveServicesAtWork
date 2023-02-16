@@ -1,19 +1,19 @@
 import * as React from "react";
 import { Provider, Flex, Text, Header } from "@fluentui/react-northstar";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
-import * as microsoftTeams from "@microsoft/teams-js";
+import { app } from "@microsoft/teams-js";
 
 /**
- * Implementation of Cognitive Bot remove page
+ * Implementation of recbot remove page
  */
-export const CognitiveBotTabRemove = () => {
+export const RecbotTabRemove = () => {
 
     const [{ inTeams, theme }] = useTeams();
 
     useEffect(() => {
         if (inTeams === true) {
-            microsoftTeams.appInitialization.notifySuccess();
+            app.notifySuccess();
         }
     }, [inTeams]);
 

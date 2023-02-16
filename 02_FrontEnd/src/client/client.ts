@@ -6,7 +6,7 @@ import * as React from "react";
 export const render = (type: any, element: HTMLElement) => {
     ReactDOM.render(React.createElement(type, {}), element);
 };
-// Automatically added for the cognitiveBotTab tab
-export * from "./cognitiveBotTab/CognitiveBotTab";
-export * from "./cognitiveBotTab/CognitiveBotTabConfig";
-export * from "./cognitiveBotTab/CognitiveBotTabRemove";
+// Automatically added for the recbotTab tab
+export * from "./recbotTab/RecbotTab";
+export * from "./recbotTab/RecbotTabConfig";
+export * from "./recbotTab/RecbotTabRemove";

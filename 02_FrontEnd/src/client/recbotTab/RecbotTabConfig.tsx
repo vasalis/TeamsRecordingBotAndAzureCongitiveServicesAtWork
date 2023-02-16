@@ -2,36 +2,37 @@ import * as React from "react";
 import { Provider, Flex, Header, Input } from "@fluentui/react-northstar";
 import { useState, useEffect, useRef } from "react";
 import { useTeams } from "msteams-react-base-component";
-import * as microsoftTeams from "@microsoft/teams-js";
+import { app, pages } from "@microsoft/teams-js";
 
 /**
- * Implementation of Cognitive Bot configuration page
+ * Implementation of recbot configuration page
  */
-export const CognitiveBotTabConfig = () => {
+export const RecbotTabConfig = () => {
 
     const [{ inTeams, theme, context }] = useTeams({});
     const [text, setText] = useState<string>();
     const entityId = useRef("");
 
-    const onSaveHandler = (saveEvent: microsoftTeams.settings.SaveEvent) => {
+    const onSaveHandler = (saveEvent: pages.config.SaveEvent) => {
         const host = "https://" + window.location.host;
-        microsoftTeams.settings.setSettings({
-            contentUrl: host + "/cognitiveBotTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-            websiteUrl: host + "/cognitiveBotTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-            suggestedDisplayName: "Cognitive Bot",
-            removeUrl: host + "/cognitiveBotTab/remove.html?theme={theme}",
+        pages.config.setConfig({
+            contentUrl: host + "/recbotTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+            websiteUrl: host + "/recbotTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+            suggestedDisplayName: "recbot",
+            removeUrl: host + "/recbotTab/remove.html?theme={theme}",
             entityId: entityId.current
+        }).then(() => {
+            saveEvent.notifySuccess();
         });
-        saveEvent.notifySuccess();
     };
 
     useEffect(() => {
         if (context) {
-            setText(context.entityId);
-            entityId.current = context.entityId;
-            microsoftTeams.settings.registerOnSaveHandler(onSaveHandler);
-            microsoftTeams.settings.setValidityState(true);
-            microsoftTeams.appInitialization.notifySuccess();
+            setText(context.page.id);
+            entityId.current = context.page.id;
+            pages.config.registerOnSaveHandler(onSaveHandler);
+            pages.config.setValidityState(true);
+            app.notifySuccess();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context]);

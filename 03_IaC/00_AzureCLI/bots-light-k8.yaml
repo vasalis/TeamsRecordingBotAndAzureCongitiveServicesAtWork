@@ -22,7 +22,7 @@ spec:
         "kubernetes.io/os": windows
       containers:
       - name: bot
-        image: albotacr.azurecr.io/teams-recording-bot:83
+        image: albotacr.azurecr.io/teams-recording-bot:84
         ports:
         - name: a
           containerPort: 9441
