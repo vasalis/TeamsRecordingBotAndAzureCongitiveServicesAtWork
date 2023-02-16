@@ -1,0 +1,141 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bot
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: bot
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": windows
+      containers:
+      - name: bot
+        image: albotacr.azurecr.io/teams-recording-bot:83
+        ports:
+        - name: a
+          containerPort: 9441
+        - name: b
+          containerPort: 8445
+        - name: c
+          containerPort: 9442
+        volumeMounts:
+        - mountPath: "C:/certs/"
+          name: certificate
+          readOnly: true
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: "4"
+            memory: "4G"
+        env:
+        - name: AzureSettings__BotName
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: botName
+        - name: AzureSettings__AadAppId
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: applicationId
+        - name: AzureSettings__AadAppSecret
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: applicationSecret
+        - name: AzureSettings__ServiceDnsName
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: serviceDnsName
+        - name: AzureSettings__InstancePublicPort
+          value: "8445"
+        - name: AzureSettings__InstanceInternalPort
+          value: "8445"
+        - name: AzureSettings__CallSignalingPort
+          value: "9441"
+        - name: AzureSettings__PodName
+          value: "bot-0"
+        - name: AzureSettings__PlaceCallEndpointUrl
+          value: https://graph.microsoft.com/v1.0
+        - name: AzureSettings__CaptureEvents
+          value: "false"
+        - name: AzureSettings__EventsFolder
+          value: "events"
+        - name: AzureSettings__MediaFolder
+          value: "archive"
+        - name: AzureSettings__TopicKey
+          value: ""
+        - name: AzureSettings__TopicName
+          value: ""
+        - name: AzureSettings__RegionName
+          value: ""
+        - name: AzureSettings__IsStereo
+          value: "false"
+        - name: AzureSettings__WAVSampleRate
+          value: "0"
+        - name: AzureSettings__WAVQuality
+          value: "100"
+        - name: AzureSettings__AzureCognitiveKey
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: azureCognitiveKey
+        - name: AzureSettings__AzureCognitiveRegion
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: azureCognitiveRegion
+        - name: AzureSettings__PersistenceEndPoint
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: persistenceEndPoint
+        - name: AzureSettings__AppInsightsKey
+          valueFrom:
+            secretKeyRef:
+              name: bot-application-secrets
+              key: appInsightsKey
+      volumes:
+      - name: certificate
+        secret:
+          secretName: tls-secret
+      
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bot-service
+spec:
+  # LoadBalancer type to allow external access to multiple ports
+  type: LoadBalancer
+  selector:
+    # Will deliver external traffic to the pod holding each of our containers
+    app: bot
+  ports:
+    - name: mediastream
+      protocol: TCP
+      port: 443
+      targetPort: 9441
+    - name: mediastream2
+      protocol: TCP
+      port: 8445
+      targetPort: 8445
+    - name: mediastreamplusone
+      protocol: TCP
+      port: 9442
+      targetPort: 9442
+      

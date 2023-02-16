@@ -5,6 +5,7 @@ IF "%1"=="-v" (
     exit /b 0
 )
 
+:: echo Setup: Debug Mode!!!
 :: echo Setup: Sleeping for 10 mins
 :: powershell.exe Start-Sleep -Seconds 600
 
