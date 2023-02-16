@@ -28,7 +28,7 @@
       "configurationUrl": "https://{{PUBLIC_HOSTNAME}}/recbotTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
       "canUpdateConfiguration": true,
       "scopes": [        
-        "groupchat"
+        "groupChat"
       ],
       "context": [       
         "meetingDetailsTab",
