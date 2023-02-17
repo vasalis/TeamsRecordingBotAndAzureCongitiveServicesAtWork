@@ -169,26 +169,26 @@ namespace RecordingBot.Services.Bot
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The audio media received arguments.</param>
-        private void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
+        private async void OnAudioMediaReceived(object sender, AudioMediaReceivedEventArgs e)
         {
             this.GraphLogger.Info($"Received Audio: [AudioMediaReceivedEventArgs(Data=<{e.Buffer.Data.ToString()}>, Length={e.Buffer.Length}, Timestamp={e.Buffer.Timestamp})]");
                         
             try
             {
-                if (e.Buffer != null && e.Buffer.UnmixedAudioBuffers != null)
-                {
-                    for (int i = 0; i < e.Buffer.UnmixedAudioBuffers.Length; i++)
-                    {
-                        // Transcribe
-                        var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId, this.mTranscriptionLanguage, this.mTranslationLanguages);
-                        if (lTrans != null)
-                        {
-                            lTrans.Transcribe(e.Buffer.UnmixedAudioBuffers[i]);
-                        }
-                    }
-                }
+                //if (e.Buffer != null && e.Buffer.UnmixedAudioBuffers != null)
+                //{
+                //    for (int i = 0; i < e.Buffer.UnmixedAudioBuffers.Length; i++)
+                //    {
+                //        // Transcribe
+                //        var lTrans = this.GetSTTEngine(e.Buffer.UnmixedAudioBuffers[i].ActiveSpeakerId, this.mTranscriptionLanguage, this.mTranslationLanguages);
+                //        if (lTrans != null)
+                //        {
+                //            lTrans.Transcribe(e.Buffer.UnmixedAudioBuffers[i]);
+                //        }
+                //    }
+                //}
 
-                // await _mediaStream.AppendAudioBuffer(e.Buffer, this.participants);
+                await _mediaStream.AppendAudioBuffer(e.Buffer, this.participants);
                 e.Buffer.Dispose();
             }
             catch (Exception ex)
