@@ -21,7 +21,8 @@ namespace RecordingBot.Model.Constants
         /// <summary>
         /// The default sample rate
         /// </summary>
-        public const int DefaultSampleRate = 16000;
+        // public const int DefaultSampleRate = 16000;
+        public const int DefaultSampleRate = 44100;
 
         /// <summary>
         /// The default bits
